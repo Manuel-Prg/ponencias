@@ -7,3 +7,6 @@ firebaseConfig.js
 # Ignorar archivos del sistema
 node_modules/
 .DS_Store
+
+#ignorar el readme de la configuración de firebase
+README.md
