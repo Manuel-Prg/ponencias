@@ -1,0 +1,86 @@
+/* Base logo styles */
+.logodev {
+    display: block;
+    max-width: 100px; 
+    position: relative;
+    z-index: 1;
+    height: auto;
+}
+
+/* Variant for login/register pages - positioned above card */
+.logodev-card {
+    width: 70px; 
+    margin: -75px auto 25px; 
+    transition: all 0.3s ease;
+    padding: 5px; 
+}
+
+/* Logo styles specific to the registration page */
+.register-card .logodev-card {
+    margin-top: -85px; 
+}
+/* Personalización de la barra de desplazamiento para navegadores WebKit (Chrome, Safari, etc) */
+::-webkit-scrollbar {
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888; /* Color de la barra */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color al pasar el mouse */
+}
+
+/* Para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+/* Logo container for specific positioning needs */
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative; 
+
+}
+
+/* Add padding to the top of the container to ensure scrollability */
+.container {
+    padding-top: 40px;
+}
+/* Ajuste específico para la tarjeta de registro */
+.register-card {
+    padding-top: 3rem; 
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .logodev-card {
+        width: 65px; 
+        margin: -70px auto 20px;
+    }
+    
+    .register-card .logodev-card {
+        margin-top: -80px;
+    }
+    
+    .container {
+        padding-top: 35px; 
+    }
+}
+
+/* Ensure the page is scrollable when needed */
+body {
+    min-height: 100vh;
+    overflow-y: auto;
+}
