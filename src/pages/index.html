@@ -12,6 +12,7 @@
     <div class="container">
         <div class="login-card">
             <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logodev logodev-card" />
+            <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logodacity logodacity-card" />
             <div class="logo">
                 <svg viewBox="0 0 100 100" class="woman-silhouette">
                     <path
@@ -51,8 +52,12 @@
     </div>
 
     <script type="module">
+        import { firebaseConfig } from '../scripts/config.js';
         import { auth } from '../scripts/firebase-Config.js';
-        import { iniciarSesion, cerrarSesion } from '../scripts/auth.js';
+        import { iniciarSesion } from '../scripts/auth.js';
+    
+        // Verificar el ambiente
+        console.log('Ambiente:', window.location.hostname === 'localhost' ? 'desarrollo' : 'producción');
     
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', async (e) => {

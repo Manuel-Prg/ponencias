@@ -47,6 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let authorCount = 1;
 
     addAuthorBtn?.addEventListener('click', () => {
+        if (authorCount >= 3) {
+            alert('No se pueden agregar más de 3 autores');
+            return;
+        }
         authorCount++;
         const authorInput = document.createElement('div');
         authorInput.className = 'form-group';
@@ -58,6 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         addAuthorBtn.parentElement.insertBefore(authorInput, addAuthorBtn);
+        
+        // Hide the add author button if we've reached the limit
+        if (authorCount >= 3) {
+            addAuthorBtn.style.display = 'none';
+        }
     });
 
     // Navigation functions

@@ -153,6 +153,14 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 .topics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));

@@ -1,5 +1,5 @@
 # Ignorar la configuración de Firebase
-firebaseConfig.js
+config.js
 
 # Ignorar variables de entorno
 .env

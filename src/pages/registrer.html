@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
     <link rel="stylesheet" href="../styles/stylesRegister.css">
+    <link rel="stylesheet" href="../styles/logos.css">
 </head>
 <body>
     <div class="container">
         <div class="register-card">
             <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logodev logodev-card" />
+            <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logodacity logodacity-card" />
             <div class="logo">
                 <svg viewBox="0 0 100 100" class="woman-silhouette">
                     <path d="M50,10 C30,10 25,30 25,40 C25,50 35,55 50,55 C65,55 75,50 75,40 C75,30 70,10 50,10 M35,56 C20,62 20,80 20,90 L80,90 C80,80 80,62 65,56"/>
@@ -50,8 +52,12 @@
         </div>
     </div>
     <script type="module">
+        import { firebaseConfig } from '../scripts/config.js';
         import { auth } from '../scripts/firebase-Config.js';
         import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        
+        // Verificar el ambiente
+        console.log('Ambiente:', window.location.hostname === 'localhost' ? 'desarrollo' : 'producción');
         
         document.addEventListener('DOMContentLoaded', () => {
             const registerForm = document.getElementById('registerForm');
@@ -64,19 +70,58 @@
                     const email = document.getElementById('email').value;
                     const password = document.getElementById('password').value;
     
-                    console.log('Intentando registrar usuario:', { email }); // Debug log
+                    console.log('Intentando registrar usuario en:', 
+                              window.location.hostname === 'localhost' ? 'desarrollo' : 'producción');
                     
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    console.log('Usuario creado:', userCredential.user); // Debug log
+                    console.log('Usuario creado:', userCredential.user);
                     
-                    await updateProfile(userCredential.user, { displayName: name });
-                    console.log('Perfil actualizado'); // Debug log
+                    await updateProfile(userCredential.user, { 
+                        displayName: name
+                    });
+                    console.log('Perfil actualizado');
                     
-                    alert('Usuario registrado correctamente');
-                    window.location.href = '../pages/index.html';
+                    // Mostrar notificación más elegante
+                    const notification = document.createElement('div');
+                    notification.textContent = 'Usuario registrado correctamente';
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #4CAF50;
+                        color: white;
+                        padding: 15px;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    // Redireccionar después de un breve delay
+                    setTimeout(() => {
+                        window.location.href = '../pages/index.html';
+                    }, 2000);
                 } catch (error) {
                     console.error('Error en el registro:', error);
-                    alert(`Error en el registro: ${error.code} - ${error.message}`);
+                    
+                    // Mostrar error más elegante
+                    const errorNotification = document.createElement('div');
+                    errorNotification.textContent = `Error: ${error.message}`;
+                    errorNotification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #f44336;
+                        color: white;
+                        padding: 15px;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    `;
+                    document.body.appendChild(errorNotification);
+                    
+                    // Remover la notificación después de 5 segundos
+                    setTimeout(() => {
+                        errorNotification.remove();
+                    }, 5000);
                 }
             });
         });
