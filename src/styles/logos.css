@@ -10,7 +10,7 @@
 /* Position the XDevLab logo on the left */
 .logodev {
     left: 20px;
-    transform: translateY(5px); /* Add this line to adjust vertical position */
+    transform: translateY(20px); /* Adjust this value to move the logo down */
 }
 
 /* Position the Dacit logo on the right */
@@ -38,6 +38,8 @@
     top: 20px;
     max-width: 70px;
     height: auto;
+    display: flex;
+    align-items: center;
 }
 
 /* Personalización de la barra de desplazamiento */
