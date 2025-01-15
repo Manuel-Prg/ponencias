@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateWordCount() {
         const words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
-        wordCount.textContent = `${words}/300 palabras`;
+        wordCount.textContent = `${words}/500 palabras`;
         return words;
     }
 
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 2:
                 return formData.topics.length > 0 || form.querySelector('[name="newTopic"]').value;
             case 3:
-                return updateWordCount() >= 300;
+                return updateWordCount() >= 500;
             case 4:
                 return form.querySelector('[name="source"]').value;
             default:
