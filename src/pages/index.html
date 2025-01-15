@@ -52,13 +52,13 @@
     </div>
 
     <script type="module">
-        import { firebaseConfig } from '../scripts/config.js';
+         import { firebaseConfig, getEnvironment } from '../scripts/config.js';
         import { auth } from '../scripts/firebase-Config.js';
         import { iniciarSesion } from '../scripts/auth.js';
     
         // Verificar el ambiente
-        console.log('Ambiente:', window.location.hostname === 'localhost' ? 'desarrollo' : 'producción');
-    
+        console.log('Ambiente:', getEnvironment());
+
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();

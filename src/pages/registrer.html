@@ -52,13 +52,13 @@
         </div>
     </div>
     <script type="module">
-        import { firebaseConfig } from '../scripts/config.js';
+        import { firebaseConfig, getEnvironment } from '../scripts/config.js';
         import { auth } from '../scripts/firebase-Config.js';
         import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         
         // Verificar el ambiente
-        console.log('Ambiente:', window.location.hostname === 'localhost' ? 'desarrollo' : 'producción');
-        
+        console.log('Ambiente:', getEnvironment());
+
         document.addEventListener('DOMContentLoaded', () => {
             const registerForm = document.getElementById('registerForm');
             
