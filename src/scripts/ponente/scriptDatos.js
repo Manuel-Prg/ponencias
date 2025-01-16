@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 2:
                 return formData.topics.length > 0 || form.querySelector('[name="newTopic"]').value;
             case 3:
-                return updateWordCount() >= 500;
+                return updateWordCount() <= 500;
             case 4:
                 return form.querySelector('[name="source"]').value;
             default:
