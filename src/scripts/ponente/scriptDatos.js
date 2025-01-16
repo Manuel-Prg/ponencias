@@ -1,3 +1,8 @@
+import { db } from '/src/scripts/firebase/firebase-Config.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('multiStepForm');
     const steps = document.querySelectorAll('.step-content');
@@ -8,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentStep = 1;
     const formData = {
-        title: '',
-        author: '',
-        additionalAuthors: [],
-        topics: [],
-        newTopic: '',
-        summary: '',
-        source: ''
+        titulo: '',
+        autor: '',
+        coautores: [],
+        temas: [],
+        temaExtra: '',
+        resumen: '',
+        fuente: ''
     };
 
     // Initialize word counter
@@ -34,10 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('selected');
             const topic = btn.textContent;
-            if (formData.topics.includes(topic)) {
-                formData.topics = formData.topics.filter(t => t !== topic);
+            if (formData.temas.includes(topic)) {
+                formData.temas = formData.temas.filter(t => t !== topic);
             } else {
-                formData.topics.push(topic);
+                formData.temas.push(topic);
             }
         });
     });
@@ -108,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const author = form.querySelector('[name="author"]').value;
                 return title && author;
             case 2:
-                return formData.topics.length > 0 || form.querySelector('[name="newTopic"]').value;
+                return formData.temas.length > 0 || form.querySelector('[name="newTopic"]').value;
             case 3:
                 return updateWordCount() <= 500;
             case 4:
@@ -118,23 +123,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function getAllAuthors() {
+        const authors = [formData.autor];
+        const additionalAuthorInputs = form.querySelectorAll('input[name^="author"]');
+        additionalAuthorInputs.forEach(input => {
+            if (input.name !== 'author' && input.value.trim()) {
+                authors.push(input.value.trim());
+            }
+        });
+        return authors;
+    }
+
+    async function submitPonencia() {
+        try {
+            const auth = getAuth();
+            const user = auth.currentUser;
+
+            if (!user) {
+                throw new Error('No hay usuario autenticado');
+            }
+
+            // Obtener todos los autores
+            const authors = await getAllAuthors();
+
+            // Si hay un nuevo tema, agregarlo a los temas existentes
+            if (formData.temaExtra) {
+                formData.temas.push(formData.temaExtra);
+            }
+
+            // Crear objeto de datos de la ponencia
+            const ponenciaData = {
+                title: formData.titulo,
+                authors: authors,
+                topics: formData.temas,
+                summary: formData.resumen,
+                source: formData.fuente,
+                userId: user.uid,
+                createdAt: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Obtener instancia de Firestore
+
+            // Crear referencia al documento del usuario
+            const ponenciaRef = doc(db, 'ponencias', user.uid);
+
+            // Guardar los datos
+            await setDoc(ponenciaRef, ponenciaData);
+
+            // Mostrar mensaje de éxito
+            alert('¡Tu ponencia ha sido registrada exitosamente!');
+            window.location.href = '/dashboard'; // Actualizar según tu ruta de dashboard
+
+        } catch (error) {
+            console.error('Error al enviar la ponencia:', error);
+            alert('Hubo un error al registrar tu ponencia. Por favor, intenta nuevamente.');
+        }
+    }
+
+
     function saveStepData(step) {
         switch(step) {
             case 1:
-                formData.title = form.querySelector('[name="title"]').value;
-                formData.author = form.querySelector('[name="author"]').value;
+                formData.titulo = form.querySelector('[name="title"]').value;
+                formData.autor = form.querySelector('[name="author"]').value;
                 break;
             case 2:
-                formData.newTopic = form.querySelector('[name="newTopic"]').value;
+                formData.temaExtra = form.querySelector('[name="newTopic"]').value;
                 break;
             case 3:
-                formData.summary = textarea.value;
+                formData.resumen = textarea.value;
                 break;
             case 4:
-                formData.source = form.querySelector('[name="source"]').value;
+                formData.fuente = form.querySelector('[name="source"]').value;
                 if (currentStep === steps.length) {
                     console.log('Form submitted:', formData);
-                    // Here you would typically send the data to your server
+                    submitPonencia(); // Enviar datos a Firebase cuando se complete el último paso
                 }
                 break;
         }
