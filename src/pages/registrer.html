@@ -3,54 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarse</title>
-    <link rel="stylesheet" href="../styles/stylesRegister.css">
-    <link rel="stylesheet" href="../styles/logos.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/src/styles/stylesRevisor.css">
 </head>
 <body>
-    <div class="container">
-        <div class="register-card">
-            <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logodev logodev-card" />
-            <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logodacity logodacity-card" />
-            <div class="logo">
-                <svg viewBox="0 0 100 100" class="woman-silhouette">
-                    <path d="M50,10 C30,10 25,30 25,40 C25,50 35,55 50,55 C65,55 75,50 75,40 C75,30 70,10 50,10 M35,56 C20,62 20,80 20,90 L80,90 C80,80 80,62 65,56"/>
-                </svg>
-            </div>
-            <h2>Registrarse</h2>
-            <p class="subtitle">Ingrese los Siguientes datos.</p>
-            
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="name">Nombre*</label>
-                    <input type="text" id="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Correo electrónico*</label>
-                    <input type="email" id="email" required>
-                </div>
-             
-                <div class="form-group">
-                    <label for="password">Contraseña*</label>
-                    <input type="password" id="password" required>
-                </div>
-
-                <button type="submit" class="register-btn">Registrarse</button>
-                
-                <button type="button" class="google-btn">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjRkZDMTA3IiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMS42NDksNC42NTctNi4wOCw4LTExLjMwMyw4Yy02LjYyNywwLTEyLTUuMzczLTEyLTEyYzAtNi42MjcsNS4zNzMtMTIsMTItMTJjMy4wNTksMCw1Ljg0MiwxLjE1NCw3Ljk2MSwzLjAzOWw1LjY1Ny01LjY1N0MzNC4wNDYsNi4wNTMsMjkuMjY4LDQsMjQsNEMxMi45NTUsNCw0LDEyLjk1NSw0LDI0YzAsMTEuMDQ1LDguOTU1LDIwLDIwLDIwYzExLjA0NSwwLDIwLTguOTU1LDIwLTIwQzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiPjwvcGF0aD48cGF0aCBmaWxsPSIjRkYzRDAwIiBkPSJNNi4zMDYsMTQuNjkxbDYuNTcxLDQuODE5QzE0LjY1NSwxNS4xMDgsMTguOTYxLDEyLDI0LDEyYzMuMDU5LDAsNS44NDIsMS4xNTQsNy45NjEsMy4wMzlsNS42NTctNS42NTdDMzQuMDQ2LDYuMDUzLDI5LjI2OCw0LDI0LDRDMTYuMzE4LDQsOS42NTYsOC4zMzcsNi4zMDYsMTQuNjkxeiI+PC9wYXRoPjxwYXRoIGZpbGw9IiM0Q0FGNTAiIGQ9Ik0yNCw0NGM1LjE2NiwwLDkuODYtMS45NzcsMTMuNDA5LTUuMTkybC02LjE5LTUuMjM4QzI5LjIxMSwzNS4wOTEsMjYuNzE1LDM2LDI0LDM2Yy01LjIwMiwwLTkuNjE5LTMuMzE3LTExLjI4My03Ljk0NmwtNi41MjIsNS4wMjVDOS41MDUsMzkuNTU2LDE2LjIyNyw0NCwyNCw0NHoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNNDMuNjExLDIwLjA4M0g0MlYyMEgyNHY4aDExLjMwM2MtMC43OTIsMi4yMzctMi4yMzEsNC4xNjYtNC4wODcsNS41NzFjMC4wMDEtMC4wMDEsMC4wMDItMC4wMDEsMC4wMDMtMC4wMDJsNi4xOSw1LjIzOEMzNi45NzEsMzkuMjA1LDQ0LDM0LDQ0LDI0QzQ0LDIyLjY1OSw0My44NjIsMjEuMzUsNDMuNjExLDIwLjA4M3oiPjwvcGF0aD48L3N2Zz4=" alt="Google logo">
-                    Registrarse con Google
-                </button>
-            </form>
-
-            <p class="login-text">
-                ¿Ya tienes una cuenta? <a href="../pages/index.html">Iniciar sesión</a>
-            </p>
-
-            <p class="copyright">© 2023 XDevLab</p>
-        </div>
+    <div class="logo-container">
+        <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logodev logodev-card" />
+        <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logodacity logodacity-card" />
     </div>
-    <script type="module" src="../scripts/scriptRegister.js">   </script>
+    <div class="dashboard">
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-icons">
+                <div class="icon active">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                </div>
+                <div class="icon" id="trigger-content">
+                    <img src="/public/icons/icono.png" alt="Descripción de la imagen" width="50" height="44">
+                </div>
+                
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                    </svg>
+                </div>
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <div class="bottom-icons">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Welcome Message -->
+                <header class="dashboard-header">
+                    <h1 class="welcome">¡Bienvenido <span class="user-name">[nombre]</span>!</h1>
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Buscar ponencias...">
+                    </div>
+                </header>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ponencias pendientes</h3>
+                            <p class="stat-number">90,000</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ponencias aprobadas</h3>
+                            <p class="stat-number">90,000</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Ponencias rechazadas</h3>
+                            <p class="stat-number">90,000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="notifications-container">
+                    <h2>Notificaciones recientes</h2>
+                    <div class="notifications-list">
+                        <div class="notification">
+                            <div class="notification-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">"Nueva ponencia recibida: [Título de la ponencia]."</p>
+                                <span class="notification-time" data-timestamp="1705123456789">Hace 2 horas</span>
+                            </div>
+                        </div>
+                        <div class="notification">
+                            <div class="notification-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="notification-content">
+                                <p class="notification-text">"Ponencia revisada y aprobada: [Título]."</p>
+                                <span class="notification-time" data-timestamp="1705123456789">Hace 5 horas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../scripts/scriptRevisor.js"></script>
 </body>
 </html>

@@ -4,6 +4,10 @@
     --text-color: #ffffff;
     --card-bg: rgba(255, 255, 255, 0.1);
     --hover-color: rgba(255, 255, 255, 0.2);
+    --sidebar-width: 80px;
+    --sidebar-width-mobile: 60px;
+    --header-height: 80px;
+    --transition-speed: 0.3s;
 }
 
 * {
@@ -17,9 +21,92 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--text-color);
     min-height: 100vh;
-    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+/* Logo Container */
+.logo-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.logodev, .logodacity {
+    max-width: 70px;
+    height: auto;
+    transition: transform var(--transition-speed) ease;
+    position: relative;
+    z-index: 99;
+}
+
+.logodev:hover, .logodacity:hover {
+    transform: scale(1.05);
+}
+
+/* Desktop Specific Styles */
+@media (min-width: 769px) {
+    .logo-container {
+        padding: 1rem 2rem;
+    }
+    
+    .logodev {
+        margin-left: calc(var(--sidebar-width) + 1rem);
+    }
+}
+
+
+/* Menu Toggle */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.menu-toggle.active {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Dashboard Layout */
 .dashboard {
     display: flex;
     min-height: 100vh;
@@ -27,28 +114,25 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 80px;
+    width: var(--sidebar-width);
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
-    padding: 20px 0;
+    padding: 1rem 0;
     position: fixed;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: all var(--transition-speed) ease;
+    z-index: 90;
 }
 
+/* Nuevo ajuste para sidebar-icons */
 .sidebar-icons {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 20px 0;
-}
-
-.bottom-icons {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding-top: 4rem;
+    gap: 2rem;
 }
 
 .icon {
@@ -57,10 +141,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0.5rem auto;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
     border-radius: 8px;
+    position: relative;
+}
+
+.icon img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .icon svg {
@@ -69,6 +160,7 @@ body {
     stroke-width: 2;
     width: 24px;
     height: 24px;
+    transition: transform var(--transition-speed) ease;
 }
 
 .icon:hover {
@@ -76,33 +168,53 @@ body {
     transform: translateY(-2px);
 }
 
+.icon:hover svg {
+    transform: scale(1.1);
+}
+
 .icon.active {
     background: var(--hover-color);
 }
 
+.bottom-icons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+}
+
 /* Main Content */
+
 .main-content {
     flex: 1;
-    margin-left: 80px;
-    padding: 40px;
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    padding-top: calc(var(--header-height) + 1rem);
 }
 
 .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
 }
 
-/* Welcome Message */
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .welcome {
-    font-size: 32px;
-    margin-bottom: 40px;
+    font-size: 2rem;
     font-weight: 700;
 }
-
-.welcome {
-    margin-left: 370px; /* Ajusta el valor según necesites */
-}
-
 
 /* Stats Grid */
 .stats-grid {
@@ -121,7 +233,7 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-speed) ease;
 }
 
 .stat-card:hover {
@@ -136,14 +248,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.stat-icon svg {
-    stroke: var(--text-color);
-    fill: none;
-    stroke-width: 2;
-    width: 28px;
-    height: 28px;
 }
 
 .stat-info h3 {
@@ -186,7 +290,7 @@ body {
     padding: 16px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-speed) ease;
 }
 
 .notification:hover {
@@ -203,14 +307,6 @@ body {
     justify-content: center;
 }
 
-.notification-icon svg {
-    stroke: var(--text-color);
-    fill: none;
-    stroke-width: 2;
-    width: 20px;
-    height: 20px;
-}
-
 .notification-content {
     flex: 1;
 }
@@ -225,415 +321,120 @@ body {
     opacity: 0.6;
 }
 
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .welcome {
+        font-size: 1.75rem;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 @media (max-width: 768px) {
-    .main-content {
-        margin-left: 0;
-        padding: 20px;
+    .logo-container {
+        padding: 0.5rem 1rem;
+    }
+    
+    .logodev {
+        margin-left: 4rem;
+    }
+    
+    .logodev, .logodacity {
+        max-width: 50px;
+    }
+    
+    .menu-toggle {
+        display: block;
     }
 
     .sidebar {
-        width: 60px;
+        transform: translateX(-100%);
+        width: var(--sidebar-width-mobile);
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
     }
 
-    .icon {
-        width: 32px;
-        height: 32px;
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        padding-top: calc(var(--header-height) + 1rem);
+    }
+}
+
+/* Ajuste específico para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-icon {
+        margin: 0 auto 10px;
     }
 
     .welcome {
-        font-size: 24px;
-        margin-bottom: 24px;
+        font-size: 20px;
+        padding-top: 0.5rem;
     }
 
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stat-card {
-        padding: 16px;
-    }
-
-    .notifications-container {
-        padding: 20px;
+    .notifications-container h2 {
+        font-size: 20px;
     }
 }
 
-
-/*jjjdfndsj
-/* Base logo styles */
-.logodev,
-.logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
-}
-
-/* Position the XDevLab logo on the left */
-.logodev {
-    left: 100px;
-    transform: translateY(20px); /* Adjust this value to move the logo down */
-}
-
-/* Position the Dacit logo on the right */
-.logodacity {
-    right: 80px;
-}
-
-/* Card positioning context */
-.login-card,
-.register-card {
-    position: relative;
-    padding-top: 80px;
-}
-
-/* Logo styles specific to the registration page */
-.register-card .logodev-card {
-    margin-top: 0; /* Remove the -85px margin */
-    top: 20px; /* Match the login page positioning */
-}
-
-/* Ensure both logos have consistent positioning in register card */
-.register-card .logodev,
-.register-card .logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
-    display: flex;
-    align-items: center;
-}
-
-/* Personalización de la barra de desplazamiento */
-::-webkit-scrollbar {
-    width: 10px; 
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* Para Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
-}
-
-/* Center user icon container */
-.user-icon-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Container styles */
-.container {
-    width: 100%;
-    padding: 20px;
-}
-
-/* Ajuste específico para la tarjeta de registro */
-.register-card {
-    padding-top: 3rem; 
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    .logodev,
-    .logodacity {
-        max-width: 60px;
-        top: 15px;
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .icon:hover,
+    .notification:hover,
+    .stat-card:hover {
+        transform: none;
     }
     
-    .logodev {
-        left: 15px;
-    }
-    
-    .logodacity {
-        right: 15px;
-    }
-    
-    .login-card,
-    .register-card {
-        padding-top: 70px;
-    }
-}
-
-/* Ensure the page is scrollable when needed */
-body {
-    min-height: 100vh;
-    overflow-y: auto;
-}
-
-/* Remove unused styles */
-.logo-container,
-.logo-left,
-.logo-right {
-    display: none;
-}
-
-/* Shared card styles */
-.login-card,
-.register-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 30px;
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-out;
-}
-
-/* Animation keyframes */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#trigger-content {
-  position: relative;
-  overflow: hidden;
-}
-
-#trigger-content::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-#trigger-content:hover::after {
-  opacity: 1;
-}
-
-#trigger-content:active::after {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.error-message {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ff4444;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.error-message.hidden {
-  opacity: 0;
-  transform: translateX(-50%) translateY(20px);
-  pointer-events: none;
-}
-
-.loading {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-
-
-/*jjjdfndsj
-/* Base logo styles */
-.logodev,
-.logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
-}
-
-/* Position the XDevLab logo on the left */
-.logodev {
-    left: 100px;
-    transform: translateY(20px); /* Adjust this value to move the logo down */
-}
-
-/* Position the Dacit logo on the right */
-.logodacity {
-    right: 80px;
-}
-
-/* Card positioning context */
-.login-card,
-.register-card {
-    position: relative;
-    padding-top: 80px;
-}
-
-/* Logo styles specific to the registration page */
-.register-card .logodev-card {
-    margin-top: 0; /* Remove the -85px margin */
-    top: 20px; /* Match the login page positioning */
-}
-
-/* Ensure both logos have consistent positioning in register card */
-.register-card .logodev,
-.register-card .logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
-    display: flex;
-    align-items: center;
-}
-
-/* Personalización de la barra de desplazamiento */
-::-webkit-scrollbar {
-    width: 10px; 
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* Para Firefox */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
-}
-
-/* Center user icon container */
-.user-icon-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Container styles */
-.container {
-    width: 100%;
-    padding: 20px;
-}
-
-/* Ajuste específico para la tarjeta de registro */
-.register-card {
-    padding-top: 3rem; 
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    .logodev,
-    .logodacity {
-        max-width: 60px;
-        top: 15px;
-    }
-    
-    .logodev {
-        left: 15px;
-    }
-    
-    .logodacity {
-        right: 15px;
-    }
-    
-    .login-card,
-    .register-card {
-        padding-top: 70px;
-    }
-}
-
-/* Ensure the page is scrollable when needed */
-body {
-    min-height: 100vh;
-    overflow-y: auto;
-}
-
-/* Remove unused styles */
-.logo-container,
-.logo-left,
-.logo-right {
-    display: none;
-}
-
-/* Shared card styles */
-.login-card,
-.register-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 30px;
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-out;
-}
-
-/* Animation keyframes */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .icon:active,
+    .notification:active,
+    .stat-card:active {
+        transform: scale(0.98);
     }
 }
