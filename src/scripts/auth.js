@@ -1,5 +1,7 @@
-import { auth } from './firebase-Config.js';
+import { auth, db } from '../scripts/firebase/firebase-Config.js';
 import { signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
 
 
 export function showNotification(message, type) {
@@ -22,14 +24,52 @@ export function showNotification(message, type) {
     }, 3000);
 }
 
+async function checkUserRole(uid) {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (userDoc.exists()) {
+        return userDoc.data().rol;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error al verificar rol:', error);
+      return null;
+    }
+  }
+  
+  // Función para redirigir según rol
+  function redirectBasedOnRole(rol) {
+    switch (rol) {
+      case 'admin':
+        window.location.href = '../pages/index.html';
+        break;
+      case 'ponente':
+        window.location.href = '../pages/ponente/datosPonencia.html';
+        break;
+      case 'revisor':
+        window.location.href = '../pages/revisor/revisor.html';
+        break;
+      default:
+        alert('Rol no autorizado');
+        auth.signOut();
+    }
+  }
+
 export async function iniciarSesion(email, password) {
     try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const rol = await checkUserRole(userCredential.user.uid);
+
         showNotification('Inicio de sesión exitoso', 'success');
         console.log('Inicio de sesión exitoso');
-        setTimeout(() => {
-            window.location.href = './datosPonencia.html';
-        }, 1000);
+        
+        if (rol) {
+            redirectBasedOnRole(rol);
+          } else {
+            alert('Usuario sin rol asignado');
+            await auth.signOut();
+          }
+
         return true;
     } catch (error) {
         console.error('Error de inicio de sesión:', error);

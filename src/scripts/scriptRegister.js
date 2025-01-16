@@ -1,4 +1,3 @@
-import { firebaseConfig, getEnvironment } from '../scripts/firebase/config.js';
 import { auth } from '../scripts/firebase/firebase-Config.js';
 import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
@@ -94,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const db = getFirestore();
             await setDoc(doc(db, 'users', userCredential.user.uid), {
               uid: userCredential.user.uid,
-              email: name,
-              role: "ponente",
+              nombre: name,
+              rol: "ponente",
               createdAt: new Date()
             });
 
