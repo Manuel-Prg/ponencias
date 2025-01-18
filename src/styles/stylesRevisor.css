@@ -2,6 +2,9 @@
     --primary-color: #491d88;
     --secondary-color: #fa448c;
     --text-color: #ffffff;
+    --status-pending: #FDE047;
+    --status-review: #169b2d;
+    --status-denied: #c00d0d;
     --card-bg: rgba(255, 255, 255, 0.1);
     --hover-color: rgba(255, 255, 255, 0.2);
     --sidebar-width: 80px;
@@ -437,4 +440,72 @@ body {
     .stat-card:active {
         transform: scale(0.98);
     }
+}
+
+/* Ponencias Grid */
+.ponencias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ponencia-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    transition: transform 0.3s ease;
+}
+
+.ponencia-card:hover {
+    transform: translateY(-5px);
+}
+
+.ponencia-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+
+.status-badge {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.status-pending {
+    color: var(--status-pending);
+}
+
+.status-review {
+    color: var(--status-review);
+}
+
+.status-denied {
+    color: var(--status-denied);
+}
+
+
+.review-button {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.review-button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
