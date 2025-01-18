@@ -1,0 +1,561 @@
+:root {
+    --primary-color: #491d88;
+    --secondary-color: #fa448c;
+    --text-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --hover-color: rgba(255, 255, 255, 0.2);
+    --status-pending: #FDE047;
+    --status-review: #169b2d;
+    --status-denied: #c00d0d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 80px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    position: fixed;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-icons {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 0;
+}
+
+.bottom-icons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.icon svg {
+    stroke: var(--text-color);
+    fill: none;
+    stroke-width: 2;
+    width: 24px;
+    height: 24px;
+}
+
+.icon:hover {
+    background: var(--hover-color);
+    transform: translateY(-2px);
+}
+
+.icon.active {
+    background: var(--hover-color);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 80px;
+    padding: 40px;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Welcome Message */
+.welcome {
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.welcome {
+    margin-left: 370px; /* Ajusta el valor según necesites */
+}
+
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon svg {
+    stroke: var(--text-color);
+    fill: none;
+    stroke-width: 2;
+    width: 28px;
+    height: 28px;
+}
+
+.stat-info h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    opacity: 0.8;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* Notifications */
+.notifications-container {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 32px;
+}
+
+.notifications-container h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.notification:hover {
+    transform: translateX(5px);
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-icon svg {
+    stroke: var(--text-color);
+    fill: none;
+    stroke-width: 2;
+    width: 20px;
+    height: 20px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-text {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.notification-time {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .sidebar {
+        width: 60px;
+    }
+
+    .icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .welcome {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .notifications-container {
+        padding: 20px;
+    }
+}
+
+
+/*jjjdfndsj
+/* Base logo styles */
+.logodev,
+.logodacity {
+    position: absolute;
+    top: 20px;
+    max-width: 70px;
+    height: auto;
+}
+
+/* Position the XDevLab logo on the left */
+.logodev {
+    left: 100px;
+    transform: translateY(20px); /* Adjust this value to move the logo down */
+}
+
+/* Position the Dacit logo on the right */
+.logodacity {
+    right: 80px;
+}
+
+/* Card positioning context */
+.login-card,
+.register-card {
+    position: relative;
+    padding-top: 80px;
+}
+
+/* Logo styles specific to the registration page */
+.register-card .logodev-card {
+    margin-top: 0; /* Remove the -85px margin */
+    top: 20px; /* Match the login page positioning */
+}
+
+/* Ensure both logos have consistent positioning in register card */
+.register-card .logodev,
+.register-card .logodacity {
+    position: absolute;
+    top: 20px;
+    max-width: 70px;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Personalización de la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+/* Center user icon container */
+.user-icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container styles */
+.container {
+    width: 100%;
+    padding: 20px;
+}
+
+/* Ajuste específico para la tarjeta de registro */
+.register-card {
+    padding-top: 3rem; 
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .logodev,
+    .logodacity {
+        max-width: 60px;
+        top: 15px;
+    }
+    
+    .logodev {
+        left: 15px;
+    }
+    
+    .logodacity {
+        right: 15px;
+    }
+    
+    .login-card,
+    .register-card {
+        padding-top: 70px;
+    }
+}
+
+/* Ensure the page is scrollable when needed */
+body {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Remove unused styles */
+.logo-container,
+.logo-left,
+.logo-right {
+    display: none;
+}
+
+/* Shared card styles */
+.login-card,
+.register-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#trigger-content {
+  position: relative;
+  overflow: hidden;
+}
+
+#trigger-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#trigger-content:hover::after {
+  opacity: 1;
+}
+
+#trigger-content:active::after {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.error-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4444;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.error-message.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  pointer-events: none;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Ponencias Grid */
+.ponencias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.ponencia-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    transition: transform 0.3s ease;
+}
+
+.ponencia-card:hover {
+    transform: translateY(-5px);
+}
+
+.ponencia-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.author-avatar {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.status-badge {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.status-pending {
+    color: var(--status-pending);
+}
+
+.status-review {
+    color: var(--status-review);
+}
+
+.status-denied {
+    color: var(--status-denied);
+}
+
+
+.review-button {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.review-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
