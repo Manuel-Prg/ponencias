@@ -1,8 +1,18 @@
+import { firebaseConfig, getEnvironment } from '../scripts/firebase/config.js';
 import { auth, db } from '../scripts/firebase/firebase-Config.js';
 import { signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+    
+// Verificar el ambiente        
+console.log('Ambiente:', getEnvironment());
 
-
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    await iniciarSesion(email, password);
+});
 
 export function showNotification(message, type) {
     const notification = document.createElement('div');

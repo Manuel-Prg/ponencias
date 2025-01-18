@@ -35,17 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
     textarea?.addEventListener('input', updateWordCount);
 
     // Topic selection
-    topicBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('selected');
-            const topic = btn.textContent;
-            if (formData.temas.includes(topic)) {
-                formData.temas = formData.temas.filter(t => t !== topic);
-            } else {
-                formData.temas.push(topic);
-            }
-        });
+   // Topic selection
+topicBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevenir comportamiento por defecto
+        btn.classList.toggle('selected');
+        const topic = btn.textContent;
+        console.log('Tema seleccionado:', topic); // Para debugging
+        if (formData.temas.includes(topic)) {
+            formData.temas = formData.temas.filter(t => t !== topic);
+        } else {
+            formData.temas.push(topic);
+        }
+        console.log('Temas seleccionados:', formData.temas); // Para debugging
     });
+});
 
     // Add author functionality
     const addAuthorBtn = document.querySelector('.add-author');
@@ -78,13 +82,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateStep(direction) {
         const nextStep = currentStep + direction;
         if (nextStep < 1 || nextStep > steps.length) return;
-
+    
         // Validate current step before proceeding
         if (direction > 0 && !validateStep(currentStep)) return;
-
+    
+        // Si estamos en el último paso y vamos hacia adelante, manejarlo diferente
+        if (currentStep === steps.length && direction > 0) {
+            saveStepData(currentStep);
+            submitPonencia();
+            return;
+        }
+    
         // Update form data
         saveStepData(currentStep);
-
+    
         // Update UI
         steps[currentStep - 1].classList.add('hidden');
         steps[nextStep - 1].classList.remove('hidden');
@@ -95,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (direction > 0) {
             progressSteps[currentStep - 1].classList.add('completed');
         }
-
+    
         // Update buttons
         currentStep = nextStep;
         updateButtons();
@@ -113,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const author = form.querySelector('[name="author"]').value;
                 return title && author;
             case 2:
-                return formData.temas.length > 0 || form.querySelector('[name="newTopic"]').value;
+                // Cambiar la validación para aceptar o temas seleccionados o tema extra
+                return formData.temas.length > 0 || form.querySelector('[name="newTopic"]').value.trim() !== '';
             case 3:
                 return updateWordCount() <= 500;
             case 4:
@@ -147,20 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const authors = await getAllAuthors();
 
             // Si hay un nuevo tema, agregarlo a los temas existentes
-            if (formData.temaExtra) {
-                formData.temas.push(formData.temaExtra);
+            let temasFinales = [...formData.temas]; // Copia los temas seleccionados
+            if (formData.temaExtra.trim()) {
+                temasFinales.push(formData.temaExtra.trim());
             }
 
             // Crear objeto de datos de la ponencia
             const ponenciaData = {
-                title: formData.titulo,
-                authors: authors,
-                topics: formData.temas,
-                summary: formData.resumen,
-                source: formData.fuente,
+                titulo: formData.titulo,
+                autores: authors,
+                temas: temasFinales,
+                resumen: formData.resumen,
+                fuente: formData.fuente,
                 userId: user.uid,
-                createdAt: new Date().toISOString(),
-                status: 'pending'
+                creado: new Date().toISOString(),
+                estado: 'pendiente'
             };
 
             // Obtener instancia de Firestore
@@ -196,16 +209,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 4:
                 formData.fuente = form.querySelector('[name="source"]').value;
-                if (currentStep === steps.length) {
-                    console.log('Form submitted:', formData);
-                    submitPonencia(); // Enviar datos a Firebase cuando se complete el último paso
-                }
                 break;
         }
     }
 
     // Event listeners
-    nextBtn.addEventListener('click', () => updateStep(1));
+    nextBtn.addEventListener('click', () => {
+        if (currentStep === steps.length) {
+            // Si estamos en el último paso y el botón dice "Finalizar"
+            if (validateStep(currentStep)) {
+                saveStepData(currentStep);
+                submitPonencia();
+            }
+        } else {
+            updateStep(1);
+        }
+    });   
     backBtn.addEventListener('click', () => updateStep(-1));
 
     // Form submission

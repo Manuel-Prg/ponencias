@@ -51,21 +51,7 @@
         </div>
     </div>
 
-    <script type="module">
-        import { firebaseConfig, getEnvironment } from '../scripts/firebase/config.js';
-        import { auth } from '../scripts/firebase/firebase-Config.js';
-        import { iniciarSesion } from '../scripts/auth.js';
-    
-        // Verificar el ambiente
-        console.log('Ambiente:', getEnvironment());
-
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            await iniciarSesion(email, password);
-        });
+    <script type="module" src="../scripts/auth.js">
     </script>
 </body>
 
