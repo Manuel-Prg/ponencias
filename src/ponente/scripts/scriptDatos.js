@@ -1,7 +1,9 @@
-import { db } from '/src/scripts/firebase/firebase-Config.js';
+import { db } from '/src/firebase/firebase-Config.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
+//Checame la ruta de importacion de esta funcion
+//import { cerrarSesion } from '/src/autentificacion/scripts/auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('multiStepForm');
@@ -9,8 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressSteps = document.querySelectorAll('.step');
     const nextBtn = document.querySelector('.btn-next');
     const backBtn = document.querySelector('.btn-back');
+    const cancelBtn = document.querySelector('.btn-cancel'); 
     const topicBtns = document.querySelectorAll('.topic-btn');
     
+    if (!form || !steps.length || !progressSteps.length || !nextBtn || !backBtn || !cancelBtn) {
+        console.error('No se encontraron elementos necesarios del formulario');
+        return;
+    }
+
     let currentStep = 1;
     const formData = {
         titulo: '',
@@ -27,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordCount = document.querySelector('.word-count');
     
     function updateWordCount() {
+
         const words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
         wordCount.textContent = `${words}/500 palabras`;
         return words;
@@ -35,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     textarea?.addEventListener('input', updateWordCount);
 
     // Topic selection
-   // Topic selection
 topicBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.preventDefault(); // Prevenir comportamiento por defecto
@@ -84,8 +92,10 @@ topicBtns.forEach(btn => {
         if (nextStep < 1 || nextStep > steps.length) return;
     
         // Validate current step before proceeding
-        if (direction > 0 && !validateStep(currentStep)) return;
-    
+        if (direction > 0 && !validateStep(currentStep)){
+            alert('Por favor, complete todos los campos requeridos antes de continuar.');
+            return;
+        }
         // Si estamos en el último paso y vamos hacia adelante, manejarlo diferente
         if (currentStep === steps.length && direction > 0) {
             saveStepData(currentStep);
@@ -105,6 +115,8 @@ topicBtns.forEach(btn => {
         progressSteps[nextStep - 1].classList.add('active');
         if (direction > 0) {
             progressSteps[currentStep - 1].classList.add('completed');
+        } else {
+            progressSteps[currentStep].classList.remove('completed');
         }
     
         // Update buttons
@@ -186,7 +198,8 @@ topicBtns.forEach(btn => {
 
             // Mostrar mensaje de éxito
             alert('¡Tu ponencia ha sido registrada exitosamente!');
-            window.location.href = '/dashboard'; // Actualizar según tu ruta de dashboard
+            window.location.href = '../pages/ponente/registroValido.html';
+
 
         } catch (error) {
             console.error('Error al enviar la ponencia:', error);
@@ -215,8 +228,10 @@ topicBtns.forEach(btn => {
 
     // Event listeners
     nextBtn.addEventListener('click', () => {
+
+        console.log('click next');
+
         if (currentStep === steps.length) {
-            // Si estamos en el último paso y el botón dice "Finalizar"
             if (validateStep(currentStep)) {
                 saveStepData(currentStep);
                 submitPonencia();
@@ -224,10 +239,32 @@ topicBtns.forEach(btn => {
         } else {
             updateStep(1);
         }
-    });   
+    });
+
     backBtn.addEventListener('click', () => updateStep(-1));
 
-    // Form submission
+    cancelBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (currentStep === 1) {
+            const confirmCancel = confirm('¿Estás seguro que deseas cancelar? Se cerrará tu sesión.');
+            if (confirmCancel) {
+                try {
+                    await cerrarSesion();
+                    window.location.href = '../pages/index.html';
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                    alert('Error al cerrar sesión. Por favor, intenta nuevamente.');
+                }
+            }
+        } else {
+            const confirmCancel = confirm('¿Estás seguro que deseas cancelar? Perderás los datos ingresados.');
+            if (confirmCancel) {
+                window.location.href = '../pages/ponente/datosPonencia.html';
+            }
+        }
+    });
+
+    // Prevent form submission
     form.addEventListener('submit', (e) => {
         e.preventDefault();
     });

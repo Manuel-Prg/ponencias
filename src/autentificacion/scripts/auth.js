@@ -1,7 +1,7 @@
-import { firebaseConfig, getEnvironment } from '../scripts/firebase/config.js';
-import { auth, db } from '../scripts/firebase/firebase-Config.js';
+import { getEnvironment } from '../../firebase/config.js';
+import { auth, db } from '../../firebase/firebase-Config.js';
 import { signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { doc, getDoc} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
     
 // Verificar el ambiente        
 console.log('Ambiente:', getEnvironment());
@@ -47,17 +47,41 @@ async function checkUserRole(uid) {
     }
   }
   
-  // Función para redirigir según rol
-  function redirectBasedOnRole(rol) {
+  async function checkPonenciaExistente(ponenciaId) {  
+    try {  
+      const ponenciaRef = doc(db, 'ponencias', ponenciaId);  
+      const ponenciaSnapshot = await getDoc(ponenciaRef);  
+      const ponenciaExists = ponenciaSnapshot.exists();  
+      console.log('ponenciaExists:', ponenciaExists);  
+      return ponenciaExists;  
+    } catch (error) {  
+      console.error('Error al verificar ponencia:', error);  
+      return false;  
+    }  
+  }
+  
+  async function redirectPonente(userId) {
+    console.log('userId:', userId);
+    const tienePonencia = await checkPonenciaExistente(userId);
+    if (tienePonencia) {
+
+      window.location.href = '../../ponente/pages/registroValido.html'; // Página para ver/editar ponencia existente
+    } else {
+      window.location.href = '../../ponente/pages/datosPonencia.html'; // Página para crear nueva ponencia
+    }
+  }
+  
+  function redirectBasedOnRole(rol, userId) {
     switch (rol) {
       case 'admin':
-        window.location.href = '../pages/index.html';
+        window.location.href = '../../autentificacion/pages/index.html';
         break;
       case 'ponente':
-        window.location.href = '../pages/ponente/datosPonencia.html';
+
+       redirectPonente(userId);
         break;
       case 'revisor':
-        window.location.href = '../pages/revisor/revisor.html';
+        window.location.href = '../../revisor/pages/revisor.html';
         break;
       default:
         alert('Rol no autorizado');
@@ -74,7 +98,7 @@ export async function iniciarSesion(email, password) {
         console.log('Inicio de sesión exitoso');
         
         if (rol) {
-            redirectBasedOnRole(rol);
+            redirectBasedOnRole(rol, userCredential.user.uid);
           } else {
             alert('Usuario sin rol asignado');
             await auth.signOut();
