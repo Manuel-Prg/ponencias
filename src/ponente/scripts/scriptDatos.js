@@ -1,9 +1,9 @@
-import { db } from '/src/firebase/firebase-Config.js';
+import { db, auth } from '/src/firebase/firebase-Config.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-//Checame la ruta de importacion de esta funcion
-//import { cerrarSesion } from '/src/autentificacion/scripts/auth.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('multiStepForm');
@@ -198,7 +198,7 @@ topicBtns.forEach(btn => {
 
             // Mostrar mensaje de éxito
             alert('¡Tu ponencia ha sido registrada exitosamente!');
-            window.location.href = '../pages/ponente/registroValido.html';
+            window.location.href = '/src/ponente/pages/registroValido.html';
 
 
         } catch (error) {
@@ -249,8 +249,8 @@ topicBtns.forEach(btn => {
             const confirmCancel = confirm('¿Estás seguro que deseas cancelar? Se cerrará tu sesión.');
             if (confirmCancel) {
                 try {
-                    await cerrarSesion();
-                    window.location.href = '../pages/index.html';
+                    await signOut(auth);
+                    window.location.href = '/src/autentificacion/pages/index.html';
                 } catch (error) {
                     console.error('Error al cerrar sesión:', error);
                     alert('Error al cerrar sesión. Por favor, intenta nuevamente.');
@@ -259,7 +259,7 @@ topicBtns.forEach(btn => {
         } else {
             const confirmCancel = confirm('¿Estás seguro que deseas cancelar? Perderás los datos ingresados.');
             if (confirmCancel) {
-                window.location.href = '../pages/ponente/datosPonencia.html';
+                window.location.href = '/src/ponente/pages/datosPonencia.html';
             }
         }
     });
