@@ -1,5 +1,12 @@
+// Firebase Configuration and Initialization
+import { db, auth } from '/src/firebase/firebase-Config.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Mobile menu toggle functionality
+    // ====================================
+    // Mobile Menu and Sidebar Functionality
+    // ====================================
     const menuToggle = document.querySelector('.menu-toggle');
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
@@ -21,7 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle window resize
+    // ====================================
+    // Window Resize Handler
+    // ====================================
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
@@ -34,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 250);
     });
 
-    // Sidebar icon functionality with improved touch support
+    // ====================================
+    // Sidebar Icons Functionality
+    // ====================================
     const icons = document.querySelectorAll('.sidebar .icon');
     icons.forEach(icon => {
         icon.addEventListener('click', (e) => {
@@ -50,105 +61,268 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Search functionality with debounce
-    const searchInput = document.querySelector('.search-input');
-    let searchTimeout;
+    // ====================================
+    // Presentations State Management
+    // ====================================
+    let activeStatus = 'pending'; // Default view
     
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const searchTerm = e.target.value.toLowerCase();
-                const presentations = document.querySelectorAll('.presentation-item');
-                
-                presentations.forEach(presentation => {
-                    const title = presentation.querySelector('h3')?.textContent.toLowerCase() || '';
-                    const description = presentation.querySelector('p')?.textContent.toLowerCase() || '';
-                    
-                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                        presentation.style.display = 'flex';
-                        // Animate items into view
-                        presentation.style.opacity = '0';
-                        presentation.style.transform = 'translateY(20px)';
-                        requestAnimationFrame(() => {
-                            presentation.style.opacity = '1';
-                            presentation.style.transform = 'translateY(0)';
-                            presentation.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                        });
-                    } else {
-                        presentation.style.display = 'none';
-                    }
-                });
-            }, 300); // Debounce delay
-        });
-    }
+    // Set initial active state for pending card
+    document.querySelector('[data-status="pending"]').classList.add('active');
+    
+    updatePresentations(activeStatus);
 
-    // Review button handler with improved feedback
-    const reviewButtons = document.querySelectorAll('.review-button');
-    reviewButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const presentationItem = button.closest('.presentation-item');
-            const presentationTitle = presentationItem.querySelector('h3')?.textContent || 'Untitled';
+    // ====================================
+    // Stats Cards Click Handlers
+    // ====================================
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Remove active class from all cards
+            statCards.forEach(c => c.classList.remove('active'));
+            // Add active class to clicked card
+            card.classList.add('active');
+            // Update presentations based on status
+            const status = card.getAttribute('data-status');
+            activeStatus = status;
             
-            // Visual feedback for button click
-            button.classList.add('clicked');
-            setTimeout(() => button.classList.remove('clicked'), 200);
-
-            // Add your review logic here
-            console.log(`Reviewing presentation: ${presentationTitle}`);
+            // Animate container out
+            const container = document.getElementById('ponencias-list');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            // Update content and animate in
+            setTimeout(() => {
+                updatePresentations(status);
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 300);
         });
     });
 
-    // Optimized hover effects for presentation items
-    const presentationItems = document.querySelectorAll('.presentation-item');
-    presentationItems.forEach(item => {
-        // Only apply hover effects on non-touch devices
-        if (window.matchMedia('(hover: hover)').matches) {
-            item.addEventListener('mouseenter', () => {
-                item.style.transform = 'translateX(8px)';
-                item.style.transition = 'transform 0.3s ease';
-            });
 
-            item.addEventListener('mouseleave', () => {
-                item.style.transform = 'translateX(0)';
-            });
-        }
-    });
 
-    // Initialize and update timestamps
-    const updateTimestamps = () => {
-        const timeInfos = document.querySelectorAll('.time-info span');
-        timeInfos.forEach(timeInfo => {
-            const timestamp = timeInfo.getAttribute('data-timestamp');
-            if (timestamp) {
-                const date = new Date(parseInt(timestamp));
-                const now = new Date();
-                const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+    // ====================================
+    // User Authentication State Management
+    // ====================================
+    let currentUserRef = null;
+    let assignedPresentationRefs = [];
+
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log('Usuario autenticado:', user.uid);
+            try {
+                // Obtener el documento del usuario usando el ID del usuario autenticado
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+    
+                if (!userDocSnap.exists()) {
+                    console.error('No se encontró el documento del usuario');
+                    // Redirigir a una página de error o de registro
+                    window.location.href = '/error.html';
+                    return;
+                }
+    
+                const userData = userDocSnap.data();
                 
-                let timeString;
-                if (diffInMinutes < 60) {
-                    timeString = `${diffInMinutes} min`;
-                } else if (diffInMinutes < 1440) {
-                    const hours = Math.floor(diffInMinutes / 60);
-                    timeString = `${hours}h`;
+                // Verificar si el usuario es un revisor
+                if (userData.rol !== 'revisor') {
+                    console.error('Usuario no tiene permisos de revisor');
+                    // Redirigir a una página de acceso denegado
+                    window.location.href = '/acceso-denegado.html';
+                    return;
+                }
+    
+                // Guardar la referencia del usuario y sus ponencias asignadas
+                const currentUserRef = userDocRef;
+                const assignedPresentationRefs = userData.ponenciasAsignadas || [];
+                
+                // Actualizar el nombre del revisor en la UI
+                const welcomeElement = document.querySelector('.welcome');
+                if (welcomeElement) {
+                    welcomeElement.textContent = "¡Bienvenido" ${userData.nombre || 'Revisor'}!;
+                }
+    
+                // Inicializar la vista
+                if (typeof updateCounts === 'function') {
+                    updateCounts();
                 } else {
-                    const days = Math.floor(diffInMinutes / 1440);
-                    timeString = `${days}d`;
+                    console.error('La función updateCounts no está definida');
+                }
+    
+                if (typeof updatePresentations === 'function') {
+                    updatePresentations('pendiente');
+                } else {
+                    console.error('La función updatePresentations no está definida');
                 }
                 
-                timeInfo.textContent = `• ${timeString}`;
+            } catch (error) {
+                console.error('Error al cargar datos del usuario:', error);
+                // Manejar el error (por ejemplo, mostrar un mensaje al usuario)
             }
-        });
-    };
+        } else {
+            // Redirigir al login si no hay usuario autenticado
+            window.location.href = '/login.html';
+        }
+    });
+    // ====================================
+    // Presentation Count Management
+    // ====================================
+    async function updateCounts() {
+        if (!assignedPresentationRefs.length) {
+            // Si no hay ponencias asignadas, establecer todos los contadores a 0
+            ['pendiente', 'aprobada', 'rechazada'].forEach(status => {
+                const element = document.getElementById(`${status}-count`);
+                if (element) element.textContent = '0';
+            });
+            return;
+        }
 
-    // Initial timestamp update
-    updateTimestamps();
-    
-    // Update timestamps every minute
-    setInterval(updateTimestamps, 60000);
+        const statusCounts = {
+            pending: 0,
+            approved: 0,
+            rejected: 0
+        };
 
-    // Add smooth loading animation for content
+        try {
+            // Obtener todas las ponencias asignadas
+            const presentationsSnapshot = await doc(db, "ponencias")
+                .where(firebase.firestore.FieldPath.documentId(), 'in', 
+                       assignedPresentationRefs.map(ref => ref.id))
+                .get();
+
+            // Contar por estado
+            presentationsSnapshot.forEach(doc => {
+                const estado = doc.data().estado;
+                if (statusCounts.hasOwnProperty(estado)) {
+                    statusCounts[estado]++;
+                }
+            });
+
+            // Actualizar los contadores en la UI
+            Object.entries(statusCounts).forEach(([status, count]) => {
+                const element = document.getElementById(`${status}-count`);
+                if (element) {
+                    const currentCount = parseInt(element.textContent);
+                    animateCount(currentCount, count, element);
+                }
+            });
+
+        } catch (error) {
+            console.error('Error al actualizar contadores:', error);
+        }
+    }
+    // ====================================
+    // Animation Utilities
+    // ====================================
+    function animateCount(start, end, element) {
+        const duration = 1000;
+        const steps = 60;
+        const increment = (end - start) / steps;
+        let current = start;
+        let step = 0;
+
+        const timer = setInterval(() => {
+            step++;
+            current += increment;
+            element.textContent = Math.round(current).toLocaleString();
+
+            if (step >= steps) {
+                clearInterval(timer);
+                element.textContent = end.toLocaleString();
+            }
+        }, duration / steps);
+    }
+
+       // ====================================
+    // Presentations List Management
+    // ====================================
+    async function updatePresentations(status) {
+        const presentationsList = document.getElementById('ponencias-list');
+        presentationsList.innerHTML = '';
+
+        if (!assignedPresentationRefs.length) {
+            presentationsList.innerHTML = `
+                <div class="ponencia-item" style="justify-content: center">
+                    <p style="color: rgba(255, 255, 255, 0.6)">No hay ponencias asignadas</p>
+                </div>
+            `;
+            return;
+        }
+
+        try {
+            // Obtener las ponencias que coincidan con el estado y estén en las asignadas
+            const snapshot = await db.collection('ponencias')
+                .where(firebase.firestore.FieldPath.documentId(), 'in', 
+                       assignedPresentationRefs.map(ref => ref.id))
+                .where('estado', '==', status)
+                .orderBy('timestamp', 'desc')
+                .get();
+
+            if (snapshot.empty) {
+                presentationsList.innerHTML = `
+                    <div class="ponencia-item" style="justify-content: center">
+                        <p style="color: rgba(255, 255, 255, 0.6)">No hay ponencias ${getStatusText(status)}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const presentation = {
+                    id: doc.id,
+                    ...doc.data()
+                };
+                const presentationElement = createPresentationElement(presentation);
+                presentationsList.appendChild(presentationElement);
+            });
+
+        } catch (error) {
+            console.error('Error al obtener ponencias:', error);
+            presentationsList.innerHTML = `
+                <div class="ponencia-item" style="justify-content: center">
+                    <p style="color: rgba(255, 255, 255, 0.6)">Error al cargar las ponencias</p>
+                </div>
+            `;
+        }
+    }
+    // ====================================
+    // Helper Functions
+    // ====================================
+    function getStatusText(status) {
+        const statusMap = {
+            pending: 'pendientes',
+            approved: 'aprobadas',
+            rejected: 'rechazadas'
+        };
+        return statusMap[status] || status;
+    }
+
+    function createPresentationElement(presentation) {
+        const div = document.createElement('div');
+        div.className = 'ponencia-item';
+        
+        const timestamp = presentation.timestamp?.toDate() || new Date();
+        
+        div.innerHTML = `
+            <div class="ponencia-info">
+                <h3>${presentation.title}</h3>
+                <p>${presentation.author} - ${timestamp.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })}</p>
+            </div>
+            <span class="ponencia-status status-${presentation.status}">
+                ${getStatusText(presentation.status)}
+            </span>
+        `;
+
+        return div;
+    }
+
+    // ====================================
+    // Content Animation
+    // ====================================
     const contentWrapper = document.querySelector('.content-wrapper');
     if (contentWrapper) {
         contentWrapper.style.opacity = '0';
@@ -159,69 +333,43 @@ document.addEventListener('DOMContentLoaded', () => {
             contentWrapper.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         });
     }
+
+     // ====================================
+    // Real-time Updates
+    // ====================================
+    function setupRealtimeUpdates() {
+        if (!assignedPresentationRefs.length) return;
+
+        // Desuscribirse de las actualizaciones anteriores si existen
+        if (window.presentationsUnsubscribe) {
+            window.presentationsUnsubscribe();
+        }
+
+        // Crear nueva suscripción
+        window.presentationsUnsubscribe = db.collection('ponencias')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', 
+                   assignedPresentationRefs.map(ref => ref.id))
+            .onSnapshot((snapshot) => {
+                updateCounts();
+                const currentStatusDocs = snapshot.docChanges()
+                    .filter(change => change.doc.data().estado === activeStatus);
+                
+                if (currentStatusDocs.length > 0) {
+                    updatePresentations(activeStatus);
+                }
+            }, (error) => {
+                console.error('Error en tiempo real:', error);
+            });
+    }
+
+    // Inicializar actualizaciones en tiempo real cuando se carguen las ponencias asignadas
+    auth.onAuthStateChanged((user) => {
+        if (user && assignedPresentationRefs.length > 0) {
+            setupRealtimeUpdates();
+        }
+    });
 });
 
-//Script de Ponencias Pendientes
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Lucide icons
-    lucide.createIcons();
-  
-// Sample data for ponencias
-// Sample data for ponencias
-const ponencias = [
-    {
-      title: 'Innovaciones en Inteligencia Artificial',
-      date: '2023-07-15',
-      status: 'Pendiente'
-    },
-    {
-      title: 'El Futuro de la Energía Renovable',
-      date: '2023-07-14',
-      status: 'Aceptada'
-    },
-    {
-      title: 'Avances en Medicina Genómica',
-      date: '2023-07-13',
-      status: 'Denegada'
-    }
-  ];
-  
-  const ponenciasGrid = document.getElementById('ponenciasGrid');
-  
-  // Create and append ponencia cards
-  ponencias.forEach(ponencia => {
-    const card = document.createElement('div');
-    card.className = 'ponencia-card';
-    card.innerHTML = `
-      <h3>${ponencia.title}</h3>
-      <p class="date-info">Fecha de envío: ${ponencia.date}</p>
-      <p class="status">
-        Estado: <span class="status-${ponencia.status === 'Pendiente' ? 'pending' : ponencia.status === 'Aceptada' ? 'review' : ponencia.status === 'Denegada' ? 'denied' : ''}">${ponencia.status}</span>
-      </p>
-      <button class="review-button">Revisar ponencia</button>
-    `;
-    ponenciasGrid.appendChild(card);
-  });
-  
-  
-  
-    // Add click handlers for sidebar buttons
-    const sidebarButtons = document.querySelectorAll('.sidebar-button');
-    sidebarButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        sidebarButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-      });
-    });
-  
-    // Add click handlers for review buttons
-    document.querySelectorAll('.review-button').forEach(button => {
-      button.addEventListener('click', (e) => {
-        const card = e.target.closest('.ponencia-card');
-        const title = card.querySelector('h3').textContent;
-        alert(`Revisando ponencia: ${title}`);
-      });
-    });
-  });
+
   
   

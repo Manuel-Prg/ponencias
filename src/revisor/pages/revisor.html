@@ -51,12 +51,11 @@
         <!-- Main Content -->
         <main class="main-content">
             <div class="content-wrapper">
-                <!-- Welcome Message -->
                 <h1 class="welcome">¡Bienvenido [nombre]!</h1>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card" data-status="pending">
                         <div class="stat-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -64,10 +63,10 @@
                         </div>
                         <div class="stat-info">
                             <h3>Ponencias pendientes</h3>
-                            <p class="stat-number">90,000</p>
+                            <p class="stat-number" id="pending-count">0</p>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" data-status="approved">
                         <div class="stat-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -75,10 +74,10 @@
                         </div>
                         <div class="stat-info">
                             <h3>Ponencias aprobadas</h3>
-                            <p class="stat-number">90,000</p>
+                            <p class="stat-number" id="approved-count">0</p>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" data-status="rejected">
                         <div class="stat-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -86,44 +85,21 @@
                         </div>
                         <div class="stat-info">
                             <h3>Ponencias rechazadas</h3>
-                            <p class="stat-number">90,000</p>
+                            <p class="stat-number" id="rejected-count">0</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Notifications Section -->
-                <div class="notifications-container">
-                    <h2>Notificaciones recientes</h2>
-                    <div class="notifications-list">
-                        <div class="notification">
-                            <div class="notification-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            <div class="notification-content">
-                                <p class="notification-text">"Nueva ponencia recibida: [Título de la ponencia]."</p>
-                                <span class="notification-time">Hace 2 horas</span>
-                            </div>
-                        </div>
-                        <div class="notification">
-                            <div class="notification-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                </svg>
-                            </div>
-                            <div class="notification-content">
-                                <p class="notification-text">"Ponencia revisada y aprobada: [Título]."</p>
-                                <span class="notification-time">Hace 5 horas</span>
-                            </div>
-                        </div>
+                <!-- Presentations Container -->
+                <div class="ponencias-container">
+                    <h2>Ponencias</h2>
+                    <div class="ponencias-list" id="ponencias-list">
+                        <!-- Presentations will be dynamically inserted here -->
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="../scripts/scriptRevisor.js"></script>
+    <script type="module" src="../scripts/scriptRevisor.js"></script>
 </body>
 </html>
