@@ -127,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.welcome').textContent = `¡Bienvenido ${userData.nombre || ''}!`;
 
                 // Set initial active state for pending card
-                document.querySelector('[data-status="pending"]').classList.add('active');
+                document.querySelector('[data-status="pendiente"]').classList.add('active');
                 
                 // Inicializar la vista
                 await updateCounts();
-                await updatePresentations('pending');
+                await updatePresentations('pendiente');
                 setupRealtimeUpdates();
                 
             } catch (error) {
@@ -155,9 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const statusCounts = {
-            pending: 0,
-            approved: 0,
-            rejected: 0
+            pendiente: 0,
+            aprobada: 0,
+            rechazada: 0
         };
 
         try {
@@ -252,9 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ====================================
     function getStatusText(status) {
         const statusMap = {
-            pending: 'pendientes',
-            approved: 'aprobadas',
-            rejected: 'rechazadas'
+            pendiente: 'pendientes',
+            aprobada: 'aprobadas',
+            rechazado: 'rechazadas'
         };
         return statusMap[status] || status;
     }
@@ -263,19 +263,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const div = document.createElement('div');
         div.className = 'ponencia-item';
         
-        const timestamp = presentation.timestamp?.toDate() || new Date();
+        const timestamp = presentation.creado?.toDate() || new Date();
+
         
         div.innerHTML = `
             <div class="ponencia-info">
-                <h3>${presentation.title}</h3>
-                <p>${presentation.author} - ${timestamp.toLocaleDateString('es-ES', {
+                <h3>${presentation.titulo}</h3>
+                <p>${presentation.autores[0]} - ${timestamp.toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                 })}</p>
             </div>
-            <span class="ponencia-status status-${presentation.status}">
-                ${getStatusText(presentation.status)}
+            <span class="ponencia-status status-${presentation.estado}">
+                ${presentation.estado}
             </span>
         `;
 
