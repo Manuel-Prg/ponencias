@@ -1,5 +1,5 @@
-@import 'logos.css';
-@import "shared.css";
+@import '/src/styles/logos.css';
+@import "/src/styles/shared.css";
 :root {
     --neon-purple: #491d88;
     --neon-pink: #fa448c;
@@ -15,7 +15,6 @@
 body {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -25,19 +24,6 @@ body {
     padding: 20px;
 }
 
-.logo {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 20px;
-}
-
-.woman-silhouette {
-    width: 100%;
-    height: 100%;
-    fill: white;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
-    animation: glow 2s ease-in-out infinite alternate;
-}
 
 h2 {
     color: white;

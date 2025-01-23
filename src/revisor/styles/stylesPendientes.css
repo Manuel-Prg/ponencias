@@ -1,3 +1,5 @@
+@import '/src/styles/logos.css';
+
 :root {
     --primary-color: #491d88;
     --secondary-color: #fa448c;

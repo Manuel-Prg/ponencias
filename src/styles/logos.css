@@ -1,47 +1,56 @@
 /* Base logo styles */
-.logodev,
-.logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
-}
-
-/* Position the XDevLab logo on the left */
-.logodev {
-    left: 20px;
-    transform: translateY(20px); /* Adjust this value to move the logo down */
-}
-
-/* Position the Dacit logo on the right */
-.logodacity {
-    right: 20px;
-}
-
-/* Card positioning context */
-.login-card,
-.register-card {
-    position: relative;
-    padding-top: 80px;
-}
-
-/* Logo styles specific to the registration page */
-.register-card .logodev-card {
-    margin-top: 0; /* Remove the -85px margin */
-    top: 20px; /* Match the login page positioning */
-}
-
-/* Ensure both logos have consistent positioning in register card */
-.register-card .logodev,
-.register-card .logodacity {
-    position: absolute;
-    top: 20px;
-    max-width: 70px;
-    height: auto;
+header {
+    width: 100%;
     display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+.logo-dacity{
+    width: 60px;
+}
+.logo-ujat{
+    width: 100px;
+}
+.woman-silhouette{
+    width: 80px;
+    filter: brightness(0) invert(1);  /* Convierte la imagen a blanco */
+}
+.woman-silhouette img{
+    width: 100%;
+
+}
+.logo-dev{
+    width: 80px;
+
+}
+.logo{
+    display: flex;
+    gap:20px;
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .logo-dacity{
+        width: 60px;
+    }
+    .logodacity-ujat{
+        width: 60px;
+    
+    }
+    .woman-silhouette{
+        width: 60px;
+    }
+    .woman-silhouette img{
+        width: 100%;
+    
+    }
+    .logo-dev{
+        width: 60px;
+    
+    }
+}
 /* Personalización de la barra de desplazamiento */
 ::-webkit-scrollbar {
     width: 10px; 
@@ -64,92 +73,4 @@
 * {
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
-}
-
-/* Center user icon container */
-.user-icon-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Container styles */
-.container {
-    width: 100%;
-    padding: 20px;
-}
-
-/* Ajuste específico para la tarjeta de registro */
-.register-card {
-    padding-top: 3rem; 
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    .logodev,
-    .logodacity {
-        max-width: 60px;
-        top: 15px;
-    }
-    
-    .logodev {
-        left: 15px;
-    }
-    
-    .logodacity {
-        right: 15px;
-    }
-    
-    .login-card,
-    .register-card {
-        padding-top: 70px;
-    }
-}
-
-/* Ensure the page is scrollable when needed */
-body {
-    min-height: 100vh;
-    overflow-y: auto;
-}
-
-/* Remove unused styles */
-.logo-container,
-.logo-left,
-.logo-right {
-    display: none;
-}
-
-/* Shared card styles */
-.login-card,
-.register-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 30px;
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-out;
-}
-
-/* Animation keyframes */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
