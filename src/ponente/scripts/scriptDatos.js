@@ -1,6 +1,6 @@
 import { db, auth } from '/src/firebase/firebase-Config.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { doc, setDoc, timestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 
@@ -184,7 +184,7 @@ topicBtns.forEach(btn => {
                 resumen: formData.resumen,
                 fuente: formData.fuente,
                 userId: user.uid,
-                creado: new Date().toISOString(),
+                creado: timestamp.now(),
                 estado: 'pendiente'
             };
 
