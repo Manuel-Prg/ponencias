@@ -218,18 +218,18 @@ body {
 }
 
 .status-pendiente {
-  background: rgba(250, 68, 140, 0.2);
-  color: #fa448c;
+  background: rgba(255, 0, 102, 0.2);
+  color: #ffffff;
 }
 
 .status-aprobada {
   background: rgba(73, 29, 136, 0.2);
-  color: #491d88;
+  color: #ffffff;
 }
 
 .status-rechazada {
-  background: rgba(255, 76, 76, 0.2);
-  color: #ff4c4c;
+  background: rgba(255, 0, 0, 0.2);
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {
