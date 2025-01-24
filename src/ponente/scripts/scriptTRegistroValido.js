@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function handleCardClick(action) {
-        switch(action) {
+        switch (action) {
             case 'Revisar el estado':
                 // Redirect to status page
                 console.log('Redirecting to status page...');
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const shareTitle = 'Registro exitoso de ponencia';
         const shareText = 'He registrado mi ponencia para el evento. ¡Únete tú también!';
 
-        switch(type) {
+        switch (type) {
             case 'copy':
                 navigator.clipboard.writeText(shareUrl)
                     .then(() => showToast('¡Enlace copiado al portapapeles!'))
@@ -90,29 +90,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.getElementById("review-card").addEventListener("click", function() {
+document.getElementById("review-card").addEventListener("click", function () {
     const mainContent = document.getElementById("main-content");
     mainContent.classList.add("fade-hidden");
 
     setTimeout(() => {
         mainContent.innerHTML = `
-            <div class="status-card">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24" width="80" height="80">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="none" stroke="white" stroke-width="2"></path>
-                    </svg>
+                <div id="main-content">
+                    <div class="card" id="review-card">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                        </div>
+                        <h3>Tu ponencia se encuentra en:</h3>
+                        <h2>Revisión:</h2>
+                    </div>
                 </div>
-                <h1>Tu ponencia se encuentra actualmente en:</h1>
-                <div class="status">Revisión</div>
-            </div>
         `;
         mainContent.classList.remove("fade-hidden");
     }, 500);
 });
 
 
-    document.getElementById("edit-card").addEventListener("click", function() {
-        // Redirige a la página editarPonencia.html
-        window.location.href = "../pages/editarPonencia.html";
-    });
+document.getElementById("edit-card").addEventListener("click", function () {
+    // Redirige a la página editarPonencia.html
+    window.location.href = "../pages/editarPonencia.html";
+});
 

@@ -109,5 +109,24 @@
         </main>
     </div>
     <script type="module" src="../scripts/scriptRevisor.js"></script>
+    <dialog id="presentation-dialog" class="presentation-dialog">
+    <h2 id="dialog-title"></h2>
+    <p id="dialog-summary"></p>
+    <div class="comment-area">
+        <label for="comment">Comentarios:</label>
+        <textarea id="comment" rows="4"></textarea>
+    </div>
+    <div class="rating-area">
+        <label for="rating">Calificación:</label>
+        <input type="number" id="rating" min="1" max="10" step="1">
+    </div>
+    <div class="dialog-buttons">
+        <button id="close-dialog">Cerrar</button>
+        <button id="accept-presentation">Aceptar</button>
+        <button id="reject-presentation">Rechazar</button>
+        <button id="accept-with-corrections">Aceptar con correcciones</button>
+    </div>
+</dialog>
 </body>
 </html>
+
