@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error al cargar datos del usuario:', error);
             }
         } else {
-            window.location.href = '/login.html';
+            window.location.href = '/src/autentificacion/pages/index.html';
         }
     });
 
