@@ -316,7 +316,8 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
   background: var(--card-bg);
   color: var(--text-color);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -326,12 +327,18 @@ body {
   width: 90%;
   margin: 0;
   box-shadow: var(--shadow-lg);
+  animation: dialogOpen 0.3s ease forwards;
+}
+
+.presentation-dialog[open] {
+  animation: dialogOpen 0.3s ease forwards;
 }
 
 .presentation-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  animation: backdropFade 0.3s ease forwards;
 }
 
 .dialog-content {
@@ -342,6 +349,18 @@ body {
 .form-group {
   display: grid;
   gap: var(--spacing-xs);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formElementsFade 0.3s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
 }
 
 .form-group label {
@@ -378,6 +397,10 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formElementsFade 0.3s ease forwards;
+  animation-delay: 0.4s;
 }
 
 .dialog-buttons .primary-buttons {
@@ -538,6 +561,41 @@ body {
   from {
     opacity: 0;
     transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dialogOpen {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes backdropFade {
+  from {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+}
+
+@keyframes formElementsFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
