@@ -20,13 +20,13 @@ body {
 
 .logo-left {
     position: absolute;
-    width: 130px; /* Ajusta el tamaño del logo */
-    height: auto; /* Mantén la proporción */
+    width: 130px;
+    height: auto;
 }
 .logo-right {
     position: absolute;
-    width: 140px; /* Ajusta el tamaño del logo */
-    height: auto; /* Mantén la proporción */
+    width: 140px;
+    height: auto;
 }
 
 .logo-left {
@@ -103,12 +103,48 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.icon:hover {
+    transform: rotate(10deg);
 }
 
 .icon svg {
     stroke: white;
     fill: none;
     stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+/* Nuevos iconos y animaciones */
+#review-card .icon svg {
+    animation: pulse 2s infinite;
+}
+
+#edit-card .icon svg {
+    animation: wiggle 3s infinite;
+}
+
+#download-card .icon svg {
+    animation: bounce 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 h3 {

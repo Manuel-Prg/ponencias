@@ -28,6 +28,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // User Authentication State Management
   let currentUserRef = null
 
+  // Manejo del botón de cerrar sesión
+  const logoutBtn = document.getElementById("logout-btn");
+  const logoutBtnMobile = document.getElementById("logout-btn-mobile");
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await auth.signOut();
+      window.location.href = "/src/autentificacion/pages/index.html";
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
+  // Agregar event listeners a ambos botones
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", handleLogout);
+  }
+  if (logoutBtnMobile) {
+    logoutBtnMobile.addEventListener("click", handleLogout);
+  }
+
   auth.onAuthStateChanged(async (user) => {
     if (user) {
       try {
@@ -36,6 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!userDocSnap.exists()) {
           console.error("No se encontró el documento del usuario")
+          await auth.signOut()
+          window.location.href = "/src/autentificacion/pages/index.html"
           return
         }
 
@@ -43,6 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (userData.rol !== "revisor") {
           console.error("Usuario no tiene permisos de revisor")
+          await auth.signOut()
+          window.location.href = "/src/autentificacion/pages/index.html"
           return
         }
 
@@ -60,6 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
         setupRealtimeUpdates()
       } catch (error) {
         console.error("Error al cargar datos del usuario:", error)
+        await auth.signOut()
+        window.location.href = "/src/autentificacion/pages/index.html"
       }
     } else {
       window.location.href = "/src/autentificacion/pages/index.html"

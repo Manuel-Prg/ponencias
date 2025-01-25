@@ -1,8 +1,10 @@
 @import '/src/styles/logos.css';
 @import "/src/styles/shared.css";
+
 :root {
     --neon-purple: #491d88;
     --neon-pink: #fa448c;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -15,15 +17,23 @@
 body {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    background-size: 200% 200%;
+    animation: gradientMove 15s ease infinite;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
     width: 100%;
     padding: 20px;
+    animation: fadeInUp 0.8s ease-out;
 }
-
 
 h2 {
     color: white;
@@ -31,6 +41,12 @@ h2 {
     font-size: 24px;
     margin-bottom: 10px;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
 }
 
 .subtitle {
@@ -38,34 +54,43 @@ h2 {
     text-align: center;
     margin-bottom: 25px;
     font-size: 13px;
+    animation: fadeIn 0.8s ease-out 0.2s backwards;
 }
 
 .form-group {
     margin-bottom: 16px;
+    animation: slideIn 0.5s ease-out backwards;
 }
+
+.form-group:nth-child(1) { animation-delay: 0.2s; }
+.form-group:nth-child(2) { animation-delay: 0.3s; }
+.form-group:nth-child(3) { animation-delay: 0.4s; }
 
 label {
     display: block;
     color: white;
     margin-bottom: 6px;
     font-size: 14px;
+    transition: var(--transition-smooth);
 }
 
 input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;
     font-size: 14px;
-    transition: all 0.3s;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(5px);
 }
 
 input:focus {
     outline: none;
     border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 input::placeholder {
@@ -74,26 +99,33 @@ input::placeholder {
 
 .register-btn {
     width: 100%;
-    padding: 12px;
-    background: black;
+    padding: 14px;
+    background: rgba(0, 0, 0, 0.8);
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     margin-bottom: 12px;
-    transition: transform 0.2s, background 0.3s;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
 
 .register-btn:hover {
-    background: #333;
-    transform: translateY(-1px);
+    background: rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.register-btn:active {
+    transform: translateY(0);
 }
 
 .google-btn {
     width: 100%;
-    padding: 12px;
-    background: white;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.95);
     color: #333;
     border: none;
     border-radius: 8px;
@@ -102,18 +134,29 @@ input::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    transition: transform 0.2s, background 0.3s;
+    gap: 10px;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(5px);
 }
 
 .google-btn:hover {
-    background: #f5f5f5;
-    transform: translateY(-1px);
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.google-btn:active {
+    transform: translateY(0);
 }
 
 .google-btn img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.google-btn:hover img {
+    transform: scale(1.1);
 }
 
 .login-text {
@@ -121,16 +164,33 @@ input::placeholder {
     color: white;
     margin-top: 20px;
     font-size: 14px;
+    animation: fadeIn 0.8s ease-out 0.6s backwards;
 }
 
 .login-text a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+
+.login-text a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background: white;
+    transition: var(--transition-smooth);
 }
 
 .login-text a:hover {
     color: white;
+}
+
+.login-text a:hover:after {
+    width: 100%;
 }
 
 .copyright {
@@ -138,9 +198,19 @@ input::placeholder {
     color: rgba(255, 255, 255, 0.6);
     margin-top: 25px;
     font-size: 12px;
+    animation: fadeIn 0.8s ease-out 0.8s backwards;
 }
 
 @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -151,17 +221,27 @@ input::placeholder {
     }
 }
 
-@keyframes glow {
+@keyframes slideIn {
     from {
-        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+        opacity: 0;
+        transform: translateX(-20px);
     }
     to {
-        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
 @media (max-width: 480px) {
-    .register-card {
-        padding: 20px;
+    .container {
+        padding: 15px;
+    }
+    
+    input, .register-btn, .google-btn {
+        padding: 12px;
+    }
+    
+    h2 {
+        font-size: 22px;
     }
 }

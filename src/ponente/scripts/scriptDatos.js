@@ -196,10 +196,62 @@ topicBtns.forEach(btn => {
             // Guardar los datos
             await setDoc(ponenciaRef, ponenciaData);
 
-            // Mostrar mensaje de éxito
-            alert('¡Tu ponencia ha sido registrada exitosamente!');
-            window.location.href = '/src/ponente/pages/registroValido.html';
+            // Crear elemento de alerta personalizado
+            const alertContainer = document.createElement('div');
+            alertContainer.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.95);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                animation: fadeInAndScale 0.5s ease-out;
+                text-align: center;
+            `;
 
+            // Agregar estilos de animación
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInAndScale {
+                    0% {
+                        opacity: 0;
+                        transform: translate(-50%, -50%) scale(0.7);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: translate(-50%, -50%) scale(1);
+                    }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            alertContainer.innerHTML = `
+                <h3 style="color: #4CAF50; margin-bottom: 10px;">¡Registro Exitoso!</h3>
+                <p style="margin-bottom: 15px;">Tu ponencia ha sido registrada correctamente.</p>
+                <div style="width: 50px; height: 50px; margin: 0 auto 15px;">
+                    <svg viewBox="0 0 24 24" style="fill: #4CAF50; width: 100%; height: 100%;">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                </div>
+            `;
+
+            document.body.appendChild(alertContainer);
+
+            // Remover alerta después de 2 segundos y redirigir
+            setTimeout(() => {
+                alertContainer.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => {
+                    alertContainer.remove();
+                    window.location.href = '/src/ponente/pages/registroValido.html';
+                }, 500);
+            }, 2000);
 
         } catch (error) {
             console.error('Error al enviar la ponencia:', error);

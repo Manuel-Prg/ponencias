@@ -16,21 +16,63 @@ loginForm.addEventListener('submit', async (e) => {
 
 export function showNotification(message, type) {
     const notification = document.createElement('div');
-    notification.classList.add('notification', type, 'animate'); // Agregamos la clase animate
+    notification.classList.add('notification', type);
     notification.textContent = message;
+    
+    // Estilos mejorados para la notificación
+    notification.style.position = 'fixed';
+    notification.style.top = '-100px';
+    notification.style.left = '50%';
+    notification.style.transform = 'translateX(-50%)';
+    notification.style.padding = '20px 30px';
+    notification.style.borderRadius = '10px';
+    notification.style.backgroundColor = type === 'success' ? 'var(--neon-purple)' : '#f44336';
+    notification.style.color = 'white';
+    notification.style.boxShadow = type === 'success' ? 
+        '0 0 15px var(--neon-purple), 0 0 30px var(--neon-pink)' : 
+        '0 0 15px #f44336';
+    notification.style.zIndex = '1000';
+    notification.style.transition = 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+    notification.style.fontSize = '16px';
+    notification.style.fontWeight = '500';
+    notification.style.textAlign = 'center';
+    notification.style.minWidth = '300px';
+    notification.style.backdropFilter = 'blur(5px)';
+    notification.style.border = '2px solid rgba(255, 255, 255, 0.2)';
+
     document.body.appendChild(notification);
 
-    // Mostrar la notificación con animación
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
+    // Animación de entrada mejorada
+    requestAnimationFrame(() => {
+        notification.style.top = '30px';
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(-50%) scale(1)';
+    });
 
-    // Ocultar y remover la notificación
+    // Efectos hover mejorados
+    notification.addEventListener('mouseenter', () => {
+        notification.style.transform = 'translateX(-50%) scale(1.05)';
+        notification.style.boxShadow = type === 'success' ? 
+            '0 0 25px var(--neon-purple), 0 0 40px var(--neon-pink)' : 
+            '0 0 25px #f44336';
+    });
+
+    notification.addEventListener('mouseleave', () => {
+        notification.style.transform = 'translateX(-50%) scale(1)';
+        notification.style.boxShadow = type === 'success' ? 
+            '0 0 15px var(--neon-purple), 0 0 30px var(--neon-pink)' : 
+            '0 0 15px #f44336';
+    });
+
+    // Animación de salida mejorada
     setTimeout(() => {
-        notification.classList.remove('show');
+        notification.style.top = '-100px';
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(-50%) scale(0.8)';
+        
         setTimeout(() => {
             document.body.removeChild(notification);
-        }, 300);
+        }, 600);
     }, 3000);
 }
 
@@ -94,7 +136,7 @@ export async function iniciarSesion(email, password) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const rol = await checkUserRole(userCredential.user.uid);
 
-        showNotification('Inicio de sesión exitoso', 'success');
+        showNotification('¡Bienvenido! Inicio de sesión exitoso', 'success');
         console.log('Inicio de sesión exitoso');
         
         if (rol) {
@@ -127,4 +169,3 @@ export async function cerrarSesion() {
         return false;
     }
 }
-
