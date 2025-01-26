@@ -30,7 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Manejo del botón de cerrar sesión
   const logoutBtn = document.getElementById("logout-btn");
-  const logoutBtnMobile = document.getElementById("logout-btn-mobile");
+  const datosBtn = document.getElementById("datos-btn");
+  
+  // Manejo del botón de datos
+  const handleDatos = (e) => {
+    e.preventDefault();
+    window.location.href = "/src/revisor/pages/datosRevisor.html";
+  };
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -46,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", handleLogout);
   }
-  if (logoutBtnMobile) {
-    logoutBtnMobile.addEventListener("click", handleLogout);
+  if (datosBtn) {
+    datosBtn.addEventListener("click", handleDatos);
   }
 
   auth.onAuthStateChanged(async (user) => {
