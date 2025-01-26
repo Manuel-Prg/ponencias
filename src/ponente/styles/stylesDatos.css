@@ -28,8 +28,8 @@ body {
 
 .container {
     width: 100%;
-    min-height: calc(100vh - 80px); /* Altura total menos el header */
-    padding: 40px 20px; /* Aumentado el padding superior */
+    min-height: calc(100vh - 80px);
+    padding: 40px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,53 +41,51 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
-    padding: 30px;
+    padding: 40px;
     width: 100%;
-    max-width: 600px;
-    margin: 20px auto; /* Añadido margen */
+    max-width: 500px;
+    margin: 20px auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.6s ease-out;
 }
 
 .progress-steps {
     display: flex;
-    justify-content: center;
-    gap: 3rem;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto 2rem;
+    position: relative;
 }
 
 .step {
     display: flex;
     align-items: center;
     position: relative;
-    animation: slideIn 0.5s ease-out backwards;
+    z-index: 1;
 }
 
-.step:nth-child(1) { animation-delay: 0.1s; }
-.step:nth-child(2) { animation-delay: 0.2s; }
-.step:nth-child(3) { animation-delay: 0.3s; }
-.step:nth-child(4) { animation-delay: 0.4s; }
-
 .step-number {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    position: relative;
-    transition: transform 0.3s ease;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.step-number:hover {
-    transform: scale(1.1);
+.step-line {
+    width: 40px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 5px;
 }
 
 .step.active .step-number {
@@ -114,19 +112,6 @@ body {
 @keyframes checkmark {
     0% { transform: scale(0); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
-}
-
-.step-line {
-    width: 30px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 0 5px;
-    transition: background 0.5s ease;
-}
-
-.step.active .step-line,
-.step.completed .step-line {
-    background: black;
 }
 
 h2 {
@@ -414,47 +399,41 @@ select:hover {
 
 /* Estilos para el header y botones */
 .header {
-    display: flex;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: var(--header-height, 80px);
+    height: 80px;
     background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    z-index: 100;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--spacing-lg, 1.5rem);
+    padding: 0 20px;
+    z-index: 1000;
 }
 
 .header-buttons {
     display: flex;
     gap: 1rem;
-    margin-left: auto;
 }
 
 .header-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 8px 16px;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;
     cursor: pointer;
-    font-weight: 500;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
 }
 
 .header-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
 }
 
 .header-btn svg {
@@ -475,7 +454,7 @@ select:hover {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 1rem;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .bottom-nav-items {
@@ -515,20 +494,27 @@ select:hover {
     }
 
     .container {
-        min-height: calc(100vh - 60px);
-        padding: 20px 15px 80px; /* Añadido padding inferior para la navegación móvil */
-    }
-
-    .progress-steps {
-        gap: 2rem;
-    }
-
-    .step-line {
-        width: 20px;
+        padding-bottom: 80px; /* Espacio para la navegación móvil */
     }
 
     .form-card {
-        padding: 20px;
-        margin: 10px auto;
+        padding: 30px 20px;
+        margin: 10px;
+        max-width: 100%;
     }
+
+    .progress-steps {
+        max-width: 220px;
+    }
+
+    .step-content {
+        max-width: 100%;
+    }
+}
+
+/* Ajustes para el contenido interno */
+.step-content {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
 }

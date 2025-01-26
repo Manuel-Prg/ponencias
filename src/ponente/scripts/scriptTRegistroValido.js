@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.card');
+    const cards = document.querySelectorAll('.card[data-action]');
     const socialButtons = document.querySelectorAll('.social-icon');
 
     // Add click handlers for cards
     cards.forEach(card => {
         card.addEventListener('click', () => {
-            const action = card.querySelector('h3').textContent;
+            const action = card.getAttribute('data-action');
             handleCardClick(action);
         });
     });
@@ -19,23 +19,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function handleCardClick(action) {
+    async function handleCardClick(action) {
         switch (action) {
-            case 'Revisar el estado':
-                // Redirect to status page
-                console.log('Redirecting to status page...');
+            case 'revisar':
+                const mainContent = document.getElementById("main-content");
+                mainContent.classList.add("fade-hidden");
+
+                setTimeout(() => {
+                    mainContent.innerHTML = `
+                        <div class="card">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                                </svg>
+                            </div>
+                            <h3>Tu ponencia se encuentra en:</h3>
+                            <h2>Revisión</h2>
+                        </div>
+                    `;
+                    mainContent.classList.remove("fade-hidden");
+                }, 500);
                 break;
-            case 'Editar mi ponencia':
-                // Redirect to edit page
-                console.log('Redirecting to edit page...');
+            case 'editar':
+                window.location.href = "/src/ponente/pages/editarPonencia.html";
                 break;
-            case 'Descargar comprobante':
-                // Trigger PDF download
-                console.log('Downloading PDF...');
-                break;
-            case 'Explorar talleres':
-                // Redirect to workshops page
-                console.log('Redirecting to workshops page...');
+            case 'descargar':
+                console.log('Descargando comprobante...');
                 break;
         }
     }
@@ -63,14 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Simple toast notification
     function showToast(message) {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.textContent = message;
         document.body.appendChild(toast);
 
-        // Add styles for the toast
         toast.style.position = 'fixed';
         toast.style.bottom = '20px';
         toast.style.left = '50%';
@@ -82,39 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.style.zIndex = '1000';
         toast.style.animation = 'fadeIn 0.3s ease-out';
 
-        // Remove toast after 3 seconds
         setTimeout(() => {
             toast.style.animation = 'fadeOut 0.3s ease-out';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
-});
-
-document.getElementById("review-card").addEventListener("click", function () {
-    const mainContent = document.getElementById("main-content");
-    mainContent.classList.add("fade-hidden");
-
-    setTimeout(() => {
-        mainContent.innerHTML = `
-                <div id="main-content">
-                    <div class="card" id="review-card">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                            </svg>
-                        </div>
-                        <h3>Tu ponencia se encuentra en:</h3>
-                        <h2>Revisión:</h2>
-                    </div>
-                </div>
-        `;
-        mainContent.classList.remove("fade-hidden");
-    }, 500);
-});
-
-
-document.getElementById("edit-card").addEventListener("click", function () {
-    // Redirige a la página editarPonencia.html
-    window.location.href = "../pages/editarPonencia.html";
 });
 

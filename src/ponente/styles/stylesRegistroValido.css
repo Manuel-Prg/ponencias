@@ -13,9 +13,11 @@
 body {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-    align-items: center;
+    padding-top: 120px;
+    padding-bottom: 80px;
+    display: flex;
+    align-items: flex-start;
     justify-content: center;
-    padding: 20px;
 }
 
 .logo-left {
@@ -43,6 +45,7 @@ body {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
+    padding: 20px;
 }
 
 .success-card {
@@ -50,9 +53,10 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 14px;
-    padding: 30px;
+    padding: 40px;
     text-align: center;
     animation: fadeIn 0.6s ease-out;
+    margin-top: 20px;
 }
 
 h1 {
@@ -217,8 +221,17 @@ h4 {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding-top: 100px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
     .success-card {
         padding: 30px 20px;
+        margin-top: 10px;
     }
 
     h1 {
@@ -257,4 +270,139 @@ h4 {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Estilos del menú superior */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.header-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.header-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+/* Navegación móvil */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px;
+    z-index: 1000;
+}
+
+.bottom-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    gap: 5px;
+}
+
+.bottom-nav-item svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .header-buttons {
+        display: none;
+    }
+
+    .bottom-nav {
+        display: block;
+    }
+
+    .logo img {
+        height: 30px;
+    }
+
+    body {
+        padding-top: 100px;
+        padding-bottom: 70px;
+    }
+}
+
+/* Ajustes para los logos */
+.logo-ujat {
+    height: 40px;
+    width: auto;
+}
+
+.logo-dacity {
+    height: 35px;
+    width: auto;
+}
+
+.woman-silhouette {
+    height: 35px;
+    width: auto;
+}
+
+.logo-dev {
+    height: 35px;
+    width: auto;
 }
