@@ -1,8 +1,7 @@
 import { db, auth } from "/src/firebase/firebase-Config.js";
-import { doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('constanciaForm');
     
     // Botones de escritorio
     const logoutBtn = document.getElementById('logout-btn');
@@ -11,6 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botones móviles
     const logoutBtnMobile = document.getElementById('logout-btn-mobile');
     
+    const nombreInput = document.getElementById('nombre');
+    const gradoInput = document.getElementById('grado');
+    const institucionInput = document.getElementById('institucion');
+    const departamentoInput = document.getElementById('departamento');
+    const emailInput = document.getElementById('email');
+
     // Manejador para cerrar sesión
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -28,59 +33,81 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "/src/revisor/pages/ponenciasPendientes.html";
     };
 
+    // Manejador para guardar datos de la ponencia
+    const handleSaveData = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid;
+                const dataToSave = {
+                    grado: gradoInput.value,
+                    institucion: institucionInput.value,
+                    departamento: departamentoInput.value,
+                    email: emailInput.value,
+                };
+                
+                const userRef = doc(getFirestore(), 'users', userId);
+                await updateDoc(userRef, {
+                    nombre : nombreInput.value,
+                    datos: dataToSave
+                });
+                
+                console.log('Datos guardados correctamente');
+            } else {
+                console.error('No se pudo obtener el usuario actual');
+            }
+        } catch (error) {
+            console.error('Error al guardar los datos:', error);
+        }
+    };
+
+    // Cargar datos del usuario
+    const loadUserData = async () => {
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                const userId = user.uid;
+                const userRef = doc(getFirestore(), 'users', userId);
+                const userDoc = await getDoc(userRef);
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('Datos del usuario:', userData);
+                    if (userData.datos) { // Comprobar si 'datos' existe  
+                        const { grado, institucion, departamento, email, tituloPonencia, modalidad } = userData.datos;  
+                
+                        nombreInput.value = userData.nombre || ''; // Usa un valor por defecto en caso de que sea undefined  
+                        gradoInput.value = grado || '';  
+                        institucionInput.value = institucion || '';  
+                        departamentoInput.value = departamento || '';  
+                        emailInput.value = email || '';  
+                    } else {  
+                        console.error("La propiedad 'datos' no existe en userData");  
+                        nombreInput.value = userData.nombre || ''; // Usa un valor por defecto en caso de que sea undefined  
+                    }  
+                }
+            } else {
+                console.error('No se pudo obtener el usuario actual');
+            }
+        } catch (error) {
+            console.error('Error al cargar los datos del usuario:', error);
+        }
+    };
+
     // Agregar event listeners
     if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
     if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', handleLogout);
-    if (ponenciasBtn) ponenciasBtn.addEventListener('click', handlePonencias);
+    if (ponenciasBtn) ponenciaBtn.addEventListener('click', handlePonencias);
+    document.getElementById('constanciaForm').addEventListener('submit', handleSaveData);
 
-    // Verificar autenticación y cargar datos existentes
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            // Cargar datos existentes si los hay
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                const data = userDoc.data();
-                if (data.datosConstancia) {
-                    form.nombre.value = data.datosConstancia.nombre || '';
-                    form.grado.value = data.datosConstancia.grado || '';
-                    form.institucion.value = data.datosConstancia.institucion || '';
-                    form.departamento.value = data.datosConstancia.departamento || '';
-                    form.email.value = data.datosConstancia.email || '';
-                }
-            }
-        } else {
-            window.location.href = "/src/autentificacion/pages/index.html";
-        }
-    });
-
-    // Manejar envío del formulario
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const user = auth.currentUser;
+    // Verificar autenticación y cargar datos del usuario
+    auth.onAuthStateChanged(user => {
         if (!user) {
-            alert('Debe iniciar sesión para guardar sus datos');
-            return;
-        }
-
-        try {
-            const datosConstancia = {
-                nombre: form.nombre.value,
-                grado: form.grado.value,
-                institucion: form.institucion.value,
-                departamento: form.departamento.value,
-                email: form.email.value,
-                fechaActualizacion: new Date()
-            };
-
-            await updateDoc(doc(db, "users", user.uid), {
-                datosConstancia: datosConstancia
-            });
-
-            alert('Datos guardados correctamente');
-        } catch (error) {
-            console.error("Error al guardar los datos:", error);
-            alert('Error al guardar los datos. Por favor, intente nuevamente.');
+            window.location.href = "/src/autentificacion/pages/index.html";
+        } else {
+            loadUserData();
         }
     });
 }); 
