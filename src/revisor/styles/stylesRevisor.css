@@ -319,9 +319,191 @@ body {
     margin-bottom: 4px;
 }
 
+<<<<<<< Updated upstream
 .notification-time {
     font-size: 12px;
     opacity: 0.6;
+=======
+/* Updated Dialog Styles */
+.presentation-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 60vw; /* Modified width */
+  min-width: 400px;
+  max-width: 800px;
+  height: 70vh;
+  min-height: 400px;
+  max-height: 800px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+  animation: dialogOpen 0.3s ease forwards;
+}
+
+.presentation-dialog[open] {
+  animation: dialogOpen 0.3s ease forwards;
+}
+
+.presentation-dialog::backdrop {
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  animation: backdropFade 0.3s ease forwards;
+}
+
+.dialog-content {
+  display: grid;
+  gap: var(--spacing-md);
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 4rem; /* Add space for the close button */
+}
+
+.form-group {
+  display: grid;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formElementsFade 0.3s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.form-group label {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.form-group textarea,
+.form-group input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-speed) ease;
+}
+
+.form-group textarea:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* Close button repositioning */
+#close-dialog {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--button-neutral);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#close-dialog:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Radio button group styling */
+.status-radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-radio-label {
+  flex: 1;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.status-radio-input {
+  display: none;
+}
+
+.status-radio-input:checked + .status-radio-label {
+  background: var(--button-primary);
+  border-color: var(--button-primary);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .presentation-dialog {
+    width: 90vw;
+    min-width: unset;
+  }
+}
+
+/* Comment area transition */
+.comment-section {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.comment-section.visible {
+  max-height: 300px;
+}
+
+
+
+.dialog-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive Styles */
+@media (max-width: 480px) {
+  .logo img {
+    height: 28px;
+  }
+
+  .presentation-dialog {
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-icon {
+    margin: 0 auto var(--spacing-sm);
+  }
+>>>>>>> Stashed changes
 }
 
 /* Animations */
@@ -413,6 +595,7 @@ body {
         text-align: center;
     }
 
+<<<<<<< Updated upstream
     .stat-icon {
         margin: 0 auto 10px;
     }
@@ -620,3 +803,10 @@ body {
         transform: scale(0.98);
     }
 }
+=======
+  .bottom-nav {
+    display: none;
+  }
+}
+
+>>>>>>> Stashed changes
