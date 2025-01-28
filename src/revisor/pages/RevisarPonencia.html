@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon/favicon_io/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon/favicon_io/favicon-16x16.png">
 </head>
-<header class="header">
+<header class="header"> 
   <div class="logo">
     <img src="/../public/icons/Logos UJAT/Logos UJAT/Logo 1 blanco.png" alt="Logo-ujat" class="logo-ujat">
     <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity"
@@ -79,16 +79,16 @@
       </label>  
   </div> 
 
-  <script>  
-    function selectButton(selectedRadio) {  
-        const buttons = document.querySelectorAll('.btn');  
-
-        buttons.forEach(button => {  
-            button.classList.remove('active');  
-        });  
-
-        selectedRadio.parentElement.classList.add('active');  
-    }  
-</script> 
+  <div id="dialogOverlay" class="dialog-overlay" style="display: none;">
+    <div class="dialog">
+        <h2 id="dialogTitle"></h2>
+        <textarea id="dialogComments" placeholder="Escriba sus comentarios aquí"></textarea>
+        <div class="dialog-buttons">
+            <button id="dialogAccept">Aceptar</button>
+            <button id="dialogCancel">Cancelar</button>
+        </div>
+    </div>
+</div>
+<script type="module" src="/src/revisor/scripts/scriptDatosRevisor.js"></script>
 </body>
 </html>

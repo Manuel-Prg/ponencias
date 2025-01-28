@@ -474,3 +474,110 @@ textarea::placeholder {
   }
 }
 
+/* Diseños de los dialogos*/
+
+.dialog-overlay {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* Reducido de 0.7 a 0.3 para hacerlo más transparente */
+  backdrop-filter: blur(8px); /* Añadido efecto de desenfoque */
+  -webkit-backdrop-filter: blur(8px); /* Para compatibilidad con Safari */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+
+
+.dialog {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  color: white;
+  animation: slideUp 0.3s ease-out;
+}
+
+.dialog h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.dialog textarea {
+  width: 100%;
+  min-height: 120px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.dialog textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.dialog-buttons button {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#dialogAccept {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#dialogCancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.dialog-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+}
+
+.dialog-buttons button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .dialog {
+      width: 95%;
+      padding: 20px;
+      margin: 15px;
+  }
+}
