@@ -12,276 +12,299 @@ import {
   updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
 
-let assignedPresentationRefs = []
-let activeStatus = "pending"
-let currentPresentationId = null
 let currentUserData = null
+let activeStatus = "pendiente"
 
-document.addEventListener('DOMContentLoaded', () => {
-    // ====================================
-    // Mobile Menu and Sidebar Functionality
-    // ====================================
-    const mainContent = document.querySelector('.main-content');
-    const logoutBtn = document.getElementById("logout-btn")
-    const datosBtn = document.getElementById("datos-btn")
 
-  // Manejo de autentificacion
-  let currentUserRef = null
+//Inicializa el script
+document.addEventListener('DOMContentLoaded', setupApplication)
 
-  
-  // Manejo del botón de datos
-  const handleDatos = (e) => {
-    e.preventDefault();
-    window.location.href = "/src/revisor/pages/datosRevisor.html";
-  };
+async function setupApplication() {
+  setupEventListeners()
+  await handleAuthState()
+}
 
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    try {
-      await auth.signOut();
-      window.location.href = "/src/autentificacion/pages/index.html";
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-    }
-  };
-
-  // Agregar event listeners a ambos botones
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", handleLogout);
-  }
-  if (datosBtn) {
-    datosBtn.addEventListener("click", handleDatos);
-  }
-
-  //Manejo de informacion de revisor actual
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      try {
-        const userDocRef = doc(db, "users", user.uid)
-        const userDocSnap = await getDoc(userDocRef)
-
-        if (!userDocSnap.exists()) {
-          console.error("No se encontró el documento del usuario")
-          await auth.signOut()
-          //window.location.href = "/src/autentificacion/pages/index.html"
-          return
-        }
-
-        const userData = userDocSnap.data()
-
-        if (userData.rol !== "revisor") {
-          console.error("Usuario no tiene permisos de revisor")
-          await auth.signOut()
-         // window.location.href = "/src/autentificacion/pages/index.html"
-          return
-        }
-
-        currentUserData = userData
-        document.querySelector(".welcome").textContent = `¡Bienvenido ${userData.nombre || ""}!`
-        document.querySelector('[data-status="pendiente"]').classList.add("active")
-
-        await updateCounts()
-        await updatePresentations("pendiente")
-        setupRealtimeUpdates()
-      } catch (error) {
-        console.error("Error al cargar datos del usuario:", error)
-        await auth.signOut()
-        //window.location.href = "/src/autentificacion/pages/index.html"
-      }
-    } else {
-      //window.location.href = "/src/autentificacion/pages/index.html"
-    }
+function setupEventListeners() {
+  // Manejador boton Logout 
+  const logoutBtn = document.getElementById("logout-btn")
+  const logoutBtnMobile = document.getElementById("logout-btn-mobile")
+  ;[logoutBtn, logoutBtnMobile].forEach(btn => {
+    if (btn) btn.addEventListener("click", handleLogout)
   })
 
+  // Manejador boton Datos 
+  const datosBtn = document.getElementById("datos-btn")
+  const datosBtnMobile = document.getElementById("datos-btn-mobile")
+  ;[datosBtn, datosBtnMobile].forEach(btn => {
+    if (btn) btn.addEventListener("click", handleDatos)
+  })
 
-  //Manejo de click en las cards
+  // Setea el click de las cards de estado
+  setupStatCardsListeners()
+}
+
+function setupStatCardsListeners() {
   const statCards = document.querySelectorAll(".stat-card")
   statCards.forEach((card) => {
-    card.addEventListener("click", () => {
+    card.addEventListener("click", async () => {
       statCards.forEach((c) => c.classList.remove("active"))
       card.classList.add("active")
+      
       const status = card.getAttribute("data-status")
       activeStatus = status
 
-      const container = document.getElementById("ponencias-list")
-      container.style.opacity = "0"
-      container.style.transform = "translateY(20px)"
-
-      setTimeout(() => {
-        updatePresentations(status)
-        container.style.opacity = "1"
-        container.style.transform = "translateY(0)"
-      }, 300)
+      await animatePresentationsList(status)
     })
   })
+}
 
-  // Helper Functions
-  async function updateCounts() {
-    if (!currentUserData?.ponenciasAsignadas?.length) {
-      ;["pendiente", "aprobada", "rechazada"].forEach((status) => {
-        const element = document.getElementById(`${status}-count`)
-        if (element) element.textContent = "0"
-      })
-      return
-    }
+async function animatePresentationsList(status) {
+  const container = document.getElementById("ponencias-list")
+  container.style.opacity = "0"
+  container.style.transform = "translateY(20px)"
 
-    const statusCounts = {
-      pendiente: 0,
-      aprobada: 0,
-      rechazada: 0,
-      correciones: 0
-    }
+  await new Promise(resolve => setTimeout(resolve, 300))
+  await updatePresentations(status)
+  
+  container.style.opacity = "1"
+  container.style.transform = "translateY(0)"
+}
 
-    // Count from the user's ponenciasAsignadas array
-    currentUserData.ponenciasAsignadas.forEach((assignment) => {
-      if (statusCounts.hasOwnProperty(assignment.estado)) {
-        statusCounts[assignment.estado]++
-      }
-    })
 
-    Object.entries(statusCounts).forEach(([status, count]) => {
-      const element = document.getElementById(`${status}-count`)
-      if (element) {
-        const currentCount = Number.parseInt(element.textContent)
-        animateCount(currentCount, count, element)
-      }
-    })
-  }
-
-  async function updatePresentations(status) {
-    const presentationsList = document.getElementById("ponencias-list")
-    presentationsList.innerHTML = ""
-
-    if (!currentUserData?.ponenciasAsignadas?.length) {
-      presentationsList.innerHTML = `
-        <div class="ponencia-item" style="justify-content: center">
-          <p style="color: rgba(255, 255, 255, 0.6)">No hay ponencias asignadas</p>
-        </div>
-      `
+//MAnejador de autentificacion
+async function handleAuthState() {
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = "/src/autentificacion/pages/index.html"
       return
     }
 
     try {
-      // Filter assignments by status
-      const relevantAssignments = currentUserData.ponenciasAsignadas.filter(
-        assignment => assignment.estado === status
-      )
-
-      if (relevantAssignments.length === 0) {
-        presentationsList.innerHTML = `
-          <div class="ponencia-item" style="justify-content: center">
-            <p style="color: rgba(255, 255, 255, 0.6)">No hay ponencias ${getStatusText(status)}</p>
-          </div>
-        `
-        return
-      }
-
-      // Get presentation IDs for the current status
-      const presentationIds = relevantAssignments.map(assignment => assignment.ponencia)
-
-      // Fetch presentations details from ponencias collection
-      const presentationsRef = collection(db, "ponencias")
-      const q = query(
-        presentationsRef,
-        where("__name__", "in", presentationIds),
-        orderBy("creado", "desc")
-      )
-
-      const querySnapshot = await getDocs(q)
-
-      querySnapshot.forEach((doc) => {
-        const presentation = {
-          id: doc.id,
-          ...doc.data(),
-        }
-        const presentationElement = createPresentationElement(presentation)
-        presentationsList.appendChild(presentationElement)
-      })
+      await loadUserData(user)
+      await initializeUserDashboard(user)
     } catch (error) {
-      console.error("Error al obtener ponencias:", error)
-      presentationsList.innerHTML = `
-        <div class="ponencia-item" style="justify-content: center">
-          <p style="color: rgba(255, 255, 255, 0.6)">Error al cargar las ponencias</p>
-        </div>
-      `
+      console.error("Error en la inicialización:", error)
+      await handleLogout()
     }
+  })
+}
+
+//Carga de datos del usuario
+async function loadUserData(user) {
+  const userDocRef = doc(db, "users", user.uid)
+  const userDocSnap = await getDoc(userDocRef)
+
+  if (!userDocSnap.exists()) {
+    throw new Error("No se encontró el documento del usuario")
   }
 
-  
+  const userData = userDocSnap.data()
+  if (userData.rol !== "revisor") {
+    throw new Error("Usuario no tiene permisos de revisor")
+  }
 
-  function createPresentationElement(presentation) {
+  currentUserData = userData
+  updateWelcomeMessage(userData.nombre)
+  return userData
+}
+
+//Inicializa el dashboard del usuario
+async function initializeUserDashboard(user) {
+  document.querySelector('[data-status="pendiente"]').classList.add("active")
+  await Promise.all([
+    updateCounts(),
+    updatePresentations("pendiente")
+  ])
+  setupRealtimeUpdates(user)
+}
+
+//Actualiza los conteos de las ponencias
+async function updateCounts() {
+  if (!currentUserData?.ponenciasAsignadas?.length) {
+    ;["pendiente", "aprobada", "rechazada"].forEach((status) => {
+      const element = document.getElementById(`${status}-count`)
+      if (element) element.textContent = "0"
+    })
+    return
+  }
+
+  const statusCounts = {
+    pendiente: 0,
+    aprobada: 0,
+    rechazada: 0,
+    correciones: 0
+  }
+
+  currentUserData.ponenciasAsignadas.forEach((assignment) => {
+    if (statusCounts.hasOwnProperty(assignment.estado)) {
+      statusCounts[assignment.estado]++
+    }
+  })
+
+  Object.entries(statusCounts).forEach(([status, count]) => {
+    const element = document.getElementById(`${status}-count`)
+    if (element) {
+      const currentCount = parseInt(element.textContent)
+      animateCount(currentCount, count, element)
+    }
+  })
+}
+
+//Actualiza el mensaje de bienvenida
+function updateWelcomeMessage(nombre) {
+  const welcomeElement = document.querySelector(".welcome")
+  if (welcomeElement) {
+    welcomeElement.textContent = `¡Bienvenido ${nombre || ""}!`
+  }
+}
+
+//Actualiza las ponencias
+async function updatePresentations(status) {
+  const presentationsList = document.getElementById("ponencias-list")
+  presentationsList.innerHTML = ""
+
+  if (!currentUserData?.ponenciasAsignadas?.length) {
+    renderEmptyState(presentationsList, "No hay ponencias asignadas")
+    return
+  }
+
+  try {
+    const relevantAssignments = currentUserData.ponenciasAsignadas.filter(
+      assignment => assignment.estado === status
+    )
+
+    if (relevantAssignments.length === 0) {
+      renderEmptyState(presentationsList, `No hay ponencias ${getStatusText(status)}`)
+      return
+    }
+
+    await fetchAndRenderPresentations(relevantAssignments, presentationsList)
+  } catch (error) {
+    console.error("Error al obtener ponencias:", error)
+    renderEmptyState(presentationsList, "Error al cargar las ponencias")
+  }
+}
+
+//Obtiene y renderiza las ponencias
+async function fetchAndRenderPresentations(assignments, container) {
+  const presentationIds = assignments.map(assignment => assignment.ponencia)
+  const presentationsRef = collection(db, "ponencias")
+  const q = query(
+    presentationsRef,
+    where("__name__", "in", presentationIds),
+    orderBy("creado", "desc")
+  )
+
+  const querySnapshot = await getDocs(q)
+  querySnapshot.forEach((doc) => {
+    const presentation = { id: doc.id, ...doc.data() }
+    const element = createPresentationElement(presentation)
+    container.appendChild(element)
+  })
+}
+
+//Actualizador en tiempo real
+function setupRealtimeUpdates(user) {
+  if (!currentUserData?.ponenciasAsignadas?.length) return
+
+  if (window.presentationsUnsubscribe) {
+    window.presentationsUnsubscribe()
+  }
+
+  const userRef = doc(db, "users", user.uid)
+  window.presentationsUnsubscribe = onSnapshot(userRef, handleRealtimeUpdate)
+}
+//Manejador tiempo real
+function handleRealtimeUpdate(snapshot) {
+  if (snapshot.exists()) {
+    currentUserData = snapshot.data()
+    updateCounts()
+    updatePresentations(activeStatus)
+  }
+}
+
+function animateCount(start, end, element) {
+  const duration = 1000
+  const steps = 60
+  const increment = (end - start) / steps
+  let current = start
+  let step = 0
+
+  const timer = setInterval(() => {
+    step++
+    current += increment
+    element.textContent = Math.round(current).toLocaleString()
+
+    if (step >= steps) {
+      clearInterval(timer)
+      element.textContent = end.toLocaleString()
+    }
+  }, duration / steps)
+}
+
+// Helpers y utilidades
+function handleDatos(e) {
+  e.preventDefault()
+  window.location.href = "/src/revisor/pages/datosRevisor.html"
+}
+
+async function handleLogout(e) {
+  if (e) e.preventDefault()
+  try {
+    await auth.signOut()
+    window.location.href = "/src/autentificacion/pages/index.html"
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error)
+  }
+}
+
+function renderEmptyState(container, message) {
+  container.innerHTML = `
+    <div class="ponencia-item" style="justify-content: center">
+      <p style="color: rgba(255, 255, 255, 0.6)">${message}</p>
+    </div>
+  `
+}
+
+// Tarjeta de ponencia
+function createPresentationElement(presentation) {
     const div = document.createElement("div")
     div.className = "ponencia-item"
-
+  
+    const presentationAssignment = currentUserData.ponenciasAsignadas.find(
+      assignment => assignment.ponencia === presentation.id
+    )
+    
+    const estadoPonencia = presentationAssignment ? presentationAssignment.estado : 'pendiente'
     const timestamp = presentation.creado?.toDate() || new Date()
-
+    
     div.innerHTML = `
       <div class="ponencia-info">
         <h3>${presentation.titulo}</h3>
-        <p>${timestamp.toLocaleDateString("es-ES", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}</p>
+        <p>${formatDate(timestamp)}</p>
       </div>
-      <span class="ponencia-status status-${presentation.estado}">
-        ${presentation.estado}
+      <span class="ponencia-status status-${estadoPonencia}">
+        ${estadoPonencia}
       </span>
     `
-
+  
     div.addEventListener("click", () => openDialog(presentation))
     return div
   }
 
-  function animateCount(start, end, element) {
-    const duration = 1000
-    const steps = 60
-    const increment = (end - start) / steps
-    let current = start
-    let step = 0
+function formatDate(date) {
+  return date.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  })
+}
 
-    const timer = setInterval(() => {
-      step++
-      current += increment
-      element.textContent = Math.round(current).toLocaleString()
-
-      if (step >= steps) {
-        clearInterval(timer)
-        element.textContent = end.toLocaleString()
-      }
-    }, duration / steps)
+function getStatusText(status) {
+  const statusMap = {
+    pendiente: "pendientes",
+    aprobada: "aprobadas",
+    rechazada: "rechazadas"
   }
-
-  function getStatusText(status) {
-    const statusMap = {
-      pendiente: "pendientes",
-      aprobada: "aprobadas",
-      rechazada: "rechazadas",
-    }
-    return statusMap[status] || status
-  }
-
-  function setupRealtimeUpdates() {
-    if (!currentUserData?.ponenciasAsignadas?.length) return;
-
-    if (window.presentationsUnsubscribe) {
-      window.presentationsUnsubscribe();
-    }
-
-    const userRef = doc(db, "users", auth.currentUser.uid);
-    
-    window.presentationsUnsubscribe = onSnapshot(
-      userRef,
-      (snapshot) => {
-        if (snapshot.exists()) {
-          currentUserData = snapshot.data();
-          updateCounts();
-          updatePresentations(activeStatus);
-        }
-      },
-      (error) => {
-        console.error("Error en tiempo real:", error);
-      }
-    );
-  }
-})
+  return statusMap[status] || status
+}
