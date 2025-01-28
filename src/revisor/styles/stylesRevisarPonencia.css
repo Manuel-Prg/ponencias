@@ -477,15 +477,14 @@ textarea::placeholder {
 /* Diseños de los dialogos*/
 
 .dialog-overlay {
-  overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3); /* Reducido de 0.7 a 0.3 para hacerlo más transparente */
-  backdrop-filter: blur(8px); /* Añadido efecto de desenfoque */
-  -webkit-backdrop-filter: blur(8px); /* Para compatibilidad con Safari */
+  background-color: rgba(0, 0, 0, 0.8); /* Aumentado de 0.3 a 0.8 para menos transparencia */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -493,20 +492,18 @@ textarea::placeholder {
   animation: fadeIn 0.3s ease-out;
 }
 
-
-
 .dialog {
   background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
-  padding: 25px;
-  width: 90%;
-  max-width: 500px;
+  padding: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-out;
   color: white;
-  animation: slideUp 0.3s ease-out;
 }
 
 .dialog h2 {
@@ -574,10 +571,18 @@ textarea::placeholder {
   transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+  .dialog {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    max-width: calc(100% - 20px);
+  }
+}
+
 @media (max-width: 480px) {
   .dialog {
-      width: 95%;
-      padding: 20px;
-      margin: 15px;
+    margin: 5px;
+    padding: 12px;
   }
 }

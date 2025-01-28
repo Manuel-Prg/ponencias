@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
           buttons.forEach(btn => btn.classList.remove('active'));
           this.classList.add('active');
 
-          if (selectedAction === 'rechazar' || selectedAction === 'devolver') {
+          if (selectedAction === 'devolver') {
               showDialog();
           }
       });
