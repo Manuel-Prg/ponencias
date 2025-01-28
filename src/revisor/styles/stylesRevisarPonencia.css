@@ -238,69 +238,84 @@ textarea::placeholder {
 
 @media (max-width: 768px) {
   body {
-    padding: 60px 10px 80px 10px; /* Ajustado para dar espacio al header y bottom nav */
+    padding: 60px 15px 90px 15px; /* Aumentado el padding inferior para el bottom nav */
   }
 
   .card {
-    margin: 0;
+    margin: 10px;
     padding: 15px;
     border-radius: 12px;
+    max-width: calc(100% - 20px); /* Asegura que la tarjeta no se salga de los márgenes */
   }
 
   .calif {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch; /* Cambiado para ocupar todo el ancho */
     gap: 1rem;
   }
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 1.4;
-  }
-
-  .rating-container {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  select {
-    padding: 8px 32px 8px 8px; /* Ajustado el padding */
-    font-size: 13px;
+    word-wrap: break-word; /* Mejor manejo de títulos largos */
   }
 
   .content {
-    height: auto;
-    min-height: 200px;
-    max-height: calc(100vh - 400px);
+    max-height: 50vh; /* Altura máxima relativa a la ventana */
+    min-height: 150px;
   }
 
   .buttons {
-    flex-direction: column;
+    flex-direction: row; /* Mantener botones en fila */
+    flex-wrap: wrap; /* Permitir que se envuelvan si no hay espacio */
+    justify-content: center; /* Centrar los botones */
     gap: 8px;
+    margin-top: 20px;
   }
 
   .btn {
-    width: 100%;
-    padding: 12px;
+    flex: 1 1 auto; /* Permitir que los botones crezcan y se encogan */
+    min-width: 140px; /* Ancho mínimo para botones */
+    max-width: calc(50% - 8px); /* Máximo dos botones por fila */
+    justify-content: center;
+    padding: 12px 15px;
   }
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 50px 10px 80px 10px;
+  }
+
+  .card {
+    margin: 5px;
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .buttons {
+    flex-direction: column; /* En móviles pequeños, botones en columna */
+  }
+
+  .btn {
+    max-width: 100%; /* Botones a ancho completo */
+    margin: 4px 0;
+  }
+
+  .bottom-nav {
+    padding: 10px 5px;
+  }
+
   .header {
-    height: 60px;
     padding: 0 10px;
   }
 
   .logo img {
-    height: 30px; /* Ajusta según el tamaño de tus logos */
-  }
-
-  .bottom-nav {
-    padding: 8px;
-  }
-
-  .bottom-nav-item span {
-    font-size: 12px;
+    height: 25px;
+    margin: 0 2px; /* Reducir espacio entre logos */
   }
 }
 
