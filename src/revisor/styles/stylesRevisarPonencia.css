@@ -481,15 +481,30 @@ textarea::placeholder {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(135deg, 
+    rgba(73, 29, 136, 0.95), 
+    rgba(250, 68, 140, 0.95)
+  );
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease-out;
-  border-radius: 35px;
-  margin: 15px;
+  animation: overlayFadeIn 0.3s ease-out;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(15px);
+  }
 }
 
 .dialog {
