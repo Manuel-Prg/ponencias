@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisar Ponencia</title>
+  <link rel="stylesheet" href="/src/revisor/styles/stylesRevisarPonencia.css">
+  <link rel="stylesheet" href="/src/styles/logos.css">
+  <!-- Favicon básico -->
+  <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon_io/favicon.ico">
+  <!-- Para diferentes tamaños de favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon/favicon_io/favicon-16x16.png">
+</head>
+<header class="header">
+  <div class="logo">
+    <img src="/../public/icons/Logos UJAT/Logos UJAT/Logo 1 blanco.png" alt="Logo-ujat" class="logo-ujat">
+    <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity"
+      class="logo-dacity" />
+    <img src="/../public/icons/logo_mujeres/logo_mueres_blanco.png" alt="Logo-mujeres" class="woman-silhouette" />
+    <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logo-dev" />
+  </div>
+  <div class="header-buttons">
+    <button class="header-btn" id="datos-btn" title="Agregar Comentarios">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M3 17.25V21h3.75l12-12-3.75-3.75-12 12H3zm16.5-10.5a2.25 2.25 0 1 1 3.18 3.18l-8.91 8.91-3.18-3.18L15.91 6.75a2.25 2.25 0 0 1 3.18 0z"></path>
+      </svg>      
+      
+      <span>Agregar Comentarios</span>
+    </button>
+    <button class="header-btn" id="logout-btn" title="Regresar">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Regresar</span>
+    </button>
+  </div>
+</header>
+
+<!-- Bottom Navigation for Mobile -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-items">
+      <a href="/src/ponente/pages/datosPonentes.html" class="bottom-nav-item" id="cmtarios-btn-mobile">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M3 17.25V21h3.75l12-12-3.75-3.75-12 12H3zm16.5-10.5a2.25 2.25 0 1 1 3.18 3.18l-8.91 8.91-3.18-3.18L15.91 6.75a2.25 2.25 0 0 1 3.18 0z"></path>
+        </svg>
+        
+          <span>Agregar Comentarios</span>
+      </a>
+      <a href="#" class="bottom-nav-item" id="regresar-btn-mobile">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Regresar</span>
+      </a>
+  </div>
+</nav>
+<body>
+  <div class="card">
+    <!-- Encabezado -->
+    <div class="calif">
+      <h1 class="title">La tecnología en el mundo</h1>
+      <div class="rating-container">
+        <label for="rating" class="rating-label">Calificación:</label>
+        <select id="rating">
+          <option value="1">⭐ 1</option>
+          <option value="2">⭐⭐ 2</option>
+          <option value="3">⭐⭐⭐ 3</option>
+          <option value="4">⭐⭐⭐⭐ 4</option>
+          <option value="5">⭐⭐⭐⭐⭐ 5</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="content">
+      <p>
+        Tranquilo aquí va a estar una ponencia
+      </p>
+    </div>
+
+    <!-- Botones -->
+    <div class="buttons">
+      <button class="btn">Aceptar</button>
+      <button class="btn">Rechazar</button>
+      <button class="btn">Devolver</button>
+    </div>
+  </div>
+</body>
+
+</html>
