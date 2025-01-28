@@ -42,12 +42,75 @@ document.addEventListener('DOMContentLoaded', function() {
     dialogCancel.addEventListener('click', hideDialog);
   });
   
-  function selectButton(selectedRadio) {  
-    const buttons = document.querySelectorAll('.btn');  
-  
-    buttons.forEach(button => {  
-        button.classList.remove('active');  
-    });  
-  
-    selectedRadio.parentElement.classList.add('active');  
-  }  
+  // Funciones para manejar el diálogo
+  function showDialog(title) {
+    const overlay = document.querySelector('.dialog-overlay');
+    overlay.classList.remove('closing');
+    document.querySelector('.dialog').classList.remove('closing');
+    overlay.style.display = 'flex';
+    document.getElementById('dialogTitle').textContent = title;
+  }
+
+  function closeDialog() {
+    const overlay = document.querySelector('.dialog-overlay');
+    const dialog = document.querySelector('.dialog');
+    
+    overlay.classList.add('closing');
+    dialog.classList.add('closing');
+    
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('closing');
+        dialog.classList.remove('closing');
+    }, 300);
+  }
+
+  function selectButton(selectedRadio) {
+    console.log('Button selected:', selectedRadio.value);
+    const action = selectedRadio.value;
+    
+    // Remover clase activa de todos los botones
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Añadir clase activa al botón seleccionado
+    selectedRadio.parentElement.classList.add('active');
+    
+    if (action === 'devolver') {
+        showDialog('Aceptar con observaciones');
+    }
+  }
+
+  // Event listeners cuando el DOM está listo
+  document.addEventListener('DOMContentLoaded', () => {
+    // Manejador de botones de radio
+    const radioButtons = document.querySelectorAll('.action-radio');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Remover clase activa de todos los botones
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Añadir clase activa al botón seleccionado
+            this.parentElement.classList.add('active');
+            
+            if (this.value === 'devolver') {
+                showDialog('Aceptar con observaciones');
+            }
+        });
+    });
+
+    // Event listeners para los botones del diálogo
+    const dialogCancel = document.getElementById('dialogCancel');
+    const dialogAccept = document.getElementById('dialogAccept');
+    
+    if (dialogCancel) {
+        dialogCancel.addEventListener('click', closeDialog);
+    }
+    
+    if (dialogAccept) {
+        dialogAccept.addEventListener('click', closeDialog);
+    }
+  });  
