@@ -225,21 +225,69 @@ textarea::placeholder {
 
 @media (max-width: 768px) {
   body {
-    padding-top: 60px;
+    padding: 60px 10px 80px 10px; /* Ajustado para dar espacio al header y bottom nav */
   }
 
   .card {
-    padding: 30px 20px;
-    margin: 10px;
-    max-width: 100%;
+    margin: 0;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .calif {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .rating-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  select {
+    padding: 8px 32px 8px 8px; /* Ajustado el padding */
+    font-size: 13px;
+  }
+
+  .content {
+    height: auto;
+    min-height: 200px;
+    max-height: calc(100vh - 400px);
   }
 
   .buttons {
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .btn {
-    flex: 1 1 calc(50% - 5px);
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 60px;
+    padding: 0 10px;
+  }
+
+  .logo img {
+    height: 30px; /* Ajusta según el tamaño de tus logos */
+  }
+
+  .bottom-nav {
+    padding: 8px;
+  }
+
+  .bottom-nav-item span {
+    font-size: 12px;
   }
 }
 
@@ -363,5 +411,38 @@ textarea::placeholder {
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    gap: 5px;
+  }
+  
+  .logo img {
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    gap: 3px;
+  }
+
+  .logo img {
+    height: 25px;
+  }
 }
 
