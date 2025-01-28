@@ -22,13 +22,6 @@
     <img src="/../public/icons/icon-logo.png" alt="Logo-dev" class="logo-dev" />
   </div>
   <div class="header-buttons">
-    <button class="header-btn" id="datos-btn" title="Agregar Comentarios">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <path d="M3 17.25V21h3.75l12-12-3.75-3.75-12 12H3zm16.5-10.5a2.25 2.25 0 1 1 3.18 3.18l-8.91 8.91-3.18-3.18L15.91 6.75a2.25 2.25 0 0 1 3.18 0z"></path>
-      </svg>      
-      
-      <span>Agregar Comentarios</span>
-    </button>
     <button class="header-btn" id="logout-btn" title="Regresar">
       <svg viewBox="0 0 24 24" width="24" height="24">
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -43,13 +36,6 @@
 <!-- Bottom Navigation for Mobile -->
 <nav class="bottom-nav">
   <div class="bottom-nav-items">
-      <a href="/src/ponente/pages/datosPonentes.html" class="bottom-nav-item" id="cmtarios-btn-mobile">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M3 17.25V21h3.75l12-12-3.75-3.75-12 12H3zm16.5-10.5a2.25 2.25 0 1 1 3.18 3.18l-8.91 8.91-3.18-3.18L15.91 6.75a2.25 2.25 0 0 1 3.18 0z"></path>
-        </svg>
-        
-          <span>Agregar Comentarios</span>
-      </a>
       <a href="#" class="bottom-nav-item" id="regresar-btn-mobile">
           <svg viewBox="0 0 24 24" width="24" height="24">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -66,14 +52,7 @@
     <div class="calif">
       <h1 class="title">La tecnología en el mundo</h1>
       <div class="rating-container">
-        <label for="rating" class="rating-label">Calificación:</label>
-        <select id="rating">
-          <option value="1">⭐ 1</option>
-          <option value="2">⭐⭐ 2</option>
-          <option value="3">⭐⭐⭐ 3</option>
-          <option value="4">⭐⭐⭐⭐ 4</option>
-          <option value="5">⭐⭐⭐⭐⭐ 5</option>
-        </select>
+        <button class="btn">Guardar</button>
       </div>
     </div>
 
@@ -84,13 +63,32 @@
       </p>
     </div>
 
-    <!-- Botones -->
-    <div class="buttons">
-      <button class="btn">Aceptar</button>
-      <button class="btn">Rechazar</button>
-      <button class="btn">Devolver</button>
-    </div>
-  </div>
-</body>
+    <!-- Botones -->  
+    <div class="buttons">  
+      <label class="btn">  
+          <input type="radio" name="action" value="aceptar" onclick="selectButton(this)">  
+          Aceptar  
+      </label>  
+      <label class="btn">  
+          <input type="radio" name="action" value="rechazar" onclick="selectButton(this)">  
+          Rechazar  
+      </label>  
+      <label class="btn">  
+          <input type="radio" name="action" value="devolver" onclick="selectButton(this)">  
+          Devolver  
+      </label>  
+  </div> 
 
+  <script>  
+    function selectButton(selectedRadio) {  
+        const buttons = document.querySelectorAll('.btn');  
+
+        buttons.forEach(button => {  
+            button.classList.remove('active');  
+        });  
+
+        selectedRadio.parentElement.classList.add('active');  
+    }  
+</script> 
+</body>
 </html>

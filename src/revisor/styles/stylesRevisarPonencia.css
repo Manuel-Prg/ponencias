@@ -181,28 +181,41 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end; /* Alinea los botones a la derecha */
-  gap: 10px;
-  margin-top: 30px;
-}
+.buttons {  
+  display: flex;  
+  justify-content: flex-end; /* Alinea los botones a la derecha */  
+  gap: 10px; /* Espacio entre los botones */  
+  margin-top: 30px;  
+}  
 
-.btn {
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-}
+.btn {  
+  padding: 10px 20px;  
+  border-radius: 6px;  
+  font-size: 14px;  
+  cursor: pointer;  
+  transition: all 0.3s;  
+  background: rgba(255, 255, 255, 0.1);  
+  border: 1px solid rgba(255, 255, 255, 0.2);  
+  color: white;  
+  display: inline-flex; /* Hace que el label se comporte como un bloque */  
+  align-items: center; /* Centra verticalmente el texto */  
+}  
 
-.btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
+.btn input[type="radio"] {  
+  display: none; /* Oculta el radio button */  
+}  
+
+/* Estilo para el botón seleccionado */  
+.btn.active {  
+  background: rgba(167, 56, 167, 0.3); /* Color de fondo al seleccionar */  
+  border: 1px solid white; /* Borde blanco al seleccionar */  
+}  
+
+/* Efecto hover */  
+.btn:hover {  
+  background: rgba(255, 255, 255, 0.2);  
+  transform: translateY(-2px);  
+}  
 
 /* Estilos para la barra de desplazamiento */
 ::-webkit-scrollbar {
