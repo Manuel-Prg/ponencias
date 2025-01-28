@@ -238,69 +238,84 @@ textarea::placeholder {
 
 @media (max-width: 768px) {
   body {
-    padding: 60px 10px 80px 10px; /* Ajustado para dar espacio al header y bottom nav */
+    padding: 60px 15px 90px 15px; /* Aumentado el padding inferior para el bottom nav */
   }
 
   .card {
-    margin: 0;
+    margin: 10px;
     padding: 15px;
     border-radius: 12px;
+    max-width: calc(100% - 20px); /* Asegura que la tarjeta no se salga de los márgenes */
   }
 
   .calif {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch; /* Cambiado para ocupar todo el ancho */
     gap: 1rem;
   }
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 1.4;
-  }
-
-  .rating-container {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  select {
-    padding: 8px 32px 8px 8px; /* Ajustado el padding */
-    font-size: 13px;
+    word-wrap: break-word; /* Mejor manejo de títulos largos */
   }
 
   .content {
-    height: auto;
-    min-height: 200px;
-    max-height: calc(100vh - 400px);
+    max-height: 50vh; /* Altura máxima relativa a la ventana */
+    min-height: 150px;
   }
 
   .buttons {
-    flex-direction: column;
+    flex-direction: row; /* Mantener botones en fila */
+    flex-wrap: wrap; /* Permitir que se envuelvan si no hay espacio */
+    justify-content: center; /* Centrar los botones */
     gap: 8px;
+    margin-top: 20px;
   }
 
   .btn {
-    width: 100%;
-    padding: 12px;
+    flex: 1 1 auto; /* Permitir que los botones crezcan y se encogan */
+    min-width: 140px; /* Ancho mínimo para botones */
+    max-width: calc(50% - 8px); /* Máximo dos botones por fila */
+    justify-content: center;
+    padding: 12px 15px;
   }
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 50px 10px 80px 10px;
+  }
+
+  .card {
+    margin: 5px;
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .buttons {
+    flex-direction: column; /* En móviles pequeños, botones en columna */
+  }
+
+  .btn {
+    max-width: 100%; /* Botones a ancho completo */
+    margin: 4px 0;
+  }
+
+  .bottom-nav {
+    padding: 10px 5px;
+  }
+
   .header {
-    height: 60px;
     padding: 0 10px;
   }
 
   .logo img {
-    height: 30px; /* Ajusta según el tamaño de tus logos */
-  }
-
-  .bottom-nav {
-    padding: 8px;
-  }
-
-  .bottom-nav-item span {
-    font-size: 12px;
+    height: 25px;
+    margin: 0 2px; /* Reducir espacio entre logos */
   }
 }
 
@@ -459,3 +474,110 @@ textarea::placeholder {
   }
 }
 
+/* Diseños de los dialogos*/
+
+.dialog-overlay {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* Reducido de 0.7 a 0.3 para hacerlo más transparente */
+  backdrop-filter: blur(8px); /* Añadido efecto de desenfoque */
+  -webkit-backdrop-filter: blur(8px); /* Para compatibilidad con Safari */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+
+
+.dialog {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  color: white;
+  animation: slideUp 0.3s ease-out;
+}
+
+.dialog h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.dialog textarea {
+  width: 100%;
+  min-height: 120px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.dialog textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.dialog-buttons button {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#dialogAccept {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#dialogCancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.dialog-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+}
+
+.dialog-buttons button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .dialog {
+      width: 95%;
+      padding: 20px;
+      margin: 15px;
+  }
+}
