@@ -1,6 +1,51 @@
+import {auth} from "/src/firebase/firebase-Config.js";
 document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.card[data-action]');
     const socialButtons = document.querySelectorAll('.social-icon');
+    
+    // Get auth instance
+
+    // Get header buttons
+    const logoutBtn = document.getElementById('logout-btn');
+    const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+    const datosBtn = document.getElementById('datos-btn');
+    const datosBtnMobile = document.getElementById('datos-btn-mobile');
+
+    // Handle logout function
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            // Redirect to index page after successful logout
+            window.location.href = "/src/autentificacion/pages/index.html";
+        } catch (error) {
+            console.error("Error during logout:", error);
+            // You might want to show a toast or alert here
+            alert("Error al cerrar sesión. Por favor intente nuevamente.");
+        }
+    };
+
+    // Handle datos redirect
+    const handleDatosRedirect = () => {
+        window.location.href = "/src/ponente/pages/datosPonentes.html";
+    };
+
+    // Add click event listeners
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+
+    if (logoutBtnMobile) {
+        logoutBtnMobile.addEventListener('click', handleLogout);
+    }
+
+    if (datosBtn) {
+        datosBtn.addEventListener('click', handleDatosRedirect);
+    }
+
+    if (datosBtnMobile) {
+        datosBtnMobile.addEventListener('click', handleDatosRedirect);
+    }
+
 
     // Add click handlers for cards
     cards.forEach(card => {
