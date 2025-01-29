@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #491d88;
-    --secondary-color: #fa448c;
+    --primary-color: #5170ff;
+    --secondary-color: #ff66c4;
     --text-color: #ffffff;
     --card-bg: rgba(255, 255, 255, 0.1);
     --hover-color: rgba(255, 255, 255, 0.2);
@@ -64,10 +64,10 @@ body {
     width: 100%;
     padding: 0.75rem 1rem;
     padding-right: 3rem;
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    color: var(--text-color);
+    color: white;
     font-size: 1rem;
 }
 
@@ -262,6 +262,24 @@ body {
 .submit-btn {
     background: var(--secondary-color);
     color: var(--text-color);
+}
+
+/* Estilos del placeholder */
+#searchUsers::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Estilos para diferentes navegadores */
+#searchUsers::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#searchUsers::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#searchUsers:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Responsive Design Mejorado */

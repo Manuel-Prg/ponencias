@@ -1,9 +1,9 @@
 :root {
-  --primary-color: #491d88;
-  --secondary-color: #fa448c;
+  --primary-color: #5170ff;
+  --secondary-color: #ff66c4;
   --text-color: #ffffff;
-  --button-primary: #491d88;
-  --button-secondary: #fa448c;
+  --primary-color: #5170ff;
+  --secondary-color: #ff66c4;
   --button-tertiary: #8e44ad;
   --button-neutral: rgba(255, 255, 255, 0.2);
   --card-bg: rgba(255, 255, 255, 0.1);
