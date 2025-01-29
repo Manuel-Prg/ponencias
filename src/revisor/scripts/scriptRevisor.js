@@ -309,3 +309,28 @@ function getStatusText(status) {
   return statusMap[status] || status
 }
 
+// Modificación en scriptRevisor.js - Función openDialog
+function openDialog(presentation) {
+  // Guardar la presentación en sessionStorage para acceder desde la otra página
+  sessionStorage.setItem('currentPresentation', JSON.stringify(presentation));
+  // Redirigir a la página de revisión
+  window.location.href = '/src/revisor/pages/RevisarPonencia.html';
+}
+
+// Función auxiliar para obtener la evaluación actual
+function getCurrentEvaluation(presentationId) {
+  if (!currentUserData?.ponenciasAsignadas) return null;
+  
+  const assignment = currentUserData.ponenciasAsignadas.find(
+      a => a.ponencia === presentationId
+  );
+  
+  if (!assignment) return null;
+  
+  return {
+      estado: assignment.estado,
+      comentarios: assignment.comentarios || '',
+      evaluacion: assignment.evaluacion || ''
+  };
+}
+
