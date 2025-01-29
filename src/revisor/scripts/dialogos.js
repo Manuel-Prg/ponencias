@@ -78,15 +78,16 @@ async function loadPreviousEvaluation(presentationId) {
 
         if (currentReviewerEval) {
             const radioButtons = document.querySelectorAll('.action-radio');
+            const evaluacion = getActionValueView(currentReviewerEval.evaluacion);
             radioButtons.forEach(radio => {
-                if (radio.value === currentReviewerEval.evaluacion) {
+                if (radio.value === evaluacion) {
                     radio.checked = true;
                     const btnContainer = radio.closest('.btn');
                     if (btnContainer) {
                         btnContainer.classList.add('active');
                     }
 
-                    if (currentReviewerEval.evaluacion === 'devolver') {
+                    if (evaluacion === 'aceptada con correciones') {
                         showDialog('Aceptar con observaciones');
                         const dialogComments = document.getElementById('dialogComments');
                         if (dialogComments) {
@@ -100,6 +101,16 @@ async function loadPreviousEvaluation(presentationId) {
         console.error('Error al cargar la evaluación previa:', error);
     }
 }
+
+function getActionValueView(action) {
+    const statusMap = {
+        'aprobada': 'aceptar',
+        'rechazada': 'rechazar',
+        'aprobadas con correciones': 'devolver'
+    }
+    return statusMap[action];
+}
+
 function setupReviewControls() {
     const radioButtons = document.querySelectorAll('.action-radio');
     const saveButton = document.querySelector('.calif .btn');
@@ -162,7 +173,8 @@ async function handleSave() {
         return;
     }
 
-    const action = selectedRadio.value;
+    const action = getActionValueDB(selectedRadio.value);
+
     const comments = document.getElementById('dialogComments')?.value || '';
 
     if (action === 'devolver' && !comments.trim()) {
@@ -172,12 +184,24 @@ async function handleSave() {
 
     try {
         await saveEvaluation(presentationData.id, action, comments);
+        await saveEvaluationRevisor(presentationData.id, action);
         window.location.href = '/src/revisor/pages/revisor.html';
     } catch (error) {
         console.error('Error al guardar la evaluación:', error);
         alert('Error al guardar la evaluación. Por favor, intente de nuevo.');
     }
 }
+
+function getActionValueDB(action) {
+    const statusMap = {
+        'aceptar': 'aprobada',
+        'rechazar': 'rechazada',
+        'devolver': 'aprobadas con correciones'
+    }
+    return statusMap[action];
+    
+}
+
 
 async function saveEvaluation(presentationId, evaluacion, correcciones) {
     const presentationRef = doc(db, "ponencias", presentationId);
@@ -211,6 +235,31 @@ async function saveEvaluation(presentationId, evaluacion, correcciones) {
     await updateDoc(presentationRef, {
         evaluaciones: updatedEvaluaciones
     });
+}
+
+async function saveEvaluationRevisor(presentationId, evaluacion) {
+    const user = auth.currentUser;
+        if (!user) throw new Error('No hay usuario autenticado');
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.data();
+
+    // Encontrar y actualizar la ponencia asignada
+    const updatedAssignments = userData.ponenciasAsignadas.map(assignment => {
+        if (assignment.ponencia === presentationId) {
+            return {
+                ...assignment,
+                estado: evaluacion,
+            };
+        }
+        return assignment;
+    });
+
+    await updateDoc(userRef, {
+        ponenciasAsignadas: updatedAssignments
+    });
+    
 }
 function showDialog(title) {
     const overlay = document.querySelector('.dialog-overlay');
