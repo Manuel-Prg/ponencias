@@ -87,7 +87,7 @@ async function loadPreviousEvaluation(presentationId) {
                         btnContainer.classList.add('active');
                     }
 
-                    if (evaluacion === 'aceptada con correciones') {
+                    if (evaluacion === 'aprobada con correciones') {
                         showDialog('Aceptar con observaciones');
                         const dialogComments = document.getElementById('dialogComments');
                         if (dialogComments) {
@@ -106,7 +106,7 @@ function getActionValueView(action) {
     const statusMap = {
         'aprobada': 'aceptar',
         'rechazada': 'rechazar',
-        'aprobadas con correciones': 'devolver'
+        'aprobada con correciones': 'devolver'
     }
     return statusMap[action];
 }
@@ -196,7 +196,7 @@ function getActionValueDB(action) {
     const statusMap = {
         'aceptar': 'aprobada',
         'rechazar': 'rechazada',
-        'devolver': 'aprobadas con correciones'
+        'devolver': 'aprobada con correciones'
     }
     return statusMap[action];
     

@@ -130,16 +130,17 @@ async function updateCounts() {
 
   const statusCounts = {
     pendiente: 0,
-    aprobada: 0,
-    rechazada: 0,
-    correciones: 0
+    aprobada: 0,  // This will now include both "aprobada" and "aprobado con correcciones"
+    rechazada: 0
   }
 
   currentUserData.ponenciasAsignadas.forEach((assignment) => {
-    if (statusCounts.hasOwnProperty(assignment.estado)) {
-      statusCounts[assignment.estado]++
+    // Map "aprobado con correcciones" to "aprobada" for counting
+    const status = assignment.estado === "aprobada con correcciones" ? "aprobada" : assignment.estado;
+    if (statusCounts.hasOwnProperty(status)) {
+      statusCounts[status]++;
     }
-  })
+  });
 
   Object.entries(statusCounts).forEach(([status, count]) => {
     const element = document.getElementById(`${status}-count`)
@@ -169,8 +170,14 @@ async function updatePresentations(status) {
   }
 
   try {
+    // Include both "aprobada" and "aprobado con correcciones" when status is "aprobada"
     const relevantAssignments = currentUserData.ponenciasAsignadas.filter(
-      assignment => assignment.estado === status
+      assignment => {
+        if (status === "aprobada") {
+          return assignment.estado === "aprobada" || assignment.estado === "aprobada con correcciones";
+        }
+        return assignment.estado === status;
+      }
     )
 
     if (relevantAssignments.length === 0) {
@@ -184,7 +191,6 @@ async function updatePresentations(status) {
     renderEmptyState(presentationsList, "Error al cargar las ponencias")
   }
 }
-
 //Obtiene y renderiza las ponencias
 async function fetchAndRenderPresentations(assignments, container) {
   const presentationIds = assignments.map(assignment => assignment.ponencia)
@@ -268,29 +274,32 @@ function renderEmptyState(container, message) {
 
 // Tarjeta de ponencia
 function createPresentationElement(presentation) {
-    const div = document.createElement("div")
-    div.className = "ponencia-item"
+  const div = document.createElement("div")
+  div.className = "ponencia-item"
+
+  const presentationAssignment = currentUserData.ponenciasAsignadas.find(
+    assignment => assignment.ponencia === presentation.id
+  )
   
-    const presentationAssignment = currentUserData.ponenciasAsignadas.find(
-      assignment => assignment.ponencia === presentation.id
-    )
-    
-    const estadoPonencia = presentationAssignment ? presentationAssignment.estado : 'pendiente'
-    const timestamp = presentation.creado?.toDate() || new Date()
-    
-    div.innerHTML = `
-      <div class="ponencia-info">
-        <h3>${presentation.titulo}</h3>
-        <p>${formatDate(timestamp)}</p>
-      </div>
-      <span class="ponencia-status status-${estadoPonencia}">
-        ${estadoPonencia}
-      </span>
-    `
+  const estadoPonencia = presentationAssignment ? presentationAssignment.estado : 'pendiente'
+  const timestamp = presentation.creado?.toDate() || new Date()
   
-    div.addEventListener("click", () => openDialog(presentation))
-    return div
-  }
+  // Determine which status class to use for styling
+  const statusClass = estadoPonencia === "aprobada con correcciones" ? "aprobada" : estadoPonencia
+  
+  div.innerHTML = `
+    <div class="ponencia-info">
+      <h3>${presentation.titulo}</h3>
+      <p>${formatDate(timestamp)}</p>
+    </div>
+    <span class="ponencia-status status-${statusClass}">
+      ${estadoPonencia}
+    </span>
+  `
+
+  div.addEventListener("click", () => openDialog(presentation))
+  return div
+}
 
 function formatDate(date) {
   return date.toLocaleDateString("es-ES", {
@@ -303,7 +312,7 @@ function formatDate(date) {
 function getStatusText(status) {
   const statusMap = {
     pendiente: "pendientes",
-    aprobada: "aprobadas",
+    aprobada: "aprobadas y aprobadas con correcciones",
     rechazada: "rechazadas"
   }
   return statusMap[status] || status
