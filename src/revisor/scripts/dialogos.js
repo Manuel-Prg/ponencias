@@ -87,7 +87,7 @@ async function loadPreviousEvaluation(presentationId) {
                         btnContainer.classList.add('active');
                     }
 
-                    if (evaluacion === 'aprobada con correciones') {
+                    if (evaluacion === 'devolver') {
                         showDialog('Aceptar con observaciones');
                         const dialogComments = document.getElementById('dialogComments');
                         if (dialogComments) {
@@ -106,7 +106,7 @@ function getActionValueView(action) {
     const statusMap = {
         'aprobada': 'aceptar',
         'rechazada': 'rechazar',
-        'aprobada con correciones': 'devolver'
+        'aprobada con correcciones': 'devolver'
     }
     return statusMap[action];
 }
