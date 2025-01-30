@@ -692,7 +692,8 @@ label {
   font-weight: 500;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -706,7 +707,8 @@ input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
@@ -821,51 +823,93 @@ input:focus, select:focus {
 }
 
 .header-buttons {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .header-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .header-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: white;
-    fill: none;
-    stroke-width: 2;
+  width: 20px;
+  height: 20px;
+  stroke: white;
+  fill: none;
+  stroke-width: 2;
 }
 
 .header-btn span {
-    color: white;
-    font-size: 14px;
+  color: white;
+  font-size: 14px;
 }
 
 .header-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Estilos para la navegación móvil */
 .bottom-nav-item svg {
-    width: 24px;
-    height: 24px;
-    stroke: white;
-    fill: none;
-    stroke-width: 2;
+  width: 24px;
+  height: 24px;
+  stroke: white;
+  fill: none;
+  stroke-width: 2;
 }
 
 .bottom-nav-item span {
-    color: white;
-    font-size: 12px;
+  color: white;
+  font-size: 12px;
+}
+
+/* Estilos específicos para los select y sus opciones */
+select {
+  width: 100%;
+  padding: 12px;
+  background: rgba(81, 112, 255, 0.5); /* Color azul más claro y semi-transparente */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.3s;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Estilos para las opciones del select */
+select option {
+  background-color: #5170ff; /* Color sólido para las opciones */
+  color: white;
+  padding: 12px;
+}
+
+/* Estilo para el select cuando está abierto */
+select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(81, 112, 255, 0.6);
+}
+
+/* Estilo para el hover del select */
+select:hover {
+  background: rgba(81, 112, 255, 0.6);
+}
+
+/* Asegurarse que el texto siempre sea visible */
+select,
+select option {
+  color: white !important;
+  text-shadow: none;
 }
