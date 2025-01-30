@@ -350,44 +350,46 @@ function handleAcceptWithObs() {
 function showComentariosCard() {
     const container = document.querySelector('.container');
     const comentariosCard = document.querySelector('.comentarios-card');
-    const ponenciaCard = document.querySelector('.ponencia-card');
     
     if (container && comentariosCard) {
-        // Primero añadimos la clase al contenedor para iniciar la transición
         container.classList.add('with-comments');
-        
-        // Mostramos el card de comentarios
         comentariosCard.style.display = 'flex';
         
-        // Forzamos un reflow para que la transición funcione
+        // Forzar reflow para activar transición
         void comentariosCard.offsetWidth;
         
-        // Añadimos la clase que hace visible el card con la animación
         comentariosCard.classList.add('visible');
         
-        // Limpiar el textarea
+        // Enfocar el textarea
         const textarea = document.getElementById('dialogComments');
         if (textarea) {
             textarea.value = '';
+            setTimeout(() => {
+                textarea.focus();
+                // Hacer scroll suave hasta el área de comentarios
+                comentariosCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
         }
+        
+        // No bloquear el scroll en móviles
+        document.body.style.overflow = 'auto';
     }
 }
+
 
 function hideComentariosCard() {
     const container = document.querySelector('.container');
     const comentariosCard = document.querySelector('.comentarios-card');
     
     if (container && comentariosCard) {
-        // Removemos la clase visible primero para iniciar la animación de salida
         comentariosCard.classList.remove('visible');
-        
-        // Removemos la clase del contenedor
         container.classList.remove('with-comments');
         
-        // Esperamos a que termine la animación antes de ocultar completamente
         setTimeout(() => {
             comentariosCard.style.display = 'none';
-        }, 300); // Este tiempo debe coincidir con la duración de la transición en CSS
+            // Hacer scroll suave de vuelta a la tarjeta de ponencia
+            document.querySelector('.ponencia-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
     }
 }
 
