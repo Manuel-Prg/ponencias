@@ -45,8 +45,29 @@
     <div class="container">
         <div class="form-container">
             <h1>Datos para Constancia de Ponente</h1>
-            <p class="subtitle">Por favor, ingrese sus datos para generar su constancia como ponente</p>
+            <p class="subtitle">Por favor, ingrese sus datos y los de sus colaboradores para generar las constancias</p>
             
+            <!-- Navegación de autores -->
+            <div class="authors-navigation">
+                <button type="button" class="nav-btn" id="prevAuthor">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <span id="authorCounter">Autor 1 de 1</span>
+                <button type="button" class="nav-btn" id="nextAuthor">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+                <button type="button" class="add-author-btn" id="addAuthor" title="Agregar autor">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+
             <form id="constanciaPonente">
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
@@ -55,41 +76,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="grado">Grado Académico</label>
-                    <select id="grado" name="grado" required>
-                        <option value="">Seleccione su grado</option>
-                        <option value="Dr.">Doctor</option>
-                        <option value="Dra.">Doctora</option>
-                        <option value="Mtro.">Maestro</option>
-                        <option value="Mtra.">Maestra</option>
-                        <option value="Lic.">Licenciado</option>
-                        <option value="Lic.">Licenciada</option>
-                        <option value="Est.">Estudiante</option>
-                    </select>
+                    <label for="institucion">Institución/Organización</label>
+                    <input type="text" id="institucion" name="institucion" required 
+                           placeholder="Nombre de su institución">
                 </div>
 
                 <div class="form-group">
-                    <label for="institucion">Institución</label>
-                    <select id="institucion" name="institucion" required>
-                        <option value="institucion">Seleccione su institución</option>
-                        <option value="institucion">Institución</option>
-                        <option value="departamento">Departamento</option>
-                        <option value="facultad">Facultdad</option>
-                        <option value="division">División</option>
-                        <option value="area">Area</option>
-                    </select>
+                    <label for="facultad">Facultad/División/Departamento/Área</label>
+                    <input type="text" id="facultad" name="facultad" required 
+                           placeholder="Nombre de su facultad, división, departamento o área">
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Correo Electrónico</label>
                     <input type="email" id="email" name="email" required 
-                           placeholder="correo@ejemplo.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="tituloPonencia">Título de la Ponencia</label>
-                    <input type="text" id="tituloPonencia" name="tituloPonencia" required 
-                           placeholder="Título de su ponencia aceptada">
+                           placeholder="correo@ejemplo.com" readonly>
                 </div>
 
                 <div class="form-group">

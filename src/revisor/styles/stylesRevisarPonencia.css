@@ -14,16 +14,150 @@ body {
   min-height: 100vh;
   background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
   padding-top: 80px;
-  align-items: center;
-  justify-content: center;
-  animation: gradientMove 15s ease infinite;
+  margin: 0;
   display: flex;
+  flex-direction: column;
 }
 
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  height: calc(100vh - 100px);
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Tarjeta de ponencia (izquierda) */
+.ponencia-card {
+  flex: 1;
+  background: rgba(81, 112, 255, 0.2);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 50%;
+}
+
+/* Área de observaciones (derecha) */
+.comentarios-card {
+  flex: 1;
+  background: rgba(81, 112, 255, 0.2);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 50%;
+}
+
+.title {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Tarjeta de comentarios */
+.dialog-overlay {
+  flex: 1;
+  display: none;
+  height: 100%;
+}
+
+.dialog {
+  background: rgba(81, 112, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-title {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#dialogComments {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  resize: none;
+  margin-bottom: 1rem;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 1rem;
+    height: auto;
+  }
+
+  .ponencia-card,
+  .dialog-overlay {
+    height: 70vh;
+  }
+
+  .dialog-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 80vh;
+    z-index: 1000;
+  }
 }
 
 .card {
@@ -33,10 +167,10 @@ body {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 20px;
-  width: 100%;
-  max-width: 800px;
-  margin: 20px;
+  padding: 30px;
+  width: 95%;
+  max-width: 1200px;
+  margin: 20px auto;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.6s ease-out;
 }
@@ -57,24 +191,6 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  animation: fadeInDown 0.8s ease-out;
-}
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .rating-container {
@@ -124,29 +240,6 @@ select option {
   padding: 12px;
 }
 
-.content {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  padding: 1rem;
-  height: 270px;
-  overflow-y: auto;
-  margin-bottom: 1.5rem;
-  color: white;
-  animation: slideIn 0.5s ease-out backwards;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 .comments-section {
   margin-bottom: 1.5rem;
 }
@@ -190,19 +283,6 @@ textarea::placeholder {
   margin-top: 30px;  
 }  
 
-.btn {  
-  padding: 10px 20px;  
-  border-radius: 6px;  
-  font-size: 14px;  
-  cursor: pointer;  
-  transition: all 0.3s;  
-  background: rgba(255, 255, 255, 0.1);  
-  border: 1px solid rgba(255, 255, 255, 0.2);  
-  color: white;  
-  display: inline-flex; /* Hace que el label se comporte como un bloque */  
-  align-items: center; /* Centra verticalmente el texto */  
-}  
-
 .btn input[type="radio"] {  
   display: none; /* Oculta el radio button */  
 }  
@@ -220,22 +300,30 @@ textarea::placeholder {
 }  
 
 /* Estilos para la barra de desplazamiento */
-::-webkit-scrollbar {
+.content::-webkit-scrollbar {
   width: 8px;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+.content::-webkit-scrollbar-track {
+  background: rgba(81, 112, 255, 0.1);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+.content::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 196, 0.3);
   border-radius: 4px;
+  border: 2px solid rgba(81, 112, 255, 0.2);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+.content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 102, 196, 0.5);
+}
+
+/* Asegurar que el texto sea más legible */
+.content p, 
+.content span, 
+.content div {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -244,10 +332,9 @@ textarea::placeholder {
   }
 
   .card {
-    margin: 10px;
-    padding: 15px;
-    border-radius: 12px;
-    max-width: calc(100% - 20px); /* Asegura que la tarjeta no se salga de los márgenes */
+    width: 90%;
+    padding: 20px;
+    margin: 15px auto;
   }
 
   .calif {
@@ -263,8 +350,8 @@ textarea::placeholder {
   }
 
   .content {
-    max-height: 50vh; /* Altura máxima relativa a la ventana */
-    min-height: 150px;
+    height: 350px; /* Altura ajustada para móviles */
+    padding: 1rem;
   }
 
   .buttons {
@@ -290,8 +377,9 @@ textarea::placeholder {
   }
 
   .card {
-    margin: 5px;
-    padding: 12px;
+    width: 95%;
+    padding: 15px;
+    margin: 10px auto;
   }
 
   .title {
@@ -318,6 +406,10 @@ textarea::placeholder {
   .logo img {
     height: 25px;
     margin: 0 2px; /* Reducir espacio entre logos */
+  }
+
+  .content {
+    height: 300px; /* Altura ajustada para móviles pequeños */
   }
 }
 
@@ -676,4 +768,179 @@ textarea::placeholder {
     margin: 5px;
     padding: 12px;
   }
+}
+
+/* Estilos para la notificación */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateX(100%);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.notification-toast.success {
+    background: linear-gradient(135deg, 
+        rgba(81, 112, 255, 0.9),
+        rgba(255, 102, 196, 0.9)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notification-toast.error {
+    background: linear-gradient(135deg,
+        rgba(255, 102, 196, 0.9),
+        rgba(81, 112, 255, 0.9)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notification-toast.show {
+    animation: toastIn 0.8s ease forwards;
+}
+
+.notification-toast.hide {
+    animation: toastOut 0.8s ease forwards;
+}
+
+@keyframes toastIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100%) translateY(-50%);
+    }
+    50% {
+        transform: translateX(-10%) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastOut {
+    0% {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-10%) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100%) translateY(-50%);
+    }
+}
+
+/* Layout para las tarjetas */
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.card {
+    position: relative;
+    flex: 1;
+    min-width: 45%;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-out;
+    height: calc(100vh - 120px); /* Altura ajustable restando el header */
+    overflow-y: auto;
+}
+
+/* Estilos para el diálogo */
+.dialog-overlay {
+    position: relative;
+    display: none;
+    width: 45%;
+    height: auto;
+    animation: slideIn 0.3s ease-out;
+}
+
+.dialog {
+    background: rgba(81, 112, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+.dialog-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#dialogComments {
+    flex: 1;
+    min-height: 200px;
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    resize: none;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .card, 
+    .dialog-overlay {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .card {
+        height: 60vh;
+    }
+
+    .dialog-overlay {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        z-index: 1000;
+    }
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

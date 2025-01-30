@@ -3,6 +3,16 @@ import { getFirestore, doc, updateDoc, getDoc } from 'https://www.gstatic.com/fi
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    let currentAuthorIndex = 0;
+    let authors = [{ // Inicializar con el autor principal
+        nombre: '',
+        institucion: '',
+        facultad: '',
+        email: '',
+        tituloPonencia: '',
+        modalidad: ''
+    }];
+
     // Botones de escritorio
     const logoutBtn = document.getElementById('logout-btn');
     const ponenciaBtn = document.getElementById('ponencia-btn');
@@ -14,11 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombreInput = document.getElementById('nombre');
     const gradoInput = document.getElementById('grado');
     const institucionInput = document.getElementById('institucion');
-    const departamentoInput = document.getElementById('departamento');
+    const facultadInput = document.getElementById('facultad');
     const emailInput = document.getElementById('email');
     const tituloInput = document.getElementById('tituloPonencia');
     const modalidadInput = document.getElementById('modalidad');
      
+    // Elementos de navegación de autores
+    const prevAuthorBtn = document.getElementById('prevAuthor');
+    const nextAuthorBtn = document.getElementById('nextAuthor');
+    const addAuthorBtn = document.getElementById('addAuthor');
+    const authorCounter = document.getElementById('authorCounter');
+
     // Manejador para cerrar sesión
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -57,38 +73,105 @@ document.addEventListener('DOMContentLoaded', () => {
         }  
     };
 
-    // Manejador para guardar datos de la ponencia
+    // Función para actualizar la navegación
+    const updateNavigation = () => {
+        authorCounter.textContent = `Autor ${currentAuthorIndex + 1} de ${authors.length}`;
+        prevAuthorBtn.disabled = currentAuthorIndex === 0;
+        nextAuthorBtn.disabled = currentAuthorIndex === authors.length - 1;
+    };
+
+    // Función para cargar los datos del autor actual
+    const loadAuthorData = () => {
+        const author = authors[currentAuthorIndex];
+        nombreInput.value = author.nombre || '';
+        institucionInput.value = author.institucion || '';
+        facultadInput.value = author.facultad || '';
+        emailInput.value = author.email || '';
+        
+        // El título y modalidad son los mismos para todos
+        if (currentAuthorIndex === 0) {
+            tituloInput.value = author.tituloPonencia || '';
+            modalidadInput.value = author.modalidad || '';
+        }
+
+        // Solo el primer autor tiene el email bloqueado
+        emailInput.readOnly = currentAuthorIndex === 0;
+        
+        // Título y modalidad solo editables para el autor principal
+        tituloInput.readOnly = currentAuthorIndex !== 0;
+        modalidadInput.disabled = currentAuthorIndex !== 0;
+    };
+
+    // Función para guardar los datos del autor actual
+    const saveCurrentAuthorData = () => {
+        authors[currentAuthorIndex] = {
+            nombre: nombreInput.value,
+            institucion: institucionInput.value,
+            facultad: facultadInput.value,
+            email: emailInput.value,
+            tituloPonencia: tituloInput.value,
+            modalidad: modalidadInput.value
+        };
+    };
+
+    // Event listeners para navegación
+    prevAuthorBtn.addEventListener('click', () => {
+        saveCurrentAuthorData();
+        currentAuthorIndex--;
+        loadAuthorData();
+        updateNavigation();
+    });
+
+    nextAuthorBtn.addEventListener('click', () => {
+        saveCurrentAuthorData();
+        currentAuthorIndex++;
+        loadAuthorData();
+        updateNavigation();
+    });
+
+    addAuthorBtn.addEventListener('click', () => {
+        authors.push({
+            nombre: '',
+            institucion: '',
+            facultad: '',
+            email: '',
+            tituloPonencia: tituloInput.value,
+            modalidad: modalidadInput.value
+        });
+        saveCurrentAuthorData();
+        currentAuthorIndex = authors.length - 1;
+        loadAuthorData();
+        updateNavigation();
+    });
+
+    // Modificar el handleSaveData para guardar todos los autores
     const handleSaveData = async (e) => {
         e.preventDefault();
+        saveCurrentAuthorData(); // Guardar los datos del autor actual antes de enviar
         
         try {
             const user = auth.currentUser;
             if (user) {
                 const userId = user.uid;
                 const dataToSave = {
-                    grado: gradoInput.value,
-                    institucion: institucionInput.value,
-                    departamento: departamentoInput.value,
-                    email: emailInput.value,
-                    modalidad: modalidadInput.value
+                    authors: authors,
+                    tituloPonencia: authors[0].tituloPonencia,
+                    modalidad: authors[0].modalidad
                 };
                 
                 const userRef = doc(getFirestore(), 'users', userId);
                 await updateDoc(userRef, {
-                    nombre : nombreInput.value,
                     datos: dataToSave
                 });
                 
                 console.log('Datos guardados correctamente');
-            } else {
-                console.error('No se pudo obtener el usuario actual');
             }
         } catch (error) {
             console.error('Error al guardar los datos:', error);
         }
     };
 
-    // Cargar datos del usuario
+    // Modificar loadUserData para cargar todos los autores
     const loadUserData = async () => {
         try {
             const user = auth.currentUser;
@@ -97,27 +180,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userRef = doc(getFirestore(), 'users', userId);
                 const userDoc = await getDoc(userRef);
                 
-                if (userDoc.exists) {
+                if (userDoc.exists()) {
                     const userData = userDoc.data();
-                    console.log('Datos del usuario:', userData);
-                    if (userData.datos) { // Comprobar si 'datos' existe  
-                        const { grado, institucion, departamento, email, tituloPonencia, modalidad } = userData.datos;  
-                
-                        nombreInput.value = userData.nombre || ''; // Usa un valor por defecto en caso de que sea undefined  
-                        gradoInput.value = grado || '';  
-                        institucionInput.value = institucion || '';  
-                        departamentoInput.value = departamento || '';  
-                        emailInput.value = email || '';  
-                        modalidadInput.value = modalidad || '';  
-                    } else {  
-                        console.error("La propiedad 'datos' no existe en userData");  
-                    }  
+                    if (userData.datos && userData.datos.authors) {
+                        authors = userData.datos.authors;
+                        currentAuthorIndex = 0;
+                        loadAuthorData();
+                        updateNavigation();
+                    }
+                    // Si no hay datos previos, inicializar con el email del usuario actual
+                    if (currentAuthorIndex === 0) {
+                        emailInput.value = user.email;
+                    }
                 }
-            } else {
-                console.error('No se pudo obtener el usuario actual');
             }
         } catch (error) {
-            console.error('Error al cargar los datos del usuario:', error);
+            console.error('Error al cargar los datos:', error);
         }
     };
 
