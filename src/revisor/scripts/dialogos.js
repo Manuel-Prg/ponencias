@@ -332,3 +332,99 @@ function showNotification(message, type = 'success') {
         }, { once: true });
     }, 3000);
 }
+
+function handleAccept() {
+    hideComentariosCard();
+    // Lógica adicional para aceptar
+}
+
+function handleReject() {
+    hideComentariosCard();
+    // Lógica adicional para rechazar
+}
+
+function handleAcceptWithObs() {
+    showComentariosCard();
+}
+
+function showComentariosCard() {
+    const container = document.querySelector('.container');
+    const comentariosCard = document.querySelector('.comentarios-card');
+    const ponenciaCard = document.querySelector('.ponencia-card');
+    
+    if (container && comentariosCard) {
+        // Primero añadimos la clase al contenedor para iniciar la transición
+        container.classList.add('with-comments');
+        
+        // Mostramos el card de comentarios
+        comentariosCard.style.display = 'flex';
+        
+        // Forzamos un reflow para que la transición funcione
+        void comentariosCard.offsetWidth;
+        
+        // Añadimos la clase que hace visible el card con la animación
+        comentariosCard.classList.add('visible');
+        
+        // Limpiar el textarea
+        const textarea = document.getElementById('dialogComments');
+        if (textarea) {
+            textarea.value = '';
+        }
+    }
+}
+
+function hideComentariosCard() {
+    const container = document.querySelector('.container');
+    const comentariosCard = document.querySelector('.comentarios-card');
+    
+    if (container && comentariosCard) {
+        // Removemos la clase visible primero para iniciar la animación de salida
+        comentariosCard.classList.remove('visible');
+        
+        // Removemos la clase del contenedor
+        container.classList.remove('with-comments');
+        
+        // Esperamos a que termine la animación antes de ocultar completamente
+        setTimeout(() => {
+            comentariosCard.style.display = 'none';
+        }, 300); // Este tiempo debe coincidir con la duración de la transición en CSS
+    }
+}
+
+// Agregar event listeners para los botones de guardar y cancelar
+document.addEventListener('DOMContentLoaded', function() {
+    // Vincular los botones de acción
+    const btnAceptar = document.querySelector('.btn-accept');
+    const btnRechazar = document.querySelector('.btn-reject');
+    const btnAceptarObs = document.querySelector('.btn-accept-with-obs');
+    const btnSave = document.querySelector('.btn-save');
+    const btnCancel = document.querySelector('.btn-cancel');
+
+    if (btnAceptar) {
+        btnAceptar.addEventListener('click', handleAccept);
+    }
+
+    if (btnRechazar) {
+        btnRechazar.addEventListener('click', handleReject);
+    }
+
+    if (btnAceptarObs) {
+        btnAceptarObs.addEventListener('click', handleAcceptWithObs);
+    }
+
+    if (btnSave) {
+        btnSave.addEventListener('click', function() {
+            const comments = document.getElementById('dialogComments').value;
+            if (!comments.trim()) {
+                alert('Por favor, ingrese sus observaciones.');
+                return;
+            }
+            // Aquí puedes agregar la lógica para guardar los comentarios
+            hideComentariosCard();
+        });
+    }
+
+    if (btnCancel) {
+        btnCancel.addEventListener('click', hideComentariosCard);
+    }
+});

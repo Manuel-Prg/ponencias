@@ -27,15 +27,18 @@ body {
 
 .container {
   display: flex;
+  justify-content: center;
   gap: 2rem;
   padding: 2rem;
   height: calc(100vh - 100px);
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Tarjeta de ponencia (izquierda) */
+/* Tarjeta de ponencia (centrada por defecto) */
 .ponencia-card {
   flex: 1;
   background: rgba(81, 112, 255, 0.2);
@@ -45,20 +48,31 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 50%;
+  max-width: 60%; /* Reducido del 80% original */
+  transition: all 0.3s ease-in-out;
+  margin: 0 auto; /* Centrar la tarjeta */
 }
 
-/* Área de observaciones (derecha) */
+/* Área de observaciones (derecha, más estrecha) */
 .comentarios-card {
-  flex: 1;
+  flex: 0.8; /* Reducido de 1 */
   background: rgba(81, 112, 255, 0.2);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 2rem;
-  display: flex;
+  display: none;
   flex-direction: column;
   height: 100%;
-  max-width: 50%;
+  max-width: 35%; /* Reducido del 45% original */
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.3s ease-in-out;
+}
+
+.comentarios-card.visible {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .title {
@@ -141,12 +155,17 @@ body {
   .container {
     flex-direction: column;
     padding: 1rem;
-    height: auto;
   }
 
   .ponencia-card,
-  .dialog-overlay {
-    height: 70vh;
+  .comentarios-card {
+    max-width: 100% !important;
+    height: auto;
+    min-height: 50vh;
+  }
+
+  .container.with-comments .ponencia-card {
+    max-width: 100% !important;
   }
 
   .dialog-overlay {
@@ -909,28 +928,18 @@ textarea::placeholder {
 
 /* Ajustes responsive */
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
+  .container {
+      flex-direction: column;
+      padding: 1rem;
+  }
 
-    .card, 
-    .dialog-overlay {
-        width: 100%;
-        min-width: 100%;
-    }
-
-    .card {
-        height: 60vh;
-    }
-
-    .dialog-overlay {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        z-index: 1000;
-    }
+  .ponencia-card,
+  .comentarios-card {
+      max-width: 100% !important;
+      height: auto;
+      min-height: 50vh;
+      margin: 0; /* Eliminar margen en móvil */
+  }
 }
 
 /* Animaciones */
@@ -943,4 +952,13 @@ textarea::placeholder {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Ajuste cuando se muestran ambas tarjetas */
+.container.with-comments {
+  justify-content: space-between;
+}
+
+.container.with-comments .ponencia-card {
+  max-width: 55%; /* Ajustado para cuando se muestra junto con comentarios */
 }

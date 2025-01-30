@@ -2,8 +2,8 @@
 @import "/src/styles/shared.css";
 
 :root {
-    --primary-color: #5170ff;
-    --secondary-color: #ff66c4;
+    --neon-purple: #5170ff;
+    --neon-pink: #ff66c4;
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
