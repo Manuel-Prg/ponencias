@@ -348,19 +348,123 @@ textarea::placeholder {
 }
 
 @media (max-width: 480px) {
-    .form-card {
-        padding: 20px;
+    .container {
+        padding: 0;
+        min-height: calc(100vh - 120px);
     }
 
-    .topics-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .form-card {
+        margin: 0;
+        padding: 15px 10px;
+        border-radius: 0;
+        height: 100%;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 15px;
+        font-size: 16px;
+        height: 50px;
+        margin-bottom: 5px;
+    }
+
+    label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    h2 {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        padding: 0 5px;
+    }
+
+    /* Ajustes para el botón de guardar */
+    .btn-next, 
+    .btn-back,
+    .btn-cancel {
+        width: 100%;
+        height: 45px;
+        font-size: 16px;
+        margin: 5px 0;
+        border-radius: 8px;
+    }
+
+    /* Ajustes para el header */
+    .header {
+        height: 50px;
+    }
+
+    /* Ajustes para la navegación inferior */
+    .bottom-nav {
+        height: 60px;
+        padding: 5px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    /* Ajustes para el select de modalidad */
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 20px;
+        padding-right: 30px;
     }
 }
 
+@media (max-width: 320px) {
+    .form-card {
+        padding: 10px 8px;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 12px;
+        font-size: 14px;
+        height: 45px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .btn-next, 
+    .btn-back,
+    .btn-cancel {
+        height: 40px;
+        font-size: 14px;
+    }
+}
+
+/* Estilos específicos para los select y sus opciones */
 select {
     width: 100%;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(81, 112, 255, 0.2); /* Color similar al gradiente pero más transparente */
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;
@@ -368,33 +472,44 @@ select {
     transition: all 0.3s;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-    padding-right: 40px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-select:focus {
-    outline: none;
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-}
-
+/* Estilos para las opciones del select */
 select option {
-    background-color: #2a2a2a;
+    background-color: rgba(81, 112, 255, 0.9); /* Color similar al gradiente */
     color: white;
     padding: 12px;
 }
 
-select option:hover,
-select option:focus {
-    background-color: #3a3a3a;
+/* Estilo para el select cuando está abierto */
+select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(81, 112, 255, 0.3);
 }
 
-select:active,
+/* Estilo para el hover del select */
 select:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background: rgba(81, 112, 255, 0.3);
+}
+
+/* Estilo específico para las opciones cuando el select está abierto */
+select:focus option:checked {
+    background: rgba(255, 102, 196, 0.9); /* Color del gradiente secundario */
+}
+
+/* Estilo para las opciones al hacer hover */
+select option:hover {
+    background-color: rgba(255, 102, 196, 0.9);
+}
+
+/* Asegurarse que el texto siempre sea visible */
+select,
+select option {
+    color: white !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Estilos para el header y botones */
@@ -443,40 +558,29 @@ select:hover {
     stroke-width: 1.5px;
 }
 
-/* Bottom Navigation para móvil */
-.bottom-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 1rem;
-    z-index: 1000;
+/* Ocultar completamente el menú inferior en versión desktop */
+.bottom-nav,
+.mobile-menu {
+    display: none !important;
+    visibility: hidden;
+    position: absolute;
+    bottom: -100%;
 }
 
-.bottom-nav-items {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.bottom-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem;
-}
-
-.bottom-nav-item svg {
-    width: 24px;
-    height: 24px;
-    stroke: currentColor;
+/* Media query específica para móviles */
+@media screen and (max-width: 768px) {
+    .bottom-nav {
+        display: flex !important;
+        visibility: visible;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 10px;
+        z-index: 1000;
+    }
 }
 
 /* Media queries */
@@ -487,10 +591,6 @@ select:hover {
 
     .header-buttons {
         display: none;
-    }
-
-    .bottom-nav {
-        display: block;
     }
 
     .container {
@@ -518,3 +618,48 @@ select:hover {
     max-width: 420px;
     margin: 0 auto;
 }
+.form-group {
+    display: grid;
+    gap: var(--spacing-xs);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: formElementsFade 0.3s ease forwards;
+    animation-delay: 0.1s;
+  }
+  
+  .form-group:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .form-group:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  
+  .form-group textarea,
+  .form-group input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-speed) ease;
+  }
+  
+  .form-group textarea:focus,
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+  }
+  
+  .form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+  }
