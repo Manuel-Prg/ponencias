@@ -157,11 +157,11 @@ body {
     padding: 1rem;
   }
 
-  .ponencia-card,
-  .comentarios-card {
+  .ponencia-card, .comentarios-card {
     max-width: 100% !important;
     height: auto;
     min-height: 50vh;
+    padding: 1.5rem;
   }
 
   .container.with-comments .ponencia-card {
@@ -176,6 +176,33 @@ body {
     width: 90%;
     max-height: 80vh;
     z-index: 1000;
+  }
+
+  body {
+    padding-top: 60px;
+    padding-bottom: 80px;
+  }
+
+  .header {
+    height: 60px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .content {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn {
+    width: 100%;
   }
 }
 
@@ -339,55 +366,8 @@ textarea::placeholder {
 }
 
 /* Asegurar que el texto sea más legible */
-.content p, 
-.content span, 
-.content div {
+.content p, .content span, .content div {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 768px) {
-  body {
-    padding: 60px 15px 90px 15px; /* Aumentado el padding inferior para el bottom nav */
-  }
-
-  .card {
-    width: 90%;
-    padding: 20px;
-    margin: 15px auto;
-  }
-
-  .calif {
-    flex-direction: column;
-    align-items: stretch; /* Cambiado para ocupar todo el ancho */
-    gap: 1rem;
-  }
-
-  .title {
-    font-size: 1.3rem;
-    line-height: 1.4;
-    word-wrap: break-word; /* Mejor manejo de títulos largos */
-  }
-
-  .content {
-    height: 350px; /* Altura ajustada para móviles */
-    padding: 1rem;
-  }
-
-  .buttons {
-    flex-direction: row; /* Mantener botones en fila */
-    flex-wrap: wrap; /* Permitir que se envuelvan si no hay espacio */
-    justify-content: center; /* Centrar los botones */
-    gap: 8px;
-    margin-top: 20px;
-  }
-
-  .btn {
-    flex: 1 1 auto; /* Permitir que los botones crezcan y se encogan */
-    min-width: 140px; /* Ancho mínimo para botones */
-    max-width: calc(50% - 8px); /* Máximo dos botones por fila */
-    justify-content: center;
-    padding: 12px 15px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -496,6 +476,7 @@ textarea::placeholder {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  height: 23px;
 }
 
 .bottom-nav-item {
@@ -506,11 +487,12 @@ textarea::placeholder {
   color: white;
   text-decoration: none;
   padding: 0.5rem;
+
 }
 
 .bottom-nav-item svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
 }
 
@@ -817,36 +799,11 @@ textarea::placeholder {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.notification-toast.error {
-    background: linear-gradient(135deg,
-        rgba(255, 102, 196, 0.9),
-        rgba(81, 112, 255, 0.9)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.notification-toast.show {
-    animation: toastIn 0.8s ease forwards;
-}
 
 .notification-toast.hide {
     animation: toastOut 0.8s ease forwards;
 }
 
-@keyframes toastIn {
-    0% {
-        opacity: 0;
-        transform: translateX(100%) translateY(-50%);
-    }
-    50% {
-        transform: translateX(-10%) translateY(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(0) translateY(0);
-        opacity: 1;
-    }
-}
 
 @keyframes toastOut {
     0% {
@@ -927,20 +884,19 @@ textarea::placeholder {
 }
 
 /* Ajustes responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
-      flex-direction: column;
-      padding: 1rem;
+    flex-direction: column;
+    height: auto;
   }
 
   .ponencia-card,
   .comentarios-card {
-      max-width: 100% !important;
-      height: auto;
-      min-height: 50vh;
-      margin: 0; /* Eliminar margen en móvil */
+    max-width: 100%;
+    margin-bottom: 2rem;
   }
 }
+
 
 /* Animaciones */
 @keyframes slideIn {
@@ -961,4 +917,37 @@ textarea::placeholder {
 
 .container.with-comments .ponencia-card {
   max-width: 55%; /* Ajustado para cuando se muestra junto con comentarios */
+}
+
+@keyframes slideIn {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.ponencia-card, .comentarios-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.comentarios-card.visible {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Update the scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
