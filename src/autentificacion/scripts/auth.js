@@ -3,8 +3,6 @@ import { auth, db } from '../../firebase/firebase-Config.js';
 import { signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { doc, getDoc} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
     
-// Verificar el ambiente        
-console.log('Ambiente:', getEnvironment());
 
 const loginForm = document.getElementById('loginForm');
 loginForm.addEventListener('submit', async (e) => {
@@ -116,10 +114,9 @@ async function checkUserRole(uid) {
   function redirectBasedOnRole(rol, userId) {
     switch (rol) {
       case 'admin':
-        window.location.href = '../../autentificacion/pages/index.html';
+        window.location.href = '/src/admin/pages/vistaAdmin.html';
         break;
       case 'ponente':
-
        redirectPonente(userId);
         break;
       case 'revisor':

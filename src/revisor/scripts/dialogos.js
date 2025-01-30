@@ -196,7 +196,7 @@ function getActionValueDB(action) {
     const statusMap = {
         'aceptar': 'aprobada',
         'rechazar': 'rechazada',
-        'devolver': 'aprobada con correciones'
+        'devolver': 'aprobada con correcciones'
     }
     return statusMap[action];
     
