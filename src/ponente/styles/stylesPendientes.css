@@ -692,26 +692,47 @@ label {
   font-weight: 500;
 }
 
+/* Estilos para inputs y select */
 input,
 select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  font-size: 1rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
+/* Mantener el fondo semitransparente incluso cuando está enfocado o activo */
 input:focus,
-select:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+select:focus,
+input:active,
+select:active {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Estilo para el placeholder */
+input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Estilo específico para input readonly */
+input[readonly] {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Asegurar que el texto sea siempre visible */
+input,
+select,
+input::placeholder {
+    color: white;
 }
 
 .submit-btn {
@@ -912,4 +933,45 @@ select,
 select option {
   color: white !important;
   text-shadow: none;
+}
+
+/* Estilos para la navegación de autores */
+.authors-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.nav-btn, .add-author-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover, .add-author-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#authorCounter {
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 100px;
+    text-align: center;
 }

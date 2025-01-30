@@ -169,26 +169,28 @@ async function handleSave() {
 
     const presentationData = JSON.parse(sessionStorage.getItem('currentPresentation'));
     if (!presentationData) {
-        alert('Error: No se encontraron datos de la presentación.');
+        showNotification('Error: No se encontraron datos de la presentación.', 'error');
         return;
     }
 
     const action = getActionValueDB(selectedRadio.value);
-
     const comments = document.getElementById('dialogComments')?.value || '';
 
     if (action === 'devolver' && !comments.trim()) {
-        alert('Por favor, ingrese sus comentarios para aceptar con correcciones.');
+        showNotification('Por favor, ingrese sus comentarios para aceptar con correcciones.', 'error');
         return;
     }
 
     try {
         await saveEvaluation(presentationData.id, action, comments);
         await saveEvaluationRevisor(presentationData.id, action);
-        window.location.href = '/src/revisor/pages/revisor.html';
+        showNotification('La evaluación ha sido guardada con éxito');
+        setTimeout(() => {
+            window.location.href = '/src/revisor/pages/revisor.html';
+        }, 2000); // Esperar 2 segundos antes de redirigir
     } catch (error) {
         console.error('Error al guardar la evaluación:', error);
-        alert('Error al guardar la evaluación. Por favor, intente de nuevo.');
+        showNotification('Error al guardar la evaluación. Por favor, intente de nuevo.', 'error');
     }
 }
 
@@ -265,7 +267,19 @@ function showDialog(title) {
     const overlay = document.querySelector('.dialog-overlay');
     if (overlay) {
         document.getElementById('dialogTitle').textContent = title;
-        overlay.style.display = 'flex';
+        overlay.style.display = 'block';
+        
+        // Reorganizar el layout
+        const container = document.querySelector('.container');
+        if (container) {
+            container.style.justifyContent = 'space-between';
+        }
+        
+        // Animar la entrada del diálogo
+        requestAnimationFrame(() => {
+            overlay.style.opacity = '1';
+            overlay.style.transform = 'translateX(0)';
+        });
     }
 }
 
@@ -273,5 +287,48 @@ function hideDialog() {
     const overlay = document.querySelector('.dialog-overlay');
     if (overlay) {
         overlay.style.display = 'none';
+        
+        // Restaurar el layout original
+        const container = document.querySelector('.container');
+        if (container) {
+            container.style.justifyContent = 'center';
+        }
     }
+}
+
+// Agregar función para mostrar notificación
+function showNotification(message, type = 'success') {
+    // Remover notificación existente si hay alguna
+    const existingToast = document.querySelector('.notification-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Crear nueva notificación
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${type}`;
+    
+    // Agregar icono según el tipo
+    const icon = type === 'success' 
+        ? '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>'
+        : '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>';
+    
+    toast.innerHTML = `${icon}<span>${message}</span>`;
+    document.body.appendChild(toast);
+
+    // Forzar un reflow para asegurar que la animación se ejecute
+    void toast.offsetWidth;
+
+    // Mostrar la notificación
+    requestAnimationFrame(() => {
+        toast.classList.add('show');
+    });
+
+    // Ocultar y remover después de 3 segundos
+    setTimeout(() => {
+        toast.classList.add('hide');
+        toast.addEventListener('animationend', () => {
+            toast.remove();
+        }, { once: true });
+    }, 3000);
 }

@@ -47,37 +47,30 @@
   </div>
 </nav>
 <body>
-  <div class="card">
-    <!-- Encabezado -->
-    <div class="calif">
-      <h1 class="title">Título de la Ponencia</h1>
-      <div class="rating-container">
-        <button class="btn">Guardar</button>
-      </div>
+  <div class="container">
+    <!-- Tarjeta de ponencia (izquierda) -->
+    <div class="ponencia-card">
+        <h2 class="title">¿Que tan fuerte es Steve de Minecraft?</h2>
+        <div class="content">
+            <!-- Contenido de la ponencia -->
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-accept" onclick="handleAccept()">Aceptar</button>
+            <button class="btn btn-reject" onclick="handleReject()">Rechazar</button>
+            <button class="btn btn-accept-with-obs" onclick="handleAcceptWithObs()">Aceptar con observaciones</button>
+        </div>
     </div>
 
-    <!-- Contenido -->
-    <div class="content">
-      <p>
-        Contenido de la Ponencia
-      </p>
+    <!-- Área de observaciones (derecha) -->
+    <div class="comentarios-card">
+        <h2 class="title">Observaciones</h2>
+        <textarea id="dialogComments" placeholder="Escriba sus observaciones aquí..."></textarea>
+        <div class="dialog-buttons">
+            <button class="btn btn-save">Guardar</button>
+            <button class="btn btn-cancel">Cancelar</button>
+        </div>
     </div>
-
-    <!-- Botones -->  
-    <div class="buttons">  
-      <label class="btn">  
-          <input type="radio" name="action" value="aceptar" class="action-radio">  
-          Aceptar  
-      </label>  
-      <label class="btn">  
-          <input type="radio" name="action" value="rechazar" class="action-radio">  
-          Rechazar  
-      </label>  
-      <label class="btn">  
-          <input type="radio" name="action" value="devolver" class="action-radio">  
-          Aceptar con observaciones
-      </label>  
-  </div> 
+  </div>
 
   <div id="dialogOverlay" class="dialog-overlay" style="display: none;">
     <div class="dialog">
