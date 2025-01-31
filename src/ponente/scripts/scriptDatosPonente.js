@@ -1,216 +1,217 @@
 import { auth } from "/src/firebase/firebase-Config.js";
-import { getFirestore, doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { 
+    getFirestore, 
+    doc, 
+    updateDoc, 
+    getDoc
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
+// Constants
+const MAX_AUTHORS = 3;
+const ROUTES = {
+    LOGIN: "/src/autentificacion/pages/index.html",
+    PONENCIA: "/src/ponente/pages/datosPonencia.html",
+    REGISTRO_VALIDO: "/src/ponente/pages/registroValido.html"
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-    let currentAuthorIndex = 0;
-    let authors = [{ // Inicializar con el autor principal
-        nombre: '',
-        institucion: '',
-        facultad: '',
-        email: '',
-        tituloPonencia: '',
-        modalidad: ''
-    }];
+class AuthorManager {
+    constructor() {
+        this.currentAuthorIndex = 0;
+        this.authors = [];
+        this.db = getFirestore();
+        this.initializeDOM();
+        this.setupEventListeners();
+    }
 
-    // Botones de escritorio
-    const logoutBtn = document.getElementById('logout-btn');
-    const ponenciaBtn = document.getElementById('ponencia-btn');
-    
-    // Botones móviles
-    const logoutBtnMobile = document.getElementById('logout-btn-mobile');
-    
-    // Elementos del formulario
-    const nombreInput = document.getElementById('nombre');
-    const gradoInput = document.getElementById('grado');
-    const institucionInput = document.getElementById('institucion');
-    const facultadInput = document.getElementById('facultad');
-    const emailInput = document.getElementById('email');
-    const tituloInput = document.getElementById('tituloPonencia');
-    const modalidadInput = document.getElementById('modalidad');
-     
-    // Elementos de navegación de autores
-    const prevAuthorBtn = document.getElementById('prevAuthor');
-    const nextAuthorBtn = document.getElementById('nextAuthor');
-    const addAuthorBtn = document.getElementById('addAuthor');
-    const authorCounter = document.getElementById('authorCounter');
-
-    // Manejador para cerrar sesión
-    const handleLogout = async (e) => {
-        e.preventDefault();
-        try {
-            await auth.signOut();
-            window.location.href = "/src/autentificacion/pages/index.html";
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
-    async function checkPonenciaExistente(ponenciaId) {  
-        try {  
-          const ponenciaRef = doc(db, 'ponencias', ponenciaId);  
-          const ponenciaSnapshot = await getDoc(ponenciaRef);  
-          const ponenciaExists = ponenciaSnapshot.exists();  
-          console.log('ponenciaExists:', ponenciaExists);  
-          return ponenciaExists;  
-        } catch (error) {  
-          console.error('Error al verificar ponencia:', error);  
-          return false;  
-        }  
-      }
-
-    // Manejador para ir a la página de ponencia
-    const handlePonencia = (e) => {
-        e.preventDefault();
-        const user = auth.currentUser;
-        if (user) {
-            const userId = user.uid;
-            if (checkPonenciaExistente(userId)) {
-                window.location.href = "/src/ponente/pages/registroValido.html";
-            } else {
-                window.location.href = "/src/ponente/pages/datosPonencia.html";
-            }
-        }  
-    };
-
-    // Función para actualizar la navegación
-    const updateNavigation = () => {
-        authorCounter.textContent = `Autor ${currentAuthorIndex + 1} de ${authors.length}`;
-        prevAuthorBtn.disabled = currentAuthorIndex === 0;
-        nextAuthorBtn.disabled = currentAuthorIndex === authors.length - 1;
-    };
-
-    // Función para cargar los datos del autor actual
-    const loadAuthorData = () => {
-        const author = authors[currentAuthorIndex];
-        nombreInput.value = author.nombre || '';
-        institucionInput.value = author.institucion || '';
-        facultadInput.value = author.facultad || '';
-        emailInput.value = author.email || '';
-        
-        // El título y modalidad son los mismos para todos
-        if (currentAuthorIndex === 0) {
-            tituloInput.value = author.tituloPonencia || '';
-            modalidadInput.value = author.modalidad || '';
-        }
-
-        // Solo el primer autor tiene el email bloqueado
-        emailInput.readOnly = currentAuthorIndex === 0;
-        
-        // Título y modalidad solo editables para el autor principal
-        tituloInput.readOnly = currentAuthorIndex !== 0;
-        modalidadInput.disabled = currentAuthorIndex !== 0;
-    };
-
-    // Función para guardar los datos del autor actual
-    const saveCurrentAuthorData = () => {
-        authors[currentAuthorIndex] = {
-            nombre: nombreInput.value,
-            institucion: institucionInput.value,
-            facultad: facultadInput.value,
-            email: emailInput.value,
-            tituloPonencia: tituloInput.value,
-            modalidad: modalidadInput.value
+    initializeDOM() {
+        this.form = document.getElementById('constanciaPonente');
+        this.formElements = {
+            nombre: document.getElementById('nombre'),
+            institucion: document.getElementById('institucion'),
+            facultad: document.getElementById('facultad'),
+            email: document.getElementById('email'),
+            modalidad: document.getElementById('modalidad')
         };
-    };
+        
+        this.navigation = {
+            prev: document.getElementById('prevAuthor'),
+            next: document.getElementById('nextAuthor'),
+            add: document.getElementById('addAuthor'),
+            counter: document.getElementById('authorCounter')
+        };
 
-    // Event listeners para navegación
-    prevAuthorBtn.addEventListener('click', () => {
-        saveCurrentAuthorData();
-        currentAuthorIndex--;
-        loadAuthorData();
-        updateNavigation();
-    });
+        this.headerControls = {
+            ponenciaBtn: document.getElementById('ponencia-btn'),
+            ponenciaBtnMobile: document.getElementById('ponencia-btn-mobile'),
+            logoutBtn: document.getElementById('logout-btn'),
+            logoutBtnMobile: document.getElementById('logout-btn-mobile')
+        };
+    }
 
-    nextAuthorBtn.addEventListener('click', () => {
-        saveCurrentAuthorData();
-        currentAuthorIndex++;
-        loadAuthorData();
-        updateNavigation();
-    });
+    setupEventListeners() {
+        // Navigation events
+        this.navigation.prev.addEventListener('click', () => this.handleNavigation(-1));
+        this.navigation.next.addEventListener('click', () => this.handleNavigation(1));
+        this.navigation.add.addEventListener('click', () => this.handleAddAuthor());
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
 
-    addAuthorBtn.addEventListener('click', () => {
-        authors.push({
+        // Header button events
+        [this.headerControls.logoutBtn, this.headerControls.logoutBtnMobile]
+            .forEach(btn => btn?.addEventListener('click', () => this.handleLogout()));
+
+        [this.headerControls.ponenciaBtn, this.headerControls.ponenciaBtnMobile]
+            .forEach(btn => btn?.addEventListener('click', () => this.handlePonenciaNavigation()));
+    }
+
+    updateNavigationControls() {
+        const { prev, next, add, counter } = this.navigation;
+        prev.disabled = this.currentAuthorIndex === 0;
+        next.disabled = this.currentAuthorIndex === this.authors.length - 1;
+        add.disabled = this.authors.length >= MAX_AUTHORS;
+        counter.textContent = `Autor ${this.currentAuthorIndex + 1} de ${this.authors.length}`;
+        this.formElements.email.readOnly = this.currentAuthorIndex === 0;
+    }
+
+    getFormData() {
+        return Object.entries(this.formElements).reduce((acc, [key, element]) => {
+            acc[key] = element.value;
+            return acc;
+        }, {});
+    }
+
+    setFormData(authorData) {
+        if (!authorData) return;
+        Object.entries(this.formElements).forEach(([key, element]) => {
+            if (element) element.value = authorData[key] || '';
+        });
+    }
+
+    async loadAuthorsData() {
+        try {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const ponenciaDoc = await getDoc(doc(this.db, 'ponencias', user.uid));
+            
+            if (ponenciaDoc.exists()) {
+                const data = ponenciaDoc.data();
+                if (data.autores) {
+                    this.authors = [];
+                    for (let i = 1; i <= MAX_AUTHORS; i++) {
+                        const autor = data.autores[`autor${i}`];
+                        if (autor) this.authors.push(autor);
+                    }
+                } else {
+                    console.log(user.email);
+                    this.initializeFirstAuthor(user.email);
+                }
+            } else {
+                this.initializeFirstAuthor(user.email);
+            }
+
+            this.currentAuthorIndex = 0;
+            this.setFormData(this.authors[0]);
+            this.updateNavigationControls();
+        } catch (error) {
+            console.error('Error loading authors data:', error);
+        }
+    }
+
+    initializeFirstAuthor(email) {
+        this.authors = [{
+            nombre: '',
+            institucion: '',
+            facultad: '',
+            email: email,
+            modalidad: ''
+        }];
+    }
+
+    async saveAuthorsData() {
+        try {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            this.authors[this.currentAuthorIndex] = this.getFormData();
+            
+            const autoresObj = this.authors.reduce((acc, author, index) => {
+                acc[`autor${index + 1}`] = author;
+                return acc;
+            }, {});
+
+            await updateDoc(doc(this.db, 'ponencias', user.uid), {
+                'autores': autoresObj
+            });
+        } catch (error) {
+            console.error('Error saving authors data:', error);
+        }
+    }
+
+    handleNavigation(direction) {
+        this.authors[this.currentAuthorIndex] = this.getFormData();
+        this.currentAuthorIndex += direction;
+        this.setFormData(this.authors[this.currentAuthorIndex]);
+        this.updateNavigationControls();
+    }
+
+    handleAddAuthor() {
+        if (this.authors.length >= MAX_AUTHORS) return;
+        
+        this.authors[this.currentAuthorIndex] = this.getFormData();
+        this.authors.push({
             nombre: '',
             institucion: '',
             facultad: '',
             email: '',
-            tituloPonencia: tituloInput.value,
-            modalidad: modalidadInput.value
+            modalidad: this.formElements.modalidad.value
         });
-        saveCurrentAuthorData();
-        currentAuthorIndex = authors.length - 1;
-        loadAuthorData();
-        updateNavigation();
-    });
-
-    // Modificar el handleSaveData para guardar todos los autores
-    const handleSaveData = async (e) => {
-        e.preventDefault();
-        saveCurrentAuthorData(); // Guardar los datos del autor actual antes de enviar
         
+        this.currentAuthorIndex = this.authors.length - 1;
+        this.setFormData(this.authors[this.currentAuthorIndex]);
+        this.updateNavigationControls();
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        await this.saveAuthorsData();
+    }
+
+    async handleLogout() {
+        try {
+            await auth.signOut();
+            window.location.href = ROUTES.LOGIN;
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    }
+
+    async handlePonenciaNavigation() {
         try {
             const user = auth.currentUser;
-            if (user) {
-                const userId = user.uid;
-                const dataToSave = {
-                    authors: authors,
-                    tituloPonencia: authors[0].tituloPonencia,
-                    modalidad: authors[0].modalidad
-                };
-                
-                const userRef = doc(getFirestore(), 'users', userId);
-                await updateDoc(userRef, {
-                    datos: dataToSave
-                });
-                
-                console.log('Datos guardados correctamente');
-            }
+            if (!user) return;
+
+            const ponenciaDoc = await getDoc(doc(this.db, 'ponencias', user.uid));
+            const route = ponenciaDoc.exists() ? ROUTES.REGISTRO_VALIDO : ROUTES.PONENCIA;
+            window.location.href = route;
         } catch (error) {
-            console.error('Error al guardar los datos:', error);
+            console.error("Error checking ponencia status:", error);
+            window.location.href = ROUTES.PONENCIA;
         }
-    };
+    }
 
-    // Modificar loadUserData para cargar todos los autores
-    const loadUserData = async () => {
-        try {
-            const user = auth.currentUser;
+    initialize() {
+        auth.onAuthStateChanged(user => {
             if (user) {
-                const userId = user.uid;
-                const userRef = doc(getFirestore(), 'users', userId);
-                const userDoc = await getDoc(userRef);
-                
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    if (userData.datos && userData.datos.authors) {
-                        authors = userData.datos.authors;
-                        currentAuthorIndex = 0;
-                        loadAuthorData();
-                        updateNavigation();
-                    }
-                    // Si no hay datos previos, inicializar con el email del usuario actual
-                    if (currentAuthorIndex === 0) {
-                        emailInput.value = user.email;
-                    }
-                }
+                this.loadAuthorsData();
+            } else {
+                window.location.href = ROUTES.LOGIN;
             }
-        } catch (error) {
-            console.error('Error al cargar los datos:', error);
-        }
-    };
+        });
+    }
+}
 
-    // Agregar event listeners
-    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
-    if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', handleLogout);
-    if (ponenciaBtn) ponenciaBtn.addEventListener('click', handlePonencia);
-    document.getElementById('constanciaPonente').addEventListener('submit', handleSaveData);
-
-    // Verificar autenticación y cargar datos del usuario
-    auth.onAuthStateChanged(user => {
-        if (!user) {
-            window.location.href = "/src/autentificacion/pages/index.html";
-        } else {
-            loadUserData();
-        }
-    });
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+    const authorManager = new AuthorManager();
+    authorManager.initialize();
 });
