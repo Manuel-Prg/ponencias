@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, addDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { collection, getDocs, query, where, addDoc, or, updateDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { db, auth } from '/src/firebase/firebase-Config.js';
 import { signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
@@ -13,7 +13,9 @@ class AdminPanel {
             filterBtns: document.querySelectorAll('.filter-btn'),
             assignRandomlyBtn: document.getElementById('assignRandomly'),
             reviewerForm: document.getElementById('reviewerForm'),
-            logoutBtn: document.getElementById('logout-btn')
+            logoutBtn: document.getElementById('logout-btn'),
+            userSearchInput: document.getElementById('userSearchInput'),
+            searchResultsContainer: document.getElementById('searchResultsContainer')
         };
 
         this.users = [];
@@ -43,12 +45,13 @@ class AdminPanel {
             () => this.elements.modal.showModal()
         );
 
-        this.elements.reviewerForm.addEventListener('submit', 
-            this.handleReviewerSubmit.bind(this)
-        );
-
         this.elements.logoutBtn.addEventListener('click', 
             this.handleLogout.bind(this)
+        );
+
+
+        this.elements.userSearchInput.addEventListener('input', 
+            this.debounce(this.searchUsersToConvert.bind(this), 300)
         );
 
         window.closeModal = () => this.elements.modal.close();
@@ -108,7 +111,7 @@ class AdminPanel {
         card.className = 'user-card';
         
         // Usar template literal con valores seguros
-        const userType = user.type === 'revisor' ? 'Revisor' : 'Ponente';
+        const userType = this.getUserType(user.type);
         const safeHtml = `
             <div class="user-header">
                 <div class="user-info">
@@ -123,6 +126,85 @@ class AdminPanel {
         
         card.innerHTML = safeHtml;
         return card;
+    }
+
+    async searchUsersToConvert() {
+        const searchTerm = this.elements.userSearchInput.value.trim();
+        
+        if (searchTerm.length < 2) {
+            this.elements.searchResultsContainer.innerHTML = '';
+            return;
+        }
+        console.log(searchTerm);
+        try {
+            const usersRef = collection(db, 'users');
+            const searchQuery = query(usersRef, 
+                
+                    where('nombre', '>=', searchTerm),
+                    where('nombre', '<=', searchTerm + '\uf8ff'),
+                
+            );
+
+            const querySnapshot = await getDocs(searchQuery);
+            
+            this.renderSearchResults(querySnapshot.docs);
+        } catch (error) {
+            console.error('Error searching users:', error);
+        }
+    }
+
+    renderSearchResults(users) {
+        this.elements.searchResultsContainer.innerHTML = '';
+
+        if (users.length === 0) {
+            this.elements.searchResultsContainer.innerHTML = '<p>No se encontraron usuarios</p>';
+            return;
+        }
+
+        users.forEach(userDoc => {
+            const userData = userDoc.data();
+            const userCard = document.createElement('div');
+            userCard.className = 'user-search-result';
+            userCard.innerHTML = `
+                <div class="user-info">
+                    <h3>${this.escapeHtml(userData.nombre)}</h3>
+                    <p>${this.escapeHtml(userData.email)}</p>
+                    <span class="current-role">Rol actual: ${this.getUserType(userData.rol)}</span>
+                </div>
+                <button class="convert-btn" data-user-id="${userDoc.id}">Convertir a Revisor</button>
+            `;
+
+            userCard.querySelector('.convert-btn').addEventListener('click', 
+                () => this.convertUserToReviewer(userDoc.id)
+            );
+
+            this.elements.searchResultsContainer.appendChild(userCard);
+        });
+    }
+
+    async convertUserToReviewer(userId) {
+        try {
+            await updateDoc(doc(db, 'users', userId), {
+                rol: 'revisor'
+            });
+
+            alert('Usuario convertido a revisor exitosamente.');
+            this.elements.userSearchInput.value = '';
+            this.elements.searchResultsContainer.innerHTML = '';
+            await this.fetchUsers();
+        } catch (error) {
+            console.error('Error converting user to reviewer:', error);
+            alert('Hubo un error al convertir al usuario.');
+        }
+    }
+
+    getUserType(user) {
+        const userTypeMap = {
+            ponente: 'Ponente',
+            revisor: 'Revisor',
+            admin: 'Administrador'
+        }
+        return userTypeMap[user] || 'Ponente';
     }
 
     escapeHtml(str) {

@@ -73,6 +73,7 @@
                         <button class="filter-btn active" data-filter="all">Todos</button>
                         <button class="filter-btn" data-filter="revisor">Revisores</button>
                         <button class="filter-btn" data-filter="ponente">Ponentes</button>
+                        <button class="filter-btn" data-filter="admin">Administradores</button>
                     </div>
                 </div>
                 <div class="users-grid" id="usersGrid">
@@ -85,29 +86,17 @@
     <!-- Modal para agregar revisor -->
     <dialog id="addReviewerModal" class="modal">
         <div class="modal-content">
-            <h2>Agregar Nuevo Revisor</h2>
-            <form id="reviewerForm">
-                <div class="form-group">
-                    <label for="name">Nombre Completo</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="institution">Institución</label>
-                    <input type="text" id="institution" required>
-                </div>
-                <div class="form-group">
-                    <label for="department">Departamento</label>
-                    <input type="text" id="department" required>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancelar</button>
-                    <button type="submit" class="submit-btn">Guardar</button>
-                </div>
-            </form>
+            <h2>Convertir a Revisor</h2>
+            <div class="form-group">
+                <label for="userSearchInput">Buscar Usuario</label>
+                <input type="text" id="userSearchInput" placeholder="Nombre o correo">
+            </div>
+            <div id="searchResultsContainer" class="search-results">
+                <!-- Resultados de búsqueda se mostrarán aquí -->
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="cancel-btn" onclick="closeModal()">Cancelar</button>
+            </div>
         </div>
     </dialog>
 
