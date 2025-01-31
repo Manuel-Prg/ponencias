@@ -17,7 +17,6 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px;
 }
 
 @keyframes gradientMove {
@@ -156,8 +155,6 @@ body {
   .container {
     flex-direction: column;
     padding: 1rem;
-    height: auto;
-    overflow-y: auto;
   }
 
   .ponencia-card, .comentarios-card {
@@ -373,95 +370,45 @@ textarea::placeholder {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile First Adjustments */
 @media (max-width: 480px) {
-  .ponencia-card {
-    padding: 1rem;
-    height: auto;
-    min-height: 70vh;
-    max-width: 100% !important;
+  body {
+    padding: 50px 10px 80px 10px;
   }
 
-  .action-buttons {
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-
-  .btn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 0.9rem;
+  .card {
+    width: 95%;
+    padding: 15px;
+    margin: 10px auto;
   }
 
   .title {
     font-size: 1.2rem;
-    margin-bottom: 0.8rem;
   }
 
-  .content {
-    font-size: 0.95rem;
-    padding: 1rem;
-    margin-bottom: 0.8rem;
+  .buttons {
+    flex-direction: column; /* En móviles pequeños, botones en columna */
   }
 
-  .comentarios-card {
-    position: relative; /* Cambiar de fixed a relative */
-    top: auto;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    max-width: 100%;
-    height: auto;
-    min-height: 300px;
-    margin-top: 1rem;
-    border-radius: 16px;
-    z-index: 1;
-    transform: none;
-    opacity: 0;
-    display: none;
-  }
-
-  .comentarios-card.visible {
-    display: flex;
-    opacity: 1;
-    animation: slideUp 0.3s ease-out forwards;
-  }
-
-  #dialogComments {
-    min-height: 40vh;
-    font-size: 1rem;
-  }
-
-  .dialog-buttons {
-    flex-direction: column;
-  }
-
-  .dialog-buttons button {
-    width: 100%;
-    margin: 5px 0;
+  .btn {
+    max-width: 100%; /* Botones a ancho completo */
+    margin: 4px 0;
   }
 
   .bottom-nav {
-    padding: 0.5rem;
+    padding: 10px 5px;
   }
-}
 
-@media (max-width: 375px) {
   .header {
     padding: 0 10px;
   }
 
   .logo img {
-    height: 20px;
-  }
-
-  .title {
-    font-size: 1.1rem;
+    height: 25px;
+    margin: 0 2px; /* Reducir espacio entre logos */
   }
 
   .content {
-    font-size: 0.9rem;
+    height: 300px; /* Altura ajustada para móviles pequeños */
   }
 }
 
@@ -521,8 +468,7 @@ textarea::placeholder {
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 8px; /* Reducido el padding */
-  height: 60px; /* Reducido de la altura original */
+  padding: 1rem;
   z-index: 1000;
 }
 
@@ -530,27 +476,24 @@ textarea::placeholder {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
+  height: 23px;
 }
 
 .bottom-nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 0.25rem;
   color: white;
   text-decoration: none;
-  padding: 4px;
+  padding: 0.5rem;
 
 }
 
 .bottom-nav-item svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
-}
-.bottom-nav-item span {
-  font-size: 12px; /* Texto más pequeño */
 }
 
 /* Media queries */
@@ -585,46 +528,7 @@ textarea::placeholder {
       max-width: 100%;
   }
 }
-/* Ajustes para el contenedor principal y scroll */
-@media (max-width: 768px) {
-  body {
-    padding-bottom: 60px; /* Ajustado al nuevo tamaño del menú */
-  }
 
-  .container {
-    height: calc(100vh - 120px); /* Ajustado para considerar el header y bottom nav */
-    overflow-y: auto;
-    padding-bottom: 70px; /* Espacio extra para evitar que el bottom nav tape contenido */
-  }
-
-  .ponencia-card {
-    min-height: auto; /* Eliminar altura mínima fija */
-    height: auto; /* Altura automática */
-    margin-bottom: 1rem;
-  }
-
-  .comentarios-card {
-    margin-bottom: 70px; /* Espacio extra al final para el menú móvil */
-  }
-
-  /* Mejorar el scroll */
-  .content {
-    max-height: calc(100vh - 300px); /* Altura máxima ajustada */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-  }
-
-  /* Asegurar que los botones sean siempre visibles */
-  .action-buttons {
-    position: sticky;
-    bottom: 0;
-    background: rgba(81, 112, 255, 0.2);
-    backdrop-filter: blur(10px);
-    padding: 10px;
-    border-radius: 0 0 16px 16px;
-    margin-top: auto;
-  }
-}
 /* Ajustes para el contenido interno */
 .step-content {
   width: 100%;
@@ -839,96 +743,31 @@ textarea::placeholder {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Ajustes para el diálogo de observaciones en móvil */
 @media (max-width: 768px) {
-  .dialog-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-height: 80vh;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
   .dialog {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    max-height: 80vh;
+    margin: 15px;
     padding: 20px;
-    margin: 0;
-    overflow: hidden;
+    width: 95%;
   }
-
-  /* Asegurar que el contenido sea scrolleable pero los botones permanezcan visibles */
-  .dialog-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  
+  .dialog h2 {
+    font-size: 1.5rem;
   }
-
-  #dialogComments {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    max-height: calc(60vh - 120px); /* Ajustar según necesidad */
-  }
-
+  
   .dialog-buttons {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    background: transparent;
-    margin-top: auto;
-    gap: 10px;
+    flex-direction: column;
   }
-
+  
   .dialog-buttons button {
-    flex: 1;
-    min-height: 44px; /* Altura mínima para mejor táctil */
-    padding: 10px 15px;
-    margin: 0;
-  }
-
-  /* Ajuste del contenedor principal */
-  .container {
-    padding-bottom: 80px;
-    height: auto;
-    min-height: calc(100vh - 140px);
-  }
-
-  /* Asegurar que el modal no sea más alto que la pantalla */
-  .comentarios-card.visible {
-    max-height: 90vh;
-    overflow-y: auto;
+    width: 100%;
+    margin: 5px 0;
   }
 }
 
-/* Mejoras generales de accesibilidad táctil */
 @media (max-width: 480px) {
   .dialog {
-    padding: 15px;
-  }
-
-  .dialog-buttons button {
-    font-size: 16px; /* Texto más legible */
-    padding: 12px 20px;
-  }
-
-  /* Ajuste adicional para el área de texto */
-  #dialogComments {
-    max-height: calc(50vh - 100px);
-    font-size: 16px;
-    line-height: 1.4;
+    margin: 5px;
+    padding: 12px;
   }
 }
 
@@ -1034,7 +873,7 @@ textarea::placeholder {
 
 #dialogComments {
     flex: 1;
-    min-height: 150px;
+    min-height: 200px;
     margin: 15px 0;
     padding: 15px;
     background: rgba(255, 255, 255, 0.1);
@@ -1042,7 +881,6 @@ textarea::placeholder {
     border-radius: 8px;
     color: white;
     resize: none;
-    max-height: 200px;
 }
 
 /* Ajustes responsive */
@@ -1112,22 +950,4 @@ textarea::placeholder {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
-}
-
- /* Nueva animación para deslizar hacia arriba */
- @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Asegurar que el contenido sea scrolleable */
-.content {
-  max-height: 50vh;
-  overflow-y: auto;
 }

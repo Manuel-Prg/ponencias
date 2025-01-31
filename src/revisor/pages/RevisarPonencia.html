@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon/favicon_io/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon/favicon_io/favicon-16x16.png">
 </head>
-<header class="header">
+<header class="header"> 
   <div class="logo">
     <img src="/../public/icons/Logos UJAT/Logos UJAT/Logo 1 blanco.png" alt="Logo-ujat" class="logo-ujat">
     <img src="/../public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity"
@@ -36,64 +36,52 @@
 <!-- Bottom Navigation for Mobile -->
 <nav class="bottom-nav">
   <div class="bottom-nav-items">
-    <a href="#" class="bottom-nav-item" id="regresar-btn-mobile">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-        <polyline points="16 17 21 12 16 7"></polyline>
-        <line x1="21" y1="12" x2="9" y2="12"></line>
-      </svg>
-      <span>Regresar</span>
-    </a>
+      <a href="#" class="bottom-nav-item" id="regresar-btn-mobile">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>Regresar</span>
+      </a>
   </div>
 </nav>
-
 <body>
   <div class="container">
     <!-- Tarjeta de ponencia (izquierda) -->
     <div class="ponencia-card">
-      <h2 class="title">¿Que tan fuerte es Steve de Minecraft?</h2>
-      <div class="content">
-        <!-- Contenido de la ponencia -->
-      </div>
-      <!-- Modificar action-buttons -->
-      <div class="action-buttons">
-        <button class="btn btn-accept">
-          <span class="desktop-text">Aceptar</span>
-          <span class="mobile-text">✓</span>
-        </button>
-        <button class="btn btn-reject">
-          <span class="desktop-text">Rechazar</span>
-          <span class="mobile-text">✗</span>
-        </button>
-        <button class="btn btn-accept-with-obs">
-          <span class="desktop-text">Aceptar con observaciones</span>
-          <span class="mobile-text">✎</span>
-        </button>
-      </div>
+        <h2 class="title">¿Que tan fuerte es Steve de Minecraft?</h2>
+        <div class="content">
+            <!-- Contenido de la ponencia -->
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-accept">Aceptar</button>
+            <button class="btn btn-reject">Rechazar</button>
+            <button class="btn btn-accept-with-obs">Aceptar con observaciones</button>
+        </div>
     </div>
 
     <!-- Área de observaciones (derecha) -->
     <div class="comentarios-card" style="display: none;">
-      <h2 class="title">Observaciones</h2>
-      <textarea id="dialogComments" placeholder="Escriba sus observaciones aquí..."></textarea>
-      <div class="dialog-buttons">
-        <button class="btn btn-save">Guardar</button>
-        <button class="btn btn-cancel">Cancelar</button>
-      </div>
+        <h2 class="title">Observaciones</h2>
+        <textarea id="dialogComments" placeholder="Escriba sus observaciones aquí..."></textarea>
+        <div class="dialog-buttons">
+            <button class="btn btn-save">Guardar</button>
+            <button class="btn btn-cancel">Cancelar</button>
+        </div>
     </div>
   </div>
 
   <div id="dialogOverlay" class="dialog-overlay" style="display: none;">
     <div class="dialog">
-      <h2 id="dialogTitle"></h2>
-      <textarea id="dialogComments" placeholder="Escriba sus comentarios aquí"></textarea>
-      <div class="dialog-buttons">
-        <button id="dialogAccept">Aceptar</button>
-        <button id="dialogCancel">Cancelar</button>
-      </div>
+        <h2 id="dialogTitle"></h2>
+        <textarea id="dialogComments" placeholder="Escriba sus comentarios aquí"></textarea>
+        <div class="dialog-buttons">
+            <button id="dialogAccept">Aceptar</button>
+            <button id="dialogCancel">Cancelar</button>
+        </div>
     </div>
-  </div>
-  <script type="module" src="/src/revisor/scripts/dialogos.js"></script>
+</div>
+<script type="module" src="/src/revisor/scripts/dialogos.js"></script>
 </body>
-
 </html>
