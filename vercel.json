@@ -1,9 +1,8 @@
 {
     "rewrites": [
       { "source": "/", "destination": "/src/autentificacion/pages/index.html" },
-      { "source": "/src/:path*", "destination": "/src/:path*" },
-      { "source": "/:path*", "destination": "/src/:path*" }
+      { "source": "/src/:path*", "destination": "/src/:path*" }
     ],
     "buildCommand": "npm run build",
     "outputDirectory": "public"
-  }
+}
