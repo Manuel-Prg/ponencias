@@ -1,0 +1,15 @@
+{
+    "builds": [
+      { "src": "src/**/*", "use": "@vercel/static" }
+    ],
+    "routes": [
+      { "src": "/src/(.*)", "dest": "/src/$1" },
+      { "src": "/(.*)", "dest": "/src/$1" }
+    ],
+    "rewrites": [
+      { "source": "/", "destination": "/src/autentificacion/pages/index.html" }
+    ],
+    "buildCommand": "npm run build",
+    "outputDirectory": "public"
+    
+  }
