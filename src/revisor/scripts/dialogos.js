@@ -1,4 +1,3 @@
-// Nuevo archivo: revisarPonencia.js
 import { db, auth } from "/src/firebase/firebase-Config.js";
 import {
     doc,
