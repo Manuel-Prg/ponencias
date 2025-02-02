@@ -1,24 +1,4 @@
-:root {
-    --neon-purple: #5170ff;
-    --neon-pink: #ff66c4;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-    padding-top: 120px;
-    padding-bottom: 80px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-}
+@import '/src/styles/main.css';
 
 .logo-left {
     position: absolute;

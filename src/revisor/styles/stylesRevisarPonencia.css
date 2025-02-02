@@ -1,23 +1,4 @@
-:root {
-  --neon-purple: #5170ff;
-  --neon-pink: #ff66c4;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-body {
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
-  padding-top: 80px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
+@import '/src/styles/main.css';
 
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
@@ -272,12 +253,6 @@ select:focus {
   outline: none;
   border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-  animation: focusGlow 1s ease-in-out infinite alternate;
-}
-
-@keyframes focusGlow {
-  from { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
-  to { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
 }
 
 select option {
@@ -286,28 +261,63 @@ select option {
   padding: 12px;
 }
 
-.comments-section {
-  margin-bottom: 1.5rem;
+select option:hover,
+select option:focus {
+  background-color: #3a3a3a;
 }
 
-.comments-label {
-  display: block;
-  color: white;
-  font-weight: 500;
-  margin-bottom: 8px;
+select:active,
+select:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 textarea {
   width: 100%;
+  height: 150px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   color: white;
   font-size: 14px;
-  min-height: 100px;
   resize: vertical;
+  margin-top: 1rem;
   transition: all 0.3s;
 }
 
@@ -315,639 +325,62 @@ textarea:focus {
   outline: none;
   border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-  animation: focusGlow 1s ease-in-out infinite alternate;
 }
 
-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.buttons {  
-  display: flex;  
-  justify-content: flex-end; /* Alinea los botones a la derecha */  
-  gap: 10px; /* Espacio entre los botones */  
-  margin-top: 30px;  
-}  
-
-.btn input[type="radio"] {  
-  display: none; /* Oculta el radio button */  
-}  
-
-/* Estilo para el botón seleccionado */  
-.btn.active {  
-  background: rgba(167, 56, 167, 0.3); /* Color de fondo al seleccionar */  
-  border: 1px solid white; /* Borde blanco al seleccionar */  
-}  
-
-/* Efecto hover */  
-.btn:hover {  
-  background: rgba(255, 255, 255, 0.2);  
-  transform: translateY(-2px);  
-}  
-
-/* Estilos para la barra de desplazamiento */
-.content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.content::-webkit-scrollbar-track {
-  background: rgba(81, 112, 255, 0.1);
-  border-radius: 4px;
-}
-
-.content::-webkit-scrollbar-thumb {
-  background: rgba(255, 102, 196, 0.3);
-  border-radius: 4px;
-  border: 2px solid rgba(81, 112, 255, 0.2);
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 102, 196, 0.5);
-}
-
-/* Asegurar que el texto sea más legible */
-.content p, .content span, .content div {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 480px) {
-  body {
-    padding: 50px 10px 80px 10px;
-  }
-
+@media (max-width: 768px) {
   .card {
-    width: 95%;
-    padding: 15px;
-    margin: 10px auto;
+    padding: 20px;
+    width: 90%;
   }
 
-  .title {
-    font-size: 1.2rem;
+  .calif {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
-  .buttons {
-    flex-direction: column; /* En móviles pequeños, botones en columna */
+  .rating-container {
+    width: 100%;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
   }
 
   .btn {
-    max-width: 100%; /* Botones a ancho completo */
-    margin: 4px 0;
-  }
-
-  .bottom-nav {
-    padding: 10px 5px;
-  }
-
-  .header {
-    padding: 0 10px;
-  }
-
-  .logo img {
-    height: 25px;
-    margin: 0 2px; /* Reducir espacio entre logos */
-  }
-
-  .content {
-    height: 300px; /* Altura ajustada para móviles pequeños */
+    width: 100%;
   }
 }
 
-/* Estilos para el header y botones */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  z-index: 1000;
-}
-
-.header-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.header-btn {
+/* Estilos para el header y logos */
+.logos-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  gap: 2rem;
 }
 
-.header-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.header-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 1.5px;
-}
-
-/* Bottom Navigation para móvil */
-.bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 1rem;
-  z-index: 1000;
-}
-
-.bottom-nav-items {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 23px;
-}
-
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem;
-
-}
-
-.bottom-nav-item svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-}
-
-/* Media queries */
-@media (max-width: 768px) {
-  body {
-      padding-top: 60px; /* Header más pequeño en móvil */
-  }
-
-  .header-buttons {
-      display: none;
-  }
-
-  .bottom-nav {
-      display: block;
-  }
-
-  .container {
-      padding-bottom: 80px; /* Espacio para la navegación móvil */
-  }
-
-  .form-card {
-      padding: 30px 20px;
-      margin: 10px;
-      max-width: 100%;
-  }
-
-  .progress-steps {
-      max-width: 220px;
-  }
-
-  .step-content {
-      max-width: 100%;
-  }
-}
-
-/* Ajustes para el contenido interno */
-.step-content {
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 100%;
-}
-
-.logo img {
+.logo-ujat,
+.logo-dacity,
+.woman-silhouette,
+.logo-dev {
   height: 40px;
   width: auto;
   object-fit: contain;
 }
 
 @media (max-width: 768px) {
-  .logo {
-    gap: 5px;
+  .logos-container {
+    gap: 1rem;
   }
-  
-  .logo img {
+
+  .logo-ujat,
+  .logo-dacity,
+  .woman-silhouette,
+  .logo-dev {
     height: 30px;
   }
-}
-
-@media (max-width: 480px) {
-  .logo {
-    gap: 3px;
-  }
-
-  .logo img {
-    height: 25px;
-  }
-}
-
-/* Diseños de los dialogos */
-.dialog-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(73, 29, 136, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  border-radius: 16px;
-  overflow: hidden;
-  opacity: 1;
-  transition: all 0.3s ease-out;
-  animation: overlayFadeIn 0.3s ease-out;
-}
-
-.dialog-overlay.closing {
-  animation: overlayFadeOut 0.3s ease-out forwards;
-}
-
-.dialog {
-  background: linear-gradient(145deg, 
-    rgba(73, 29, 136, 0.85), 
-    rgba(250, 68, 140, 0.85)
-  );
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  width: 100%;
-  height: 100%;
-  padding: 25px;
-  box-shadow: 
-    0 10px 30px rgba(73, 29, 136, 0.3),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-  animation: scaleIn 0.4s ease-out;
-  transition: all 0.3s ease-out;
-}
-
-.dialog.closing {
-  animation: scaleOut 0.3s ease-in forwards;
-}
-
-@keyframes overlayFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes overlayFadeOut {
-  0% {
-    opacity: 1;
-    backdrop-filter: blur(20px);
-  }
-  100% {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleOut {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-}
-
-.dialog::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(145deg, 
-    rgba(255, 255, 255, 0.3), 
-    rgba(255, 255, 255, 0.1)
-  );
-  border-radius: 52px;
-  z-index: -1;
-  animation: borderGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes borderGlow {
-  from {
-    opacity: 0.5;
-  }
-  to {
-    opacity: 0.8;
-  }
-}
-
-.dialog h2 {
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  text-align: center;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.dialog textarea {
-  width: 100%;
-  min-height: 150px;
-  margin-bottom: 25px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  color: white;
-  padding: 15px;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  resize: vertical;
-  transition: all 0.3s ease;
-}
-
-.dialog textarea:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.dialog textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.dialog-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.dialog-buttons button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  color: white;
-  padding: 12px 30px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  min-width: 120px;
-}
-
-.dialog-buttons button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 768px) {
-  .dialog {
-    margin: 15px;
-    padding: 20px;
-    width: 95%;
-  }
-  
-  .dialog h2 {
-    font-size: 1.5rem;
-  }
-  
-  .dialog-buttons {
-    flex-direction: column;
-  }
-  
-  .dialog-buttons button {
-    width: 100%;
-    margin: 5px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .dialog {
-    margin: 5px;
-    padding: 12px;
-  }
-}
-
-/* Estilos para la notificación */
-.notification-toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 16px 24px;
-    border-radius: 12px;
-    color: white;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateX(100%);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.notification-toast.success {
-    background: linear-gradient(135deg, 
-        rgba(81, 112, 255, 0.9),
-        rgba(255, 102, 196, 0.9)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-.notification-toast.hide {
-    animation: toastOut 0.8s ease forwards;
-}
-
-
-@keyframes toastOut {
-    0% {
-        opacity: 1;
-        transform: translateX(0) translateY(0);
-    }
-    50% {
-        opacity: 1;
-        transform: translateX(-10%) translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(100%) translateY(-50%);
-    }
-}
-
-/* Layout para las tarjetas */
-.container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-.card {
-    position: relative;
-    flex: 1;
-    min-width: 45%;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.6s ease-out;
-    height: calc(100vh - 120px); /* Altura ajustable restando el header */
-    overflow-y: auto;
-}
-
-/* Estilos para el diálogo */
-.dialog-overlay {
-    position: relative;
-    display: none;
-    width: 45%;
-    height: auto;
-    animation: slideIn 0.3s ease-out;
-}
-
-.dialog {
-    background: rgba(81, 112, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(10px);
-}
-
-.dialog-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#dialogComments {
-    flex: 1;
-    min-height: 200px;
-    margin: 15px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: white;
-    resize: none;
-}
-
-/* Ajustes responsive */
-@media (max-width: 1024px) {
-  .container {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .ponencia-card,
-  .comentarios-card {
-    max-width: 100%;
-    margin-bottom: 2rem;
-  }
-}
-
-
-/* Animaciones */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* Ajuste cuando se muestran ambas tarjetas */
-.container.with-comments {
-  justify-content: space-between;
-}
-
-.container.with-comments .ponencia-card {
-  max-width: 55%; /* Ajustado para cuando se muestra junto con comentarios */
-}
-
-@keyframes slideIn {
-  from { transform: translateX(50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-.ponencia-card, .comentarios-card {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.comentarios-card.visible {
-  animation: slideIn 0.3s ease-out;
-}
-
-/* Update the scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-/* For Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
