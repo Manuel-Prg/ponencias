@@ -1,11 +1,10 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/src/autentificacion/pages/index.html" },
-    { "source": "/registrer", "destination": "/src/autentificacion/pages/registrer.html" }
+    { "source": "/registrer", "destination": "/src/autentificacion/pages/registrer.html" },
+    { "source": "/src/(.*)", "destination": "/src/$1" },
+    { "source": "/public/(.*)", "destination": "/public/$1" }
   ],
-  "routes": [
-    { "src": "/src/(.*)\\.css", "dest": "/src/$1.css" },
-    { "src": "/src/(.*)\\.js", "dest": "/src/$1.js" },
-    { "src": "/public/(.*)", "dest": "/public/$1" }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }
