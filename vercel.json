@@ -1,16 +1,9 @@
 {
   "rewrites": [
-
     { "source": "/", "destination": "/src/autentificacion/pages/index.html" },
-    { "source": "/registrer", "destination": "/src/pages/registrer.html" },
-
-
-    { "source": "/public/(.*)", "destination": "/public/$1" },
-    { "source": "/src/(.*)", "destination": "/src/$1" },
-
-
-    { "source": "/(.*)", "destination": "/src/autentificacion/pages/index.html" }
-  ],
-  "buildCommand": "",
-  "outputDirectory": "src/pages"
+    { "source": "/registrer", "destination": "/src/autentificacion/pages/registrer.html" },
+    { "source": "/styles/:path*", "destination": "/src/styles/:path*" },
+    { "source": "/scripts/:path*", "destination": "/src/scripts/:path*" },
+    { "source": "/public/:path*", "destination": "/public/:path*" }
+  ]
 }
