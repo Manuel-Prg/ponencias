@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where, addDoc, or, updateDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import { db, auth } from '../../firebase/firebase-Config.js';
+import { db, auth } from "/src/firebase/firebase-Config.js"
 import { signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 class AdminPanel {

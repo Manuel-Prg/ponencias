@@ -1,4 +1,4 @@
-import { db, auth } from "../../firebase/firebase-Config.js";
+import { db, auth } from "/src/firebase/firebase-Config.js"
 import { doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
