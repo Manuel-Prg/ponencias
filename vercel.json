@@ -2,7 +2,20 @@
   "rewrites": [
     { "source": "/", "destination": "/src/autentificacion/pages/index.html" },
     { "source": "/registrer", "destination": "/src/autentificacion/pages/registrer.html" },
-    { "source": "/src/(.*)", "destination": "/src/$1" },
+    
+    { "source": "/src/styles/(.*)", "destination": "/src/styles/$1" },
+    { "source": "/src/admin/styles/(.*)", "destination": "/src/admin/styles/$1" },
+    { "source": "/src/autentificacion/styles/(.*)", "destination": "/src/autentificacion/styles/$1" },
+    { "source": "/src/ponente/styles/(.*)", "destination": "/src/ponente/styles/$1" },
+    { "source": "/src/revisor/styles/(.*)", "destination": "/src/revisor/styles/$1" },
+    
+    { "source": "/src/scripts/(.*)", "destination": "/src/scripts/$1" },
+    { "source": "/src/admin/scripts/(.*)", "destination": "/src/admin/scripts/$1" },
+    { "source": "/src/autentificacion/scripts/(.*)", "destination": "/src/autentificacion/scripts/$1" },
+    { "source": "/src/ponente/scripts/(.*)", "destination": "/src/ponente/scripts/$1" },
+    { "source": "/src/revisor/scripts/(.*)", "destination": "/src/revisor/scripts/$1" },
+    
+    { "source": "/src/firebase/(.*)", "destination": "/src/firebase/$1" },
     { "source": "/public/(.*)", "destination": "/public/$1" }
   ],
   "cleanUrls": true,
