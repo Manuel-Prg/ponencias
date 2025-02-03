@@ -207,6 +207,73 @@
   opacity: 0.6;
 }
 
+.authors-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-btn svg {
+  stroke: var(--text-color);
+  width: 20px;
+  height: 20px;
+}
+
+#authorCounter {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-author-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-author-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.add-author-btn svg {
+  stroke: var(--text-color);
+  width: 20px;
+  height: 20px;
+}
+
 @media (max-width: 768px) {
   .dashboard {
     flex-direction: column;
