@@ -4,7 +4,7 @@ import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 const ROUTES = {
   LOGIN: "/src/autentificacion/pages/index.html",
-  PONENCIA: "/src/ponente/pages/datosPonente.html",
+  DATOS: "/src/ponente/pages/datosPonentes.html",
   REGISTRO_VALIDO: "/src/ponente/pages/registroValido.html",
   HERE: "/src/ponente/pages/datosPonencia.html"
 };
@@ -219,7 +219,7 @@ class PonenciaFormHandler {
     }
 
     navigateToDatos() {
-        window.location.href = ROUTES.PONENCIA;
+        window.location.href = ROUTES.DATOS;
     }
 
     showStep(step) {

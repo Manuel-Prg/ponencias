@@ -177,6 +177,7 @@ class AuthorManager {
     }
 
     async handleLogout() {
+        console.log("Logging out...");
         try {
             await auth.signOut();
             window.location.href = ROUTES.LOGIN;
@@ -186,6 +187,7 @@ class AuthorManager {
     }
 
     async handlePonenciaNavigation() {
+        console.log("Checking ponencia status...");
         try {
             const user = auth.currentUser;
             if (!user) return;

@@ -1,10 +1,11 @@
-import {auth} from "/src/firebase/firebase-Config.js"
+import { auth, db } from "/src/firebase/firebase-Config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.card[data-action]');
     const socialButtons = document.querySelectorAll('.social-icon');
     
-    // Get auth instance
-
     // Get header buttons
     const logoutBtn = document.getElementById('logout-btn');
     const logoutBtnMobile = document.getElementById('logout-btn-mobile');
@@ -15,11 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleLogout = async () => {
         try {
             await auth.signOut();
-            // Redirect to index page after successful logout
             window.location.href = "/src/autentificacion/pages/index.html";
         } catch (error) {
             console.error("Error during logout:", error);
-            // You might want to show a toast or alert here
             alert("Error al cerrar sesión. Por favor intente nuevamente.");
         }
     };
@@ -29,33 +28,144 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "/src/ponente/pages/datosPonentes.html";
     };
 
-    // Add click event listeners
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
+    // Add event listeners for header buttons
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+    if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', handleLogout);
+    if (datosBtn) datosBtn.addEventListener('click', handleDatosRedirect);
+    if (datosBtnMobile) datosBtnMobile.addEventListener('click', handleDatosRedirect);
+
+    // Function to get submission status
+    async function getSubmissionStatus(userId) {
+        try {
+            if (!userId) {
+                console.error("No user ID provided");
+                return null;
+            }
+            console.log("Getting submission status for user:", userId);
+            const submissionRef = doc(db, "ponencias", userId);
+            const submissionDoc = await getDoc(submissionRef);
+            
+            if (submissionDoc.exists()) {
+                return submissionDoc.data().estado;
+            }
+            return null;
+        } catch (error) {
+            console.error("Error getting submission status:", error);
+            return null;
+        }
     }
 
-    if (logoutBtnMobile) {
-        logoutBtnMobile.addEventListener('click', handleLogout);
+    // Function to update UI based on status
+    function updateStatusUI(status) {
+        const mainContent = document.getElementById("main-content");
+        let statusMessage = "";
+        let statusClass = "";
+
+        switch (status) {
+            case "pendiente":
+                statusMessage = "Revision";
+                statusClass = "status-review";
+                break;
+            case "aprobado":
+                statusMessage = "Aprobado";
+                statusClass = "status-approved";
+                break;
+            case "aprobado con correcciones":
+                statusMessage = "Aprobado con correcciones";
+                statusClass = "status-corrections";
+                break;
+            case "rechazado":
+                statusMessage = "Rechazado";
+                statusClass = "status-rejected";
+                break;
+            default:
+                statusMessage = "Estado no disponible";
+                statusClass = "status-unknown";
+        }
+
+        mainContent.innerHTML = `
+            <div class="card ${statusClass}">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                    </svg>
+                </div>
+                <h3>Tu ponencia se encuentra en:</h3>
+                <h2>${statusMessage}</h2>
+            </div>
+        `;
     }
 
-    if (datosBtn) {
-        datosBtn.addEventListener('click', handleDatosRedirect);
+    // Function to update edit card state
+    function updateEditCardState(status) {
+        const editCard = document.querySelector('.card[data-action="editar"]');
+        console.log(editCard);
+        if (editCard) {
+            if (status === "Aprobado con correcciones") {
+                editCard.classList.remove('disabled');
+                editCard.style.cursor = "pointer";
+            } else {
+                editCard.classList.add('disabled');
+                editCard.style.cursor = "not-allowed";
+                editCard.removeAttribute('data-action');
+            }
+        }
     }
 
-    if (datosBtnMobile) {
-        datosBtnMobile.addEventListener('click', handleDatosRedirect);
+    // Modified handleCardClick function
+    async function handleCardClick(action, userId) {
+        if (!userId) {
+            showToast("Por favor, inicia sesión nuevamente");
+            return;
+        }
+
+        switch (action) {
+            case 'revisar':
+                const mainContent = document.getElementById("main-content");
+                mainContent.classList.add("fade-hidden");
+                
+                const status = await getSubmissionStatus(userId);
+                
+                setTimeout(() => {
+                    updateStatusUI(status);
+                    mainContent.classList.remove("fade-hidden");
+                }, 500);
+                break;
+                
+            case 'editar':
+                const currentStatus = await getSubmissionStatus(userId);
+                if (currentStatus === "Aprobado con correcciones") {
+                    window.location.href = "/src/ponente/pages/editarPonencia.html";
+                } else {
+                    showToast("La edición solo está disponible para ponencias aprobadas con correcciones");
+                }
+                break;
+                
+            case 'descargar':
+                console.log('Descargando comprobante...');
+                break;
+        }
     }
 
-
-    // Add click handlers for cards
+    // Add click handlers for cards with auth state check
     cards.forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', async () => {
             const action = card.getAttribute('data-action');
-            handleCardClick(action);
+            if (action) {
+                const user = auth.currentUser;
+                if (user) {
+                    await handleCardClick(action, user.uid);
+                } else {
+                    showToast("Por favor, inicia sesión nuevamente");
+                    setTimeout(() => {
+                        window.location.href = "/src/autentificacion/pages/index.html";
+                    }, 2000);
+                }
+            }
         });
     });
 
-    // Add click handlers for social sharing
+    // Social sharing handlers remain the same
     socialButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -63,36 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
             handleShare(type);
         });
     });
-
-    async function handleCardClick(action) {
-        switch (action) {
-            case 'revisar':
-                const mainContent = document.getElementById("main-content");
-                mainContent.classList.add("fade-hidden");
-
-                setTimeout(() => {
-                    mainContent.innerHTML = `
-                        <div class="card">
-                            <div class="icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-                                </svg>
-                            </div>
-                            <h3>Tu ponencia se encuentra en:</h3>
-                            <h2>Revisión</h2>
-                        </div>
-                    `;
-                    mainContent.classList.remove("fade-hidden");
-                }, 500);
-                break;
-            case 'editar':
-                window.location.href = "/src/ponente/pages/editarPonencia.html";
-                break;
-            case 'descargar':
-                console.log('Descargando comprobante...');
-                break;
-        }
-    }
 
     function handleShare(type) {
         const shareUrl = window.location.href;
@@ -139,5 +219,15 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
-});
 
+    // Listen for auth state changes and initialize the page
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const initialStatus = await getSubmissionStatus(user.uid);
+            updateEditCardState(initialStatus);
+        } else {
+            console.log("No user logged in");
+            window.location.href = "/src/autentificacion/pages/index.html";
+        }
+    });
+});
