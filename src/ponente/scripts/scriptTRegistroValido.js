@@ -99,9 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update edit card state
     function updateEditCardState(status) {
         const editCard = document.querySelector('.card[data-action="editar"]');
-        console.log(editCard);
         if (editCard) {
-            if (status === "Aprobado con correcciones") {
+            if (status === "aprobado con correcciones") {
                 editCard.classList.remove('disabled');
                 editCard.style.cursor = "pointer";
             } else {
@@ -110,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 editCard.removeAttribute('data-action');
             }
         }
+        console.log(editCard);
+
     }
 
     // Modified handleCardClick function
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
             case 'editar':
                 const currentStatus = await getSubmissionStatus(userId);
-                if (currentStatus === "Aprobado con correcciones") {
+                if (currentStatus === "aprobado con correcciones") {
                     window.location.href = "/src/ponente/pages/editarPonencia.html";
                 } else {
                     showToast("La edición solo está disponible para ponencias aprobadas con correcciones");
@@ -224,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             const initialStatus = await getSubmissionStatus(user.uid);
+            console.log("Initial status:", initialStatus);
             updateEditCardState(initialStatus);
         } else {
             console.log("No user logged in");

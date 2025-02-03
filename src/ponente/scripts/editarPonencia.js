@@ -72,11 +72,12 @@ const firebaseOperations = {
             await updateDoc(doc(db, COLLECTION_NAME, userId), {
                 titulo,
                 resumen,
-                creado: new Date()
+                creado: new Date(),
+                estado: 'pendiente'
             });
             
             alert('Cambios guardados exitosamente.');
-            navigateTo(ROUTES.DATOS);
+            navigateTo(ROUTES.REGISTRO_VALIDO);
         } catch (error) {
             showError('Error al guardar los cambios. Por favor intente nuevamente.');
             throw error;
