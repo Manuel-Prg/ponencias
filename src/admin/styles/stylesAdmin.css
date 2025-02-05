@@ -228,6 +228,53 @@
     color: var(--text-color);
 }
 
+/* Estilos mejorados para las ventanas */
+.window {
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+  }
+  
+  .window-header {
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .window-title {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+  }
+  
+  .window-content {
+    padding: var(--spacing-md);
+  }
+  
+  /* Estilos para las áreas de especialidad */
+  .specialty-area {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .specialty-area-name {
+    font-weight: bold;
+  }
+  
+  .specialty-area-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+  
+  
 /* Estilos del placeholder */
 #searchUsers::placeholder {
     color: rgba(255, 255, 255, 0.8);

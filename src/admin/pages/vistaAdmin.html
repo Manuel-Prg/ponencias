@@ -32,56 +32,79 @@
     </header>
 
     <main class="main-content">
-        <div class="content-wrapper">
-            <div class="admin-controls">
-                <div class="search-container">
-                    <input type="text" id="searchUsers" placeholder="Buscar usuarios...">
-                    <button class="search-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="action-buttons">
-                    <button class="admin-btn" id="addReviewer">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M19 8v6"/>
-                            <path d="M22 11h-6"/>
-                        </svg>
-                        <span>Agregar Revisor</span>
-                    </button>
-                    <button class="admin-btn" id="assignRandomly">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 3h5v5"/>
-                            <path d="M4 20L21 3"/>
-                            <path d="M21 16v5h-5"/>
-                            <path d="M15 15l5 5"/>
-                            <path d="M4 4l5 5"/>
-                        </svg>
-                        <span>Asignar Aleatoriamente</span>
-                    </button>
-                </div>
+    <div class="content-wrapper">
+        <div class="window">
+            <div class="window-header">
+                <h2 class="window-title">Gestión de Usuarios</h2>
             </div>
-
-            <div class="users-list">
-                <div class="list-header">
-                    <h2>Usuarios del Sistema</h2>
-                    <div class="filter-tabs">
-                        <button class="filter-btn active" data-filter="all">Todos</button>
-                        <button class="filter-btn" data-filter="revisor">Revisores</button>
-                        <button class="filter-btn" data-filter="ponente">Ponentes</button>
-                        <button class="filter-btn" data-filter="admin">Administradores</button>
+            <div class="window-content">
+                <div class="admin-controls">
+                    <div class="search-container">
+                        <input type="text" id="searchUsers" placeholder="Buscar usuarios...">
+                        <button class="search-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="admin-btn" id="addReviewer">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M19 8v6"/>
+                                <path d="M22 11h-6"/>
+                            </svg>
+                            <span>Agregar Revisor</span>
+                        </button>
+                        <button class="admin-btn" id="assignRandomly">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 3h5v5"/>
+                                <path d="M4 20L21 3"/>
+                                <path d="M21 16v5h-5"/>
+                                <path d="M15 15l5 5"/>
+                                <path d="M4 4l5 5"/>
+                            </svg>
+                            <span>Asignar Aleatoriamente</span>
+                        </button>
                     </div>
                 </div>
-                <div class="users-grid" id="usersGrid">
-                    <!-- Los usuarios se cargarán dinámicamente aquí -->
+                <div class="users-list">
+                    <div class="list-header">
+                        <div class="filter-tabs">
+                            <button class="filter-btn active" data-filter="all">Todos</button>
+                            <button class="filter-btn" data-filter="revisor">Revisores</button>
+                            <button class="filter-btn" data-filter="ponente">Ponentes</button>
+                            <button class="filter-btn" data-filter="admin">Administradores</button>
+                        </div>
+                    </div>
+                    <div class="users-grid" id="usersGrid">
+                        <!-- Los usuarios se cargarán dinámicamente aquí -->
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+
+        <div class="window">
+            <div class="window-header">
+                <h2 class="window-title">Áreas de Especialidad</h2>
+                <button class="admin-btn" id="addSpecialtyArea">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Agregar Área</span>
+                </button>
+            </div>
+            <div class="window-content">
+                <div id="specialtyAreas">
+                    <!-- Las áreas de especialidad se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
     <!-- Modal para agregar revisor -->
     <dialog id="addReviewerModal" class="modal">
@@ -96,6 +119,21 @@
             </div>
             <div class="modal-buttons">
                 <button type="button" class="cancel-btn" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Modal para agregar área de especialidad -->
+    <dialog id="addSpecialtyAreaModal" class="modal">
+        <div class="modal-content">
+            <h2>Agregar Área de Especialidad</h2>
+            <div class="form-group">
+                <label for="specialtyAreaName">Nombre del Área</label>
+                <input type="text" id="specialtyAreaName" placeholder="Ingrese el nombre del área">
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="cancel-btn" onclick="closeSpecialtyAreaModal()">Cancelar</button>
+                <button type="button" class="submit-btn" onclick="addSpecialtyArea()">Agregar</button>
             </div>
         </div>
     </dialog>
