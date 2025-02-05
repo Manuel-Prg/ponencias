@@ -34,12 +34,12 @@ class AuthorManager {
         };
         
         this.navigation = {
-            prev: document.getElementById('prevAuthor'),
-            next: document.getElementById('nextAuthor'),
+            prev: document.querySelector('.authors-navigation .nav-btn:first-child'),
+            next: document.querySelector('.authors-navigation .nav-btn:last-child'),
             add: document.getElementById('addAuthor'),
             counter: document.getElementById('authorCounter')
         };
-
+    
         this.headerControls = {
             ponenciaBtn: document.getElementById('ponencia-btn'),
             ponenciaBtnMobile: document.getElementById('ponencia-btn-mobile'),
@@ -50,26 +50,42 @@ class AuthorManager {
 
     setupEventListeners() {
         // Navigation events
-        this.navigation.prev.addEventListener('click', () => this.handleNavigation(-1));
-        this.navigation.next.addEventListener('click', () => this.handleNavigation(1));
-        this.navigation.add.addEventListener('click', () => this.handleAddAuthor());
-        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-
+        if (this.navigation.prev) {
+            this.navigation.prev.addEventListener('click', () => this.handleNavigation(-1));
+        }
+        if (this.navigation.next) {
+            this.navigation.next.addEventListener('click', () => this.handleNavigation(1));
+        }
+        if (this.navigation.add) {
+            this.navigation.add.addEventListener('click', () => this.handleAddAuthor());
+        }
+        
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        }
+    
         // Header button events
         [this.headerControls.logoutBtn, this.headerControls.logoutBtnMobile]
             .forEach(btn => btn?.addEventListener('click', () => this.handleLogout()));
-
+    
         [this.headerControls.ponenciaBtn, this.headerControls.ponenciaBtnMobile]
             .forEach(btn => btn?.addEventListener('click', () => this.handlePonenciaNavigation()));
     }
 
     updateNavigationControls() {
         const { prev, next, add, counter } = this.navigation;
-        prev.disabled = this.currentAuthorIndex === 0;
-        next.disabled = this.currentAuthorIndex === this.authors.length - 1;
-        add.disabled = this.authors.length >= MAX_AUTHORS;
-        counter.textContent = `Autor ${this.currentAuthorIndex + 1} de ${this.authors.length}`;
-        this.formElements.email.readOnly = this.currentAuthorIndex === 0;
+        
+        if (prev) prev.disabled = this.currentAuthorIndex === 0;
+        if (next) next.disabled = this.currentAuthorIndex === this.authors.length - 1;
+        if (add) add.disabled = this.authors.length >= MAX_AUTHORS;
+        
+        if (counter) {
+            counter.textContent = `Autor ${this.currentAuthorIndex + 1} de ${this.authors.length}`;
+        }
+        
+        if (this.formElements.email) {
+            this.formElements.email.readOnly = this.currentAuthorIndex === 0;
+        }
     }
 
     getFormData() {
