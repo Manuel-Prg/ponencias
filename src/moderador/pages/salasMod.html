@@ -6,42 +6,29 @@
     <title>Lista de Ponencias</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/src/moderador/Styles/salasModstyles.css">
-    <link rel="stylesheet" href="/src/styles/logos.css">
-    <link rel="stylesheet" href="/src/styles/main.css">
 
     
-    <!-- Favicon básico -->
-    <link rel ="icon" type="image/x-icon" href="/public/icons/favicon/favicon_io/favicon.ico">
-    <!-- Para diferentes tamaños de favicon -->
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon_io/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon/favicon_io/favicon-16x16.png">
 </head>
-<header>
-    <div class="logo">
+
+<div class="main-container">
+    <div class="logo-section">
         <img src="/public/icons/Logos UJAT/Logos UJAT/Logo 1 blanco.png" alt="Logo-ujat" class="logo-ujat">
         <img src="/public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logo-dacity" />
         <img src="/public/icons/logo_mujeres/logo_mueres_blanco.png" alt="Logo-mujeres" class="woman-silhouette" />
         <img src="/public/icons/icon-logo.png" alt="Logo-dev" class="logo-dev" />
     </div>
-</header>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1 class="sala-title">Sala X</h1>
+
+    <div class="content-section">
+        <div class="top-section">
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" id="searchInput" class="search-input" placeholder="Buscar ponencia...">
             </div>
         </div>
-
-        <div class="table-container">
-            <div class="table-header">
-                <div class="header-cell">Nombre</div>
-                <div class="header-cell">Título Ponencia</div>
-                <div class="header-cell">Hora</div>
-                <div class="header-cell">Acción</div>
-            </div>
-            
             <div class="table-body" id="tableBody">
                 <!-- Las filas se generarán dinámicamente con JavaScript -->
             </div>
