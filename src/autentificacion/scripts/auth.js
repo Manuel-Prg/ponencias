@@ -8,7 +8,8 @@ const ROUTES = {
   ponenteNew: '../../ponente/pages/datosPonencia.html',
   ponenteExisting: '../../ponente/pages/registroValido.html',
   revisor: '../../revisor/pages/revisor.html',
-  home: './index.html'
+  home: './index.html',
+  moderador: '/src/moderador/pages/salasMod.html'
 };
 
 const NOTIFICATION_SETTINGS = {
@@ -126,6 +127,7 @@ class AuthService {
       admin: () => window.location.href = ROUTES.admin,
       ponente: () => this.redirectPonente(userId),
       revisor: () => window.location.href = ROUTES.revisor,
+      moderador: () => window.location.href = ROUTES.moderador,
       default: async () => {
         NotificationManager.show('Rol no autorizado', 'error');
         await auth.signOut();
