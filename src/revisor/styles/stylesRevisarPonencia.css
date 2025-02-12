@@ -385,3 +385,72 @@ textarea:focus {
     height: 30px;
   }
 }
+
+/* Ajustes responsive */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .ponencia-card,
+  .comentarios-card {
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Ajuste cuando se muestran ambas tarjetas */
+.container.with-comments {
+  justify-content: space-between;
+}
+
+.container.with-comments .ponencia-card {
+  max-width: 55%; /* Ajustado para cuando se muestra junto con comentarios */
+}
+
+@keyframes slideIn {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.ponencia-card, .comentarios-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.comentarios-card.visible {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Update the scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
