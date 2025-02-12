@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
     <link rel="stylesheet" href="/src/admin/styles/stylesAdmin.css">
     <!-- Favicon básico -->
-    <link rel ="icon" type="image/x-icon" href="/public/icons/favicon/favicon_io/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/public/icons/favicon/favicon_io/favicon.ico">
     <!-- Para diferentes tamaños de favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/public/icons/favicon/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/public/icons/favicon/favicon_io/favicon-16x16.png">
@@ -16,16 +17,18 @@
     <header class="header">
         <div class="logos-container">
             <img src="/public/icons/Logos UJAT/Logos UJAT/Logo 1 blanco.png" alt="Logo-ujat" class="logo-ujat">
-            <img src="/public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity" class="logo-dacity" />
+            <img src="/public/icons/logo-dacity/logo-negro_bordes_blancos-sinFondo.png" alt="Logo-dacity"
+                class="logo-dacity" />
             <img src="/public/icons/logo_mujeres/logo_mueres_blanco.png" alt="Logo-mujeres" class="woman-silhouette" />
             <img src="/public/icons/icon-logo.png" alt="Logo-dev" class="logo-dev" />
         </div>
         <div class="header-buttons">
             <button class="header-btn" id="logout-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
                 <span>Cerrar Sesión</span>
             </button>
@@ -33,79 +36,74 @@
     </header>
 
     <main class="main-content">
-    <div class="content-wrapper">
-        <div class="window">
-            <div class="window-header">
-                <h2 class="window-title">Gestión de Usuarios</h2>
-            </div>
-            <div class="window-content">
-                <div class="admin-controls">
-                    <div class="search-container">
-                        <input type="text" id="searchUsers" placeholder="Buscar usuarios...">
-                        <button class="search-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"/>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="admin-btn" id="addReviewer">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M19 8v6"/>
-                                <path d="M22 11h-6"/>
-                            </svg>
-                            <span>Agregar Revisor</span>
-                        </button>
-                        <button class="admin-btn" id="assignRandomly">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 3h5v5"/>
-                                <path d="M4 20L21 3"/>
-                                <path d="M21 16v5h-5"/>
-                                <path d="M15 15l5 5"/>
-                                <path d="M4 4l5 5"/>
-                            </svg>
-                            <span>Asignar Aleatoriamente</span>
-                        </button>
-                    </div>
+        <div class="content-wrapper">
+            <div class="window">
+                <div class="window-header">
+                    <h2 class="window-title">Gestión de Usuarios</h2>
                 </div>
-                <div class="users-list">
-                    <div class="list-header">
-                        <div class="filter-tabs">
-                            <button class="filter-btn active" data-filter="all">Todos</button>
-                            <button class="filter-btn" data-filter="revisor">Revisores</button>
-                            <button class="filter-btn" data-filter="ponente">Ponentes</button>
-                            <button class="filter-btn" data-filter="admin">Administradores</button>
+                <div class="window-content">
+                    <div class="admin-controls">
+                        <div class="search-container">
+                            <input type="text" id="searchUsers" placeholder="Buscar usuarios...">
+                            <button class="search-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="admin-btn" id="addReviewer">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M19 8v6" />
+                                    <path d="M22 11h-6" />
+                                </svg>
+                                <span>Agregar Revisor</span>
+                            </button>
+                            <button class="admin-btn" id="assignRandomly">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 3h5v5" />
+                                    <path d="M4 20L21 3" />
+                                    <path d="M21 16v5h-5" />
+                                    <path d="M15 15l5 5" />
+                                    <path d="M4 4l5 5" />
+                                </svg>
+                                <span>Asignar Aleatoriamente</span>
+                            </button>
+                            <button class="admin-btn" id="addSpecialtyArea">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 5v14" />
+                                    <path d="M19 11H5" />
+                                </svg>
+                                <span>Agregar Área</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="users-grid" id="usersGrid">
-                        <!-- Los usuarios se cargarán dinámicamente aquí -->
+
+                    <div class="users-list">
+                        <div class="list-header">
+                            <div class="filter-tabs">
+                                <button class="filter-btn active" data-filter="all">Todos</button>
+                                <button class="filter-btn" data-filter="revisor">Revisores</button>
+                                <button class="filter-btn" data-filter="ponente">Ponentes</button>
+                                <button class="filter-btn" data-filter="admin">Administradores</button>
+                            </div>
+                        </div>
+                        <div class="users-grid" id="usersGrid">
+                            <!-- Los usuarios se cargarán dinámicamente aquí -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="window">
-            <div class="window-header">
-                <h2 class="window-title">Áreas de Especialidad</h2>
-                <button class="admin-btn" id="addSpecialtyArea">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    <span>Agregar Área</span>
-                </button>
-            </div>
-            <div class="window-content">
-                <div id="specialtyAreas">
-                    <!-- Las áreas de especialidad se cargarán dinámicamente aquí -->
-                </div>
-            </div>
         </div>
-    </div>
-</main>
+    </main>
 
     <!-- Modal para agregar revisor -->
     <dialog id="addReviewerModal" class="modal">
@@ -139,6 +137,7 @@
         </div>
     </dialog>
 
-    <script type ="module"src="/src/admin/script/admin.js"></script>
+    <script type="module" src="/src/admin/script/admin.js"></script>
 </body>
+
 </html>
